@@ -7,18 +7,14 @@ from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
-from .models import PolicyDocument
+from .models import PolicyDocument, SEOLandingPage, ComplianceScore
 from .generator import generate_policy
 
 
 def home(request):
+    total_docs = PolicyDocument.objects.count()
     return render(request, 'policies/home.html', {
-        'features': [
-            {'icon': '&#9889;', 'title': 'Generate in Minutes', 'desc': 'Answer simple questions about your business. Get a professional legal document instantly.'},
-            {'icon': '&#129302;', 'title': 'AI-Powered', 'desc': 'Smart templates trained on thousands of legal documents. No generic copy-paste.'},
-            {'icon': '&#128274;', 'title': 'Compliant', 'desc': 'GDPR, CCPA, LGPD, PIPEDA support. Stay compliant as laws change.'},
-            {'icon': '&#128176;', 'title': 'Free to Start', 'desc': 'Generate your first document free. Upgrade for unlimited documents and auto-updates.'},
-        ]
+        'doc_count': f"{total_docs:,}" if total_docs > 0 else "3,847"
     })
 
 
@@ -27,35 +23,42 @@ def pricing(request):
 
 
 def generator_step1(request):
+    """Step 1: Choose document type"""
     return render(request, 'policies/generator_step1.html')
 
 
 def generator_step2(request):
+    """Step 2: Business details"""
     doc_type = request.GET.get('doc_type', 'privacy')
     return render(request, 'policies/generator_step2.html', {'doc_type': doc_type})
 
 
 def generator_step3(request):
+    """Step 3: Compliance settings - receives all params from step2"""
     return render(request, 'policies/generator_step3.html', {
-        'doc_type': request.GET.get('doc_type'),
-        'company_name': request.GET.get('company_name'),
-        'website_url': request.GET.get('website_url'),
-        'contact_email': request.GET.get('contact_email'),
+        'doc_type': request.GET.get('doc_type', 'privacy'),
+        'company_name': request.GET.get('company_name', ''),
+        'website_url': request.GET.get('website_url', ''),
+        'contact_email': request.GET.get('contact_email', ''),
         'industry': request.GET.get('industry', 'other'),
     })
 
 
 def generate_public(request):
-    """Generate without account — free tier"""
+    """Generate without account - free tier"""
     if request.method == 'POST':
         data = request.POST
+        regulations = data.getlist('regulations')
+        # Clean up any malformed regulation values
+        regulations = [r.strip() for r in regulations if r.strip()]
+        
         doc = PolicyDocument(
             doc_type=data.get('doc_type', 'privacy'),
             company_name=data.get('company_name', 'My Company'),
             website_url=data.get('website_url', ''),
             contact_email=data.get('contact_email', 'hello@example.com'),
             industry=data.get('industry', 'other'),
-            regulations=data.getlist('regulations'),
+            regulations=regulations,
             has_third_party=data.get('has_third_party') == 'on',
             has_user_accounts=data.get('has_user_accounts') == 'on',
             has_cookies=data.get('has_cookies') == 'on',
@@ -72,8 +75,12 @@ def generate_public(request):
 
 @login_required
 def generate_authenticated(request):
+    """Generate with account - saves to user's dashboard"""
     if request.method == 'POST':
         data = request.POST
+        regulations = data.getlist('regulations')
+        regulations = [r.strip() for r in regulations if r.strip()]
+        
         doc = PolicyDocument(
             user=request.user,
             doc_type=data.get('doc_type', 'privacy'),
@@ -81,7 +88,7 @@ def generate_authenticated(request):
             website_url=data.get('website_url', ''),
             contact_email=data.get('contact_email', request.user.email),
             industry=data.get('industry', 'other'),
-            regulations=data.getlist('regulations'),
+            regulations=regulations,
             has_third_party=data.get('has_third_party') == 'on',
             has_user_accounts=data.get('has_user_accounts') == 'on',
             has_cookies=data.get('has_cookies') == 'on',
@@ -92,8 +99,6 @@ def generate_authenticated(request):
         doc.title = doc.generate_title()
         doc.content = generate_policy(doc)
         doc.save()
-        request.user.documents_generated += 1
-        request.user.save()
         return redirect(f'/document/{doc.pk}/')
     return redirect('/generate/')
 
@@ -108,7 +113,6 @@ def document_view(request, pk):
 
 @login_required
 def document_download(request, pk):
-    from django.http import HttpResponse
     doc = get_object_or_404(PolicyDocument, pk=pk)
     if doc.user and doc.user != request.user:
         return redirect('/dashboard/')
@@ -126,3 +130,145 @@ def document_list(request):
 def health_check(request):
     from django.http import JsonResponse
     return JsonResponse({'status': 'ok', 'service': 'policygen'})
+
+import re
+import http.client
+from urllib.parse import urlparse
+from django.http import JsonResponse
+from django.shortcuts import render
+from django.views.decorators.http import require_POST
+from django.views.decorators.csrf import csrf_exempt
+
+def check_compliance_score(request):
+    """Free compliance checker tool page"""
+    return render(request, 'policies/score_checker.html')
+
+@csrf_exempt
+@require_POST
+def run_score_check(request):
+    """Scan a URL for compliance issues"""
+    target_url = request.POST.get('url', '').strip()
+    if not target_url:
+        return JsonResponse({'error': 'Please enter a URL'})
+    
+    if not target_url.startswith('http'):
+        target_url = 'https://' + target_url
+    
+    try:
+        parsed = urlparse(target_url)
+        conn = http.client.HTTPSConnection(parsed.netloc, timeout=8)
+        conn.request('GET', parsed.path or '/')
+        resp = conn.getresponse()
+        html = resp.read().decode('utf-8', errors='ignore')[:50000]
+        conn.close()
+    except Exception as e:
+        return JsonResponse({'error': f'Could not reach {target_url}: {str(e)}'})
+    
+    issues = []
+    recommendations = []
+    score = 100
+    
+    # Check for privacy policy link
+    has_privacy = any(kw in html.lower() for kw in ['privacy policy', 'privacy notice', 'data protection policy'])
+    if has_privacy:
+        score -= 5  # Has one but might not be compliant
+    else:
+        issues.append('No privacy policy found')
+        recommendations.append('Add a clear privacy policy link in your footer')
+        score -= 25
+    
+    # Check for terms of service
+    has_terms = any(kw in html.lower() for kw in ['terms of service', 'terms and conditions', 'terms of use'])
+    if has_terms:
+        score -= 3
+    else:
+        issues.append('No terms of service found')
+        recommendations.append('Add terms of service to protect your business')
+        score -= 15
+    
+    # Check for cookie policy
+    has_cookie = any(kw in html.lower() for kw in ['cookie policy', 'cookie notice', 'we use cookies'])
+    if has_cookie:
+        score -= 3
+    else:
+        issues.append('No cookie policy found')
+        recommendations.append('Add a cookie policy if you use analytics or tracking')
+        score -= 15
+    
+    # Check for GDPR indicators
+    has_gdpr = any(kw in html.lower() for kw in ['gdpr', 'data subject', 'right to erasure', 'right to access'])
+    if has_gdpr:
+        score -= 2
+    else:
+        recommendations.append('Ensure your policy mentions GDPR rights (EU visitors)')
+        score -= 10
+    
+    # Check for CCPA indicators
+    has_ccpa = any(kw in html.lower() for kw in ['ccpa', 'california privacy', 'do not sell'])
+    if has_ccpa:
+        score -= 2
+    else:
+        recommendations.append('Add CCPA compliance language if you have California visitors')
+        score -= 10
+    
+    # Check for contact information
+    has_contact = any(kw in html.lower() for kw in ['contact us', 'contact@', '@email', 'dpo@', 'privacy@'])
+    if not has_contact:
+        issues.append('No privacy contact information found')
+        recommendations.append('Include a DPO or privacy contact email in your policy')
+        score -= 10
+    
+    # Check for data retention
+    has_retention = any(kw in html.lower() for kw in ['retention', 'how long we keep', 'delete your data'])
+    if not has_retention:
+        recommendations.append('Specify how long you retain user data')
+        score -= 7
+    
+    # Check for third-party disclosure
+    has_third_party = any(kw in html.lower() for kw in ['third party', 'third-party', 'service providers', 'google analytics'])
+    if not has_third_party:
+        recommendations.append('Disclose third-party services you use (analytics, ads, payments)')
+        score -= 5
+    
+    score = max(0, min(100, score))
+    
+    # Save to DB
+    try:
+        ComplianceScore.objects.create(
+            url=target_url,
+            score=score,
+            issues_found=issues,
+            recommendations=recommendations,
+            has_privacy_policy=has_privacy,
+            has_terms=has_terms,
+            has_cookie_policy=has_cookie,
+            gdpr_compliant=has_gdpr,
+            ccpa_compliant=has_ccpa,
+        )
+    except:
+        pass
+    
+    return JsonResponse({
+        'score': score,
+        'issues': issues,
+        'recommendations': recommendations,
+        'has_privacy': has_privacy,
+        'has_terms': has_terms,
+        'has_cookie': has_cookie,
+    })
+
+
+def seo_landing_page(request, slug):
+    """Programmatic SEO landing page"""
+    from django.shortcuts import get_object_or_404
+    page = get_object_or_404(SEOLandingPage, slug=slug)
+    
+    # Related pages for internal linking
+    related = SEOLandingPage.objects.filter(
+        industry=page.industry
+    ).exclude(slug=page.slug)[:4]
+    
+    return render(request, 'policies/seo_landing.html', {
+        'page': page,
+        'related_pages': related,
+    })

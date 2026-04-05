@@ -1,41 +1,48 @@
 {% extends "base.html" %}
-{% block title %}Choose Document Type{% endblock %}
+{% block title %}Choose document type{% endblock %}
 
 {% block content %}
-<div class="text-center mb-8">
-  <h1 style="font-size:2rem;font-weight:700;">What document do you need?</h1>
-  <p class="text-secondary">We only ask what's necessary. Takes less than 5 minutes.</p>
-</div>
+<div style="padding-top:3rem;padding-bottom:2rem;">
+  <p class="hero-eyebrow">Step 1 of 3</p>
+  <h2 class="heading-serif" style="margin-top:0.5rem;margin-bottom:0.5rem;">What document do you need?</h2>
+  <p class="text-secondary text-sm" style="margin-bottom:2rem;">Select the type of policy you need. You can generate additional documents after.</p>
 
-<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;max-width:800px;margin:0 auto;">
-  <a href="/generate/details/?doc_type=privacy" class="card" style="text-decoration:none;color:inherit;display:block;">
-    <div style="font-size:2rem;margin-bottom:0.75rem;">&#128274;</div>
-    <h3>Privacy Policy</h3>
-    <p class="text-secondary text-sm">Required for GDPR, CCPA, and most app stores.</p>
-  </a>
-
-  <a href="/generate/details/?doc_type=terms" class="card" style="text-decoration:none;color:inherit;display:block;">
-    <div style="font-size:2rem;margin-bottom:0.75rem;">&#128220;</div>
-    <h3>Terms &amp; Conditions</h3>
-    <p class="text-secondary text-sm">Protect your business with clear terms of use.</p>
-  </a>
-
-  <a href="/generate/details/?doc_type=cookie" class="card" style="text-decoration:none;color:inherit;display:block;">
-    <div style="font-size:2rem;margin-bottom:0.75rem;">&#127850;</div>
-    <h3>Cookie Policy</h3>
-    <p class="text-secondary text-sm">Required for EU compliance and cookie consent.</p>
-  </a>
-
-  <a href="/generate/details/?doc_type=disclaimer" class="card" style="text-decoration:none;color:inherit;display:block;">
-    <div style="font-size:2rem;margin-bottom:0.75rem;">&#9888;&#65039;</div>
-    <h3>Disclaimer</h3>
-    <p class="text-secondary text-sm">Limit liability and clarify content boundaries.</p>
-  </a>
-
-  <a href="/generate/details/?doc_type=refund" class="card" style="text-decoration:none;color:inherit;display:block;">
-    <div style="font-size:2rem;margin-bottom:0.75rem;">&#128176;</div>
-    <h3>Refund Policy</h3>
-    <p class="text-secondary text-sm">Build customer trust with clear refund terms.</p>
-  </a>
+  <div style="display:grid;gap:0.75rem;max-width:480px;">
+    <a href="/generate/step2/?doc_type=privacy" class="card card-hover" style="display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:inherit;padding:1rem 1.25rem;">
+      <div>
+        <h3 style="font-size:0.9375rem;font-weight:600;">Privacy Policy</h3>
+        <p class="text-xs text-muted mt-1">Required by GDPR, CCPA, and most privacy laws</p>
+      </div>
+      <span style="color:var(--text-muted);font-size:1.25rem;">&#8594;</span>
+    </a>
+    <a href="/generate/step2/?doc_type=terms" class="card card-hover" style="display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:inherit;padding:1rem 1.25rem;">
+      <div>
+        <h3 style="font-size:0.9375rem;font-weight:600;">Terms &amp; Conditions</h3>
+        <p class="text-xs text-muted mt-1">Protect your business and set rules for users</p>
+      </div>
+      <span style="color:var(--text-muted);font-size:1.25rem;">&#8594;</span>
+    </a>
+    <a href="/generate/step2/?doc_type=cookie" class="card card-hover" style="display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:inherit;padding:1rem 1.25rem;">
+      <div>
+        <h3 style="font-size:0.9375rem;font-weight:600;">Cookie Policy</h3>
+        <p class="text-xs text-muted mt-1">Required for EU visitors under ePrivacy Directive</p>
+      </div>
+      <span style="color:var(--text-muted);font-size:1.25rem;">&#8594;</span>
+    </a>
+    <a href="/generate/step2/?doc_type=disclaimer" class="card card-hover" style="display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:inherit;padding:1rem 1.25rem;">
+      <div>
+        <h3 style="font-size:0.9375rem;font-weight:600;">Disclaimer</h3>
+        <p class="text-xs text-muted mt-1">Limit liability for information on your site</p>
+      </div>
+      <span style="color:var(--text-muted);font-size:1.25rem;">&#8594;</span>
+    </a>
+    <a href="/generate/step2/?doc_type=refund" class="card card-hover" style="display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:inherit;padding:1rem 1.25rem;">
+      <div>
+        <h3 style="font-size:0.9375rem;font-weight:600;">Refund Policy</h3>
+        <p class="text-xs text-muted mt-1">Clear terms for returns and cancellations</p>
+      </div>
+      <span style="color:var(--text-muted);font-size:1.25rem;">&#8594;</span>
+    </a>
+  </div>
 </div>
 {% endblock %}

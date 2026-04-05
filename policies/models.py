@@ -78,3 +78,48 @@ class PolicyDocument(models.Model):
         elif self.doc_type == 'refund':
             return f"Refund Policy — {self.company_name}"
         return f"Legal Document — {self.company_name}"
+
+
+class SEOLandingPage(models.Model):
+    """Programmatic SEO landing page — industry × regulation × location"""
+    industry = models.CharField(max_length=50, choices=INDUSTRIES, default='other')
+    regulation = models.CharField(max_length=20, default='', blank=True)
+    location = models.CharField(max_length=100, default='', blank=True)
+    title = models.CharField(max_length=200)
+    slug = models.SlugField(max_length=300, unique=True)
+    meta_description = models.TextField(default='')
+    h1 = models.CharField(max_length=200)
+    intro = models.TextField(default='')
+    sections = models.JSONField(default=list, blank=True)
+    cta_text = models.CharField(max_length=200, default="Generate your privacy policy")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'seo_landing_page'
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return self.title
+
+
+class ComplianceScore(models.Model):
+    """Result of a free compliance scan"""
+    url = models.URLField()
+    score = models.IntegerField(help_text="0-100 compliance score")
+    issues_found = models.JSONField(default=list)
+    recommendations = models.JSONField(default=list)
+    has_privacy_policy = models.BooleanField(default=False)
+    has_terms = models.BooleanField(default=False)
+    has_cookie_policy = models.BooleanField(default=False)
+    gdpr_compliant = models.BooleanField(default=False)
+    ccpa_compliant = models.BooleanField(default=False)
+    email = models.EmailField(blank=True, default='', help_text="Optional — send them results")
+    email_sent = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    class Meta:
+        db_table = 'compliance_score'
+        ordering = ['-created_at']
+    
+    def __str__(self):
+        return f"{self.url} — Score: {self.score}"

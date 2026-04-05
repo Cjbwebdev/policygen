@@ -1,50 +1,60 @@
 {% extends "base.html" %}
-{% block title %}Pricing{% endblock %}
+{% block title %}Pricing — PolicyGen{% endblock %}
 
 {% block content %}
-<div class="text-center mb-8">
-  <h1 style="font-size:2.5rem;font-weight:800;">Simple, Transparent Pricing</h1>
-  <p class="text-secondary">Start free. Upgrade when you need more.</p>
-</div>
+<div style="padding-top:3rem;padding-bottom:2rem;max-width:720px;">
+  <p class="hero-eyebrow">Pricing</p>
+  <h2 class="heading-serif" style="margin-top:0.5rem;margin-bottom:0.5rem;">Start free. Upgrade when you're ready.</h2>
+  <p class="text-secondary text-sm" style="margin-bottom:2.5rem;">Every plan includes GDPR, CCPA, LGPD, and PIPEDA support.</p>
 
-<div class="pricing-grid">
-  <!-- Free -->
-  <div class="pricing-card">
-    <h3 style="font-size:1.25rem;">Free</h3>
-    <div class="price">$0 <span>/forever</span></div>
-    <ul>
-      <li>1 document generated</li>
-      <li>Privacy Policy, Terms, Cookie Policy</li>
-      <li>Basic compliance (GDPR, CCPA)</li>
-      <li>Download as TXT</li>
-      <li>No account required</li>
-    </ul>
-    <a href="/generate/" class="btn btn-secondary btn-block">Start Free &#8594;</a>
+  <div class="pricing-grid">
+    <div class="pricing-card">
+      <div class="pricing-name">Free</div>
+      <div class="pricing-amount">$0</div>
+      <p class="pricing-desc">One document per month</p>
+      <ul class="pricing-features">
+        <li>1 document per month</li>
+        <li>All document types</li>
+        <li>All regulations supported</li>
+        <li>Copy &amp; paste export</li>
+      </ul>
+      <a href="/generate/" class="btn btn-full btn-outline">Start generating</a>
+    </div>
+
+    <div class="pricing-card featured">
+      <div class="pricing-badge">Most popular</div>
+      <div class="pricing-name">Pro</div>
+      <div class="pricing-amount">$9<span>/mo</span></div>
+      <p class="pricing-desc">Unlimited documents + auto-updates</p>
+      <ul class="pricing-features">
+        <li>Unlimited documents</li>
+        <li>All document types</li>
+        <li>Auto-compliance updates</li>
+        <li>One-click embed code</li>
+        <li>HTML &amp; TXT download</li>
+        <li>Multiple businesses</li>
+      </ul>
+      <a href="/register/" class="btn btn-full btn-dark">Create account</a>
+    </div>
+
+    <div class="pricing-card">
+      <div class="pricing-name">Agency</div>
+      <div class="pricing-amount">$49<span>/mo</span></div>
+      <p class="pricing-desc">For agencies &amp; freelancers</p>
+      <ul class="pricing-features">
+        <li>Everything in Pro</li>
+        <li>White-label documents</li>
+        <li>API access</li>
+        <li>Client management dashboard</li>
+        <li>Bulk generation</li>
+        <li>Priority support</li>
+      </ul>
+      <a href="/register/" class="btn btn-full btn-outline">Contact us</a>
+    </div>
   </div>
 
-  <!-- Pro -->
-  <div class="pricing-card featured">
-    <h3 style="font-size:1.25rem;">Pro</h3>
-    <div class="price">$9 <span>/mo</span></div>
-    <ul>
-      <li>Unlimited documents</li>
-      <li>All document types (5+)</li>
-      <li>All regulations (GDPR, CCPA, LGPD, PIPEDA)</li>
-      <li>AI-powered custom clauses</li>
-      <li>Download as TXT, HTML, Markdown</li>
-      <li>Auto-compliance updates</li>
-      <li>Priority support</li>
-    </ul>
-    <a href="{% if user.is_authenticated %}/billing/checkout/{% else %}/login/?next=/billing/checkout/{% endif %}" class="btn btn-primary btn-block">Upgrade to Pro &#8594;</a>
-  </div>
-</div>
-
-<div class="text-center mt-8" style="max-width:600px;margin-left:auto;margin-right:auto;">
-  <h3 style="margin-bottom:0.5rem;">FAQ</h3>
-  <div class="card text-center" style="text-align:left;">
-    <p><strong>Can I cancel anytime?</strong><br>Yes. Cancel your subscription anytime from your dashboard. No questions asked.</p>
-    <p style="margin-top:0.75rem;"><strong>Do you store my documents?</strong><br>Yes, securely. You can download them in any format and delete them anytime.</p>
-    <p style="margin-top:0.75rem;"><strong>Is this legal advice?</strong><br>No. We provide templates and tools to help you create compliant documents. For legal advice, consult an attorney.</p>
+  <div style="margin-top:3rem;padding:1.5rem;background:var(--cream);border-radius:var(--radius);">
+    <p class="text-sm text-secondary"><strong style="color:var(--text-primary);">Not sure which plan?</strong> Start free — generate your first document, then upgrade if you need more. No credit card required.</p>
   </div>
 </div>
 {% endblock %}

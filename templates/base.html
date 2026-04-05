@@ -3,25 +3,27 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{% block title %}PolicyGen{% endblock %} — Legal Docs Made Simple</title>
+  <title>{% block title %}PolicyGen{% endblock %}</title>
   <link rel="stylesheet" href="/static/css/style.css">
   {% block extra_head %}{% endblock %}
 </head>
 <body>
   <header>
-    <a href="/" class="logo">
-      <div class="logo-icon">&#9878;</div>
-      PolicyGen
-    </a>
-    <nav style="display:flex;align-items:center;gap:0.75rem;">
-      {% if user.is_authenticated %}
-        <a href="/dashboard/" class="btn btn-secondary">Dashboard</a>
-        <a href="/logout/" class="btn btn-secondary">Logout</a>
-      {% else %}
-        <a href="/login/" class="btn btn-secondary">Login</a>
-        <a href="/generate/" class="btn btn-primary">Generate Free</a>
-      {% endif %}
-    </nav>
+    <div class="header-inner">
+      <a href="/" class="logo">
+        <div class="logo-icon">&#9878;</div>
+        PolicyGen
+      </a>
+      <nav>
+        {% if user.is_authenticated %}
+          <a href="/dashboard/" class="nav-link">Dashboard</a>
+          <a href="/logout/" class="nav-link">Sign out</a>
+        {% else %}
+          <a href="/pricing/" class="nav-link">Pricing</a>
+          <a href="/login/" class="nav-link">Sign in</a>
+        {% endif %}
+      </nav>
+    </div>
   </header>
 
   <main>
@@ -36,7 +38,10 @@
   </main>
 
   <footer>
-    <p>&copy; {% now "Y" %} PolicyGen. Built with care. <a href="/pricing/">Pricing</a></p>
+    <div class="footer-inner">
+      <span>&copy; {% now "Y" %} PolicyGen</span>
+      <a href="/pricing/">Pricing</a>
+    </div>
   </footer>
 
   {% block extra_js %}{% endblock %}

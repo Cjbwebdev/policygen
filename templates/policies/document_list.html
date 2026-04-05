@@ -1,39 +1,33 @@
 {% extends "base.html" %}
-{% block title %}Dashboard{% endblock %}
+{% block title %}Dashboard — PolicyGen{% endblock %}
 
 {% block content %}
-<div class="flex-between mb-8">
-  <div>
-    <h1 style="font-size:1.5rem;font-weight:700;">Your Documents</h1>
-    <p class="text-secondary text-sm">{{ documents.count }} document{{ documents.count|pluralize }} generated</p>
-  </div>
-  <a href="/generate/" class="btn btn-primary">+ New Document</a>
-</div>
-
-{% if not documents %}
-<div class="text-center card" style="padding:3rem;">
-  <div style="font-size:3rem;margin-bottom:1rem;">&#128196;</div>
-  <h2>No documents yet</h2>
-  <p class="text-secondary mb-4">Your first policy is free. Let's create one.</p>
-  <a href="/generate/" class="btn btn-primary btn-lg">Generate Your First Policy</a>
-</div>
-{% else %}
-<div style="display:flex;flex-direction:column;gap:0.75rem;">
-  {% for doc in documents %}
-  <a href="/document/{{ doc.pk }}/" class="card job-card" style="text-decoration:none;color:inherit;display:block;">
+<div style="padding-top:3rem;padding-bottom:2rem;">
+  <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:2rem;flex-wrap:wrap;gap:0.75rem;">
     <div>
-      <h3>{{ doc.title }}</h3>
-      <div class="meta">
-        <span>{{ doc.get_doc_type_display }}</span>
-        <span>{{ doc.company_name }}</span>
-        <span>{{ doc.created_at|date:"M d, Y" }}</span>
-      </div>
+      <h2 class="heading-serif" style="font-size:1.5rem;margin-bottom:0.25rem;">Your documents</h2>
+      <p class="text-sm text-muted">{{ documents.count }} document{{ documents.count|pluralize }} generated</p>
     </div>
-    <span class="tag {% if doc.doc_type == 'privacy' %}tag-blue{% elif doc.doc_type == 'terms' %}tag-purple{% elif doc.doc_type == 'cookie' %}tag-amber{% elif doc.doc_type == 'disclaimer' %}tag-red{% else %}tag-green{% endif %}">
-      {{ doc.get_doc_type_display }}
-    </span>
-  </a>
-  {% endfor %}
+    <a href="/generate/" class="btn btn-dark">+ New document</a>
+  </div>
+
+  {% if documents %}
+  <ul class="doc-list">
+    {% for doc in documents %}
+    <li class="doc-item">
+      <div class="doc-info">
+        <h3><a href="/document/{{ doc.pk }}/" style="text-decoration:none;color:inherit;">{{ doc.title }}</a></h3>
+        <p class="doc-meta">{{ doc.created_at|date:"M d, Y" }} &middot; {{ doc.get_doc_type_display }} &middot; {{ doc.get_status_display }}</p>
+      </div>
+      <span class="tag tag-green">{{ doc.get_status_display }}</span>
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <div style="text-align:center;padding:3rem 0;">
+    <p class="text-secondary mb-4">You haven't generated any documents yet.</p>
+    <a href="/generate/" class="btn btn-dark btn-lg">Generate your first document</a>
+  </div>
+  {% endif %}
 </div>
-{% endif %}
 {% endblock %}
