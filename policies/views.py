@@ -23,7 +23,7 @@ def home(request):
 
 
 def pricing(request):
-    return render(request, 'pricing.html')
+    return render(request, 'policies/pricing.html')
 
 
 def generator_step1(request):

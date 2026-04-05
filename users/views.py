@@ -9,9 +9,10 @@ from django.contrib.auth.decorators import login_required
 from django import forms
 from .models import User
 
+
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput)
-    password_confirm = forms.CharField(widget=forms.PasswordInput)
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Password'}))
+    password_confirm = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'form-control', 'placeholder': 'Confirm password'}))
 
     class Meta:
         model = User
@@ -50,7 +51,7 @@ def register_view(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('document_list')
+            return redirect('dashboard')
     else:
         form = UserRegistrationForm()
     return render(request, 'users/register.html', {'form': form})

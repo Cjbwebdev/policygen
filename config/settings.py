@@ -1,5 +1,5 @@
 """
-PolicyGen settings — production-ready defaults
+PolicyGen settings — production-ready
 """
 import os
 from pathlib import Path
@@ -9,7 +9,7 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'dev-key-change-me')
+SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-dev-key-change-me-in-production')
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
@@ -43,10 +43,16 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3')
 if DATABASE_URL.startswith('postgres'):
-    import dj_database_url  # type: ignore
+    import dj_database_url
     DATABASES = {'default': dj_database_url.config(default=DATABASE_URL)}
 else:
-    DATABASES = {'default': {'ENGINE': 'django.db.backends.sqlite3', 'NAME': BASE_DIR / DATABASE_URL.split('///')[1]}}
+    db_name = DATABASE_URL.split('///')[-1] if '///' in DATABASE_URL else 'db.sqlite3'
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': BASE_DIR / db_name
+        }
+    }
 
 # Auth
 AUTH_USER_MODEL = 'users.User'
@@ -57,7 +63,7 @@ LOGOUT_REDIRECT_URL = '/'
 # Static/Storage
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+STATICFILES_DIRS = [BASE_DIR / 'static']
 STORAGES = {
     'default': {'BACKEND': 'django.core.files.storage.InMemoryStorage'},
     'staticfiles': {'BACKEND': 'whitenoise.storage.CompressedManifestStaticFilesStorage'},
@@ -86,7 +92,6 @@ STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY', '')
 STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
 STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')
 STRIPE_PRICE_ID_PRO = os.getenv('STRIPE_PRICE_ID_PRO', '')
-STRIPE_PRICE_ID_FREE = os.getenv('STRIPE_PRICE_ID_FREE', '')
 
 EMAIL_HOST = os.getenv('EMAIL_HOST', '')
 EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
