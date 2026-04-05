@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block title %}PolicyGen{% endblock %}
+
+{% block content %}
+<div class="hero">
+  <h1>Legal Documents<br>Generated in Minutes</h1>
+  <p>Privacy policies, terms of service, cookie policies &amp; more. Compliant with GDPR, CCPA, LGPD &amp; PIPEDA. Free to start.</p>
+  <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+    <a href="/generate/" class="btn btn-primary btn-lg">&#9654; Generate Free Policy</a>
+    <a href="/pricing/" class="btn btn-secondary btn-lg">See Pricing</a>
+  </div>
+</div>
+
+<div class="features-grid">
+  {% for f in features %}
+  <div class="feature card">
+    <div class="icon">{{ f.icon }}</div>
+    <h3>{{ f.title }}</h3>
+    <p>{{ f.desc }}</p>
+  </div>
+  {% endfor %}
+</div>
+
+<!-- Trust bar -->
+<div class="text-center mb-8 mt-8">
+  <p class="text-secondary">Trusted by 2,000+ businesses worldwide</p>
+  <div style="display:flex;justify-content:center;gap:2rem;margin-top:1rem;flex-wrap:wrap;opacity:0.5;">
+    <span style="font-size:1.5rem;font-weight:700;">Shopify</span>
+    <span style="font-size:1.5rem;font-weight:700;">Stripe</span>
+    <span style="font-size:1.5rem;font-weight:700;">Notion</span>
+    <span style="font-size:1.5rem;font-weight:700;">Vercel</span>
+  </div>
+</div>
+
+<!-- Comparison -->
+<div class="card mb-8" style="max-width:700px;margin-left:auto;margin-right:auto;">
+  <h2 class="text-center mb-4">Why PolicyGen?</h2>
+  <table style="width:100%;border-collapse:collapse;">
+    <thead>
+      <tr style="border-bottom:2px solid var(--border);">
+        <th style="text-align:left;padding:0.75rem;">Feature</th>
+        <th style="text-align:center;padding:0.75rem;">PolicyGen</th>
+        <th style="text-align:center;padding:0.75rem;color:var(--text-secondary);">Others</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:0.75rem;">AI-Powered Generation</td>
+        <td style="text-align:center;color:var(--success);font-weight:700;">&#10004;</td>
+        <td style="text-align:center;color:#dc2626;">&#10008;</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:0.75rem;">Free Tier</td>
+        <td style="text-align:center;color:var(--success);font-weight:700;">&#10004;</td>
+        <td style="text-align:center;color:#dc2626;">$19+</td>
+      </tr>
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:0.75rem;">Multi-Jurisdiction</td>
+        <td style="text-align:center;color:var(--success);font-weight:700;">&#10004;</td>
+        <td style="text-align:center;color:#dc2626;">&#10008;</td>
+      </tr>
+      <tr>
+        <td style="padding:0.75rem;">Auto-Compliance Updates</td>
+        <td style="text-align:center;color:var(--success);font-weight:700;">&#10004;</td>
+        <td style="text-align:center;color:#dc2626;">&#10008;</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- CTA -->
+<div class="text-center" style="background:linear-gradient(135deg,#1e3a5f,#2563eb);color:white;padding:3rem 2rem;border-radius:12px;">
+  <h2 style="font-size:1.75rem;margin-bottom:0.5rem;">Ready to Get Compliant?</h2>
+  <p style="opacity:0.9;margin-bottom:1.5rem;">Generate your first policy in under 5 minutes. Free forever.</p>
+  <a href="/generate/" class="btn" style="background:white;color:var(--primary);font-size:1rem;padding:0.75rem 2rem;">Start Free Now &#8594;</a>
+</div>
+{% endblock %}

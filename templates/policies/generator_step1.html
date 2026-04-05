@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Choose Document Type{% endblock %}
+
+{% block content %}
+<div class="text-center mb-8">
+  <h1 style="font-size:2rem;font-weight:700;">What document do you need?</h1>
+  <p class="text-secondary">We only ask what's necessary. Takes less than 5 minutes.</p>
+</div>
+
+<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem;max-width:800px;margin:0 auto;">
+  <a href="/generate/details/?doc_type=privacy" class="card" style="text-decoration:none;color:inherit;display:block;">
+    <div style="font-size:2rem;margin-bottom:0.75rem;">&#128274;</div>
+    <h3>Privacy Policy</h3>
+    <p class="text-secondary text-sm">Required for GDPR, CCPA, and most app stores.</p>
+  </a>
+
+  <a href="/generate/details/?doc_type=terms" class="card" style="text-decoration:none;color:inherit;display:block;">
+    <div style="font-size:2rem;margin-bottom:0.75rem;">&#128220;</div>
+    <h3>Terms &amp; Conditions</h3>
+    <p class="text-secondary text-sm">Protect your business with clear terms of use.</p>
+  </a>
+
+  <a href="/generate/details/?doc_type=cookie" class="card" style="text-decoration:none;color:inherit;display:block;">
+    <div style="font-size:2rem;margin-bottom:0.75rem;">&#127850;</div>
+    <h3>Cookie Policy</h3>
+    <p class="text-secondary text-sm">Required for EU compliance and cookie consent.</p>
+  </a>
+
+  <a href="/generate/details/?doc_type=disclaimer" class="card" style="text-decoration:none;color:inherit;display:block;">
+    <div style="font-size:2rem;margin-bottom:0.75rem;">&#9888;&#65039;</div>
+    <h3>Disclaimer</h3>
+    <p class="text-secondary text-sm">Limit liability and clarify content boundaries.</p>
+  </a>
+
+  <a href="/generate/details/?doc_type=refund" class="card" style="text-decoration:none;color:inherit;display:block;">
+    <div style="font-size:2rem;margin-bottom:0.75rem;">&#128176;</div>
+    <h3>Refund Policy</h3>
+    <p class="text-secondary text-sm">Build customer trust with clear refund terms.</p>
+  </a>
+</div>
+{% endblock %}

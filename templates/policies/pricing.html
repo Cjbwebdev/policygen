@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Pricing{% endblock %}
+
+{% block content %}
+<div class="text-center mb-8">
+  <h1 style="font-size:2.5rem;font-weight:800;">Simple, Transparent Pricing</h1>
+  <p class="text-secondary">Start free. Upgrade when you need more.</p>
+</div>
+
+<div class="pricing-grid">
+  <!-- Free -->
+  <div class="pricing-card">
+    <h3 style="font-size:1.25rem;">Free</h3>
+    <div class="price">$0 <span>/forever</span></div>
+    <ul>
+      <li>1 document generated</li>
+      <li>Privacy Policy, Terms, Cookie Policy</li>
+      <li>Basic compliance (GDPR, CCPA)</li>
+      <li>Download as TXT</li>
+      <li>No account required</li>
+    </ul>
+    <a href="/generate/" class="btn btn-secondary btn-block">Start Free &#8594;</a>
+  </div>
+
+  <!-- Pro -->
+  <div class="pricing-card featured">
+    <h3 style="font-size:1.25rem;">Pro</h3>
+    <div class="price">$9 <span>/mo</span></div>
+    <ul>
+      <li>Unlimited documents</li>
+      <li>All document types (5+)</li>
+      <li>All regulations (GDPR, CCPA, LGPD, PIPEDA)</li>
+      <li>AI-powered custom clauses</li>
+      <li>Download as TXT, HTML, Markdown</li>
+      <li>Auto-compliance updates</li>
+      <li>Priority support</li>
+    </ul>
+    <a href="{% if user.is_authenticated %}/billing/checkout/{% else %}/login/?next=/billing/checkout/{% endif %}" class="btn btn-primary btn-block">Upgrade to Pro &#8594;</a>
+  </div>
+</div>
+
+<div class="text-center mt-8" style="max-width:600px;margin-left:auto;margin-right:auto;">
+  <h3 style="margin-bottom:0.5rem;">FAQ</h3>
+  <div class="card text-center" style="text-align:left;">
+    <p><strong>Can I cancel anytime?</strong><br>Yes. Cancel your subscription anytime from your dashboard. No questions asked.</p>
+    <p style="margin-top:0.75rem;"><strong>Do you store my documents?</strong><br>Yes, securely. You can download them in any format and delete them anytime.</p>
+    <p style="margin-top:0.75rem;"><strong>Is this legal advice?</strong><br>No. We provide templates and tools to help you create compliant documents. For legal advice, consult an attorney.</p>
+  </div>
+</div>
+{% endblock %}

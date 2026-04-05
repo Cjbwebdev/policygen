@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Business Details{% endblock %}
+
+{% block content %}
+<div class="steps">
+  <div class="step">1. Document Type</div>
+  <div class="step active">2. Business Info</div>
+  <div class="step">3. Compliance</div>
+</div>
+
+<form method="POST" action="/generate/submit/" style="max-width:600px;margin:0 auto;">
+  {% csrf_token %}
+  <input type="hidden" name="doc_type" value="{{ request.GET.doc_type|default:'privacy' }}">
+
+  <div class="card">
+    <h2 class="mb-4">Tell us about your business</h2>
+
+    <div class="form-group">
+      <label>Company / Website Name *</label>
+      <input type="text" name="company_name" value="{{ request.GET.company_name }}" required placeholder="My Awesome SaaS">
+    </div>
+
+    <div class="form-group">
+      <label>Website URL</label>
+      <input type="url" name="website_url" value="{{ request.GET.website_url }}" placeholder="https://example.com">
+    </div>
+
+    <div class="form-group">
+      <label>Contact Email *</label>
+      {% if user.is_authenticated %}
+        <input type="email" name="contact_email" value="{{ user.email }}" required>
+      {% else %}
+        <input type="email" name="contact_email" value="{{ request.GET.contact_email }}" required placeholder="hello@example.com">
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label>Industry *</label>
+      <select name="industry" required>
+        <option value="saas">SaaS / Web App</option>
+        <option value="ecommerce">E-Commerce / Online Store</option>
+        <option value="mobile">Mobile App</option>
+        <option value="blog">Blog / Content</option>
+        <option value="marketplace">Marketplace / Platform</option>
+        <option value="consulting">Consulting</option>
+        <option value="healthcare">Healthcare</option>
+        <option value="finance">Finance / Fintech</option>
+        <option value="education">Education</option>
+        <option value="other">Other</option>
+      </select>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg btn-block">Next: Compliance &amp; Features &#8594;</button>
+  </div>
+</form>
+{% endblock %}

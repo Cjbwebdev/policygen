@@ -1,0 +1,10 @@
+[build]
+builder = "NIXPACKS"
+
+[deploy]
+healthcheckPath = "/health/"
+restartPolicyType = "ON_FAILURE"
+numRetries = 3
+
+[deploy.startCommand]
+cmd = "gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --timeout 120"

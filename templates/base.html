@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}PolicyGen{% endblock %} — Legal Docs Made Simple</title>
+  <link rel="stylesheet" href="/static/css/style.css">
+  {% block extra_head %}{% endblock %}
+</head>
+<body>
+  <header>
+    <a href="/" class="logo">
+      <div class="logo-icon">&#9878;</div>
+      PolicyGen
+    </a>
+    <nav style="display:flex;align-items:center;gap:0.75rem;">
+      {% if user.is_authenticated %}
+        <a href="/dashboard/" class="btn btn-secondary">Dashboard</a>
+        <a href="/logout/" class="btn btn-secondary">Logout</a>
+      {% else %}
+        <a href="/login/" class="btn btn-secondary">Login</a>
+        <a href="/generate/" class="btn btn-primary">Generate Free</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  <main>
+    {% if messages %}
+      {% for message in messages %}
+        <div class="alert {% if message.tags == 'error' %}alert-error{% elif message.tags == 'success' %}alert-success{% else %}alert-info{% endif %}">
+          {{ message }}
+        </div>
+      {% endfor %}
+    {% endif %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer>
+    <p>&copy; {% now "Y" %} PolicyGen. Built with care. <a href="/pricing/">Pricing</a></p>
+  </footer>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

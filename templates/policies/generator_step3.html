@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% block title %}Compliance Settings{% endblock %}
+
+{% block content %}
+<div class="steps">
+  <div class="step">1. Document Type</div>
+  <div class="step">2. Business Info</div>
+  <div class="step active">3. Compliance</div>
+</div>
+
+<form method="POST" action="/generate/submit/" style="max-width:600px;margin:0 auto;">
+  {% csrf_token %}
+  <input type="hidden" name="doc_type" value="{{ request.GET.doc_type }}">
+  <input type="hidden" name="company_name" value="{{ request.GET.company_name }}">
+  <input type="hidden" name="website_url" value="{{ request.GET.website_url }}">
+  <input type="hidden" name="contact_email" value="{{ request.GET.contact_email }}">
+  <input type="hidden" name="industry" value="{{ request.GET.industry }}">
+
+  <div class="card">
+    <h2 class="mb-4">Compliance &amp; Features</h2>
+    <p class="text-secondary mb-4">Select the regulations and features that apply to your business.</p>
+
+    <div class="form-group">
+      <label>Applicable Regulations</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="regulations" value="gdpr"> <span>GDPR (EU)</span></label>
+        <label><input type="checkbox" name="regulations" value="ccpa"> <span>CCPA (California)</span></label>
+        <label><input type="checkbox" name="regulations" value="lgpd"> <span>LGPD (Brazil)</span></label>
+        <label><input type="checkbox" name="regulations" value="pipeda"> <span>PIPEDA (Canada)</span></label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Business Features</label>
+      <div class="checkbox-group">
+        <label><input type="checkbox" name="has_user_accounts"> <span>User accounts / login</span></label>
+        <label><input type="checkbox" name="has_cookies"> <span>Cookies &amp; tracking</span></label>
+        <label><input type="checkbox" name="has_payments"> <span>Payment processing</span></label>
+        <label><input type="checkbox" name="has_third_party"> <span>Third-party services</span></label>
+        <label><input type="checkbox" name="has_newsletter"> <span>Email newsletter</span></label>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Additional Notes (optional)</label>
+      <textarea name="additional_notes" rows="3" placeholder="Anything specific we should include..."></textarea>
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-lg btn-block">&#10004; Generate My Policy</button>
+  </div>
+</form>
+{% endblock %}

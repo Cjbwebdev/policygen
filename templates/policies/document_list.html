@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="flex-between mb-8">
+  <div>
+    <h1 style="font-size:1.5rem;font-weight:700;">Your Documents</h1>
+    <p class="text-secondary text-sm">{{ documents.count }} document{{ documents.count|pluralize }} generated</p>
+  </div>
+  <a href="/generate/" class="btn btn-primary">+ New Document</a>
+</div>
+
+{% if not documents %}
+<div class="text-center card" style="padding:3rem;">
+  <div style="font-size:3rem;margin-bottom:1rem;">&#128196;</div>
+  <h2>No documents yet</h2>
+  <p class="text-secondary mb-4">Your first policy is free. Let's create one.</p>
+  <a href="/generate/" class="btn btn-primary btn-lg">Generate Your First Policy</a>
+</div>
+{% else %}
+<div style="display:flex;flex-direction:column;gap:0.75rem;">
+  {% for doc in documents %}
+  <a href="/document/{{ doc.pk }}/" class="card job-card" style="text-decoration:none;color:inherit;display:block;">
+    <div>
+      <h3>{{ doc.title }}</h3>
+      <div class="meta">
+        <span>{{ doc.get_doc_type_display }}</span>
+        <span>{{ doc.company_name }}</span>
+        <span>{{ doc.created_at|date:"M d, Y" }}</span>
+      </div>
+    </div>
+    <span class="tag {% if doc.doc_type == 'privacy' %}tag-blue{% elif doc.doc_type == 'terms' %}tag-purple{% elif doc.doc_type == 'cookie' %}tag-amber{% elif doc.doc_type == 'disclaimer' %}tag-red{% else %}tag-green{% endif %}">
+      {{ doc.get_doc_type_display }}
+    </span>
+  </a>
+  {% endfor %}
+</div>
+{% endif %}
+{% endblock %}
