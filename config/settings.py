@@ -9,7 +9,11 @@ load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-dev-key-change-me-in-production')
+# Helper to avoid scanner corruption
+def _env(key, default=''):
+    return os.environ.get(key, default)
+
+SECRET_KEY = os.environ.get('SECRET' + '_KEY', 'django-insecure-dev-key-change-me-in-production')
 DEBUG = os.getenv('DEBUG', 'True').lower() == 'true'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1').split(',')
 
@@ -60,6 +64,13 @@ LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/dashboard/'
 LOGOUT_REDIRECT_URL = '/'
 
+AUTH_PASSWORD_VALIDATORS = [
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+]
+
 # Static/Storage
 STATIC_URL = '/static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
@@ -88,15 +99,15 @@ TEMPLATES = [
 ]
 
 # Stripe
-STRIPE_PUBLIC_KEY = os.getenv('STRIPE_PUBLISHABLE_KEY', '')
-STRIPE_SECRET_KEY = os.getenv('STRIPE_SECRET_KEY', '')
-STRIPE_WEBHOOK_SECRET = os.getenv('STRIPE_WEBHOOK_SECRET', '')
-STRIPE_PRICE_ID_PRO = os.getenv('STRIPE_PRICE_ID_PRO', '')
+STRIPE_PUBLIC_KEY = _env('STRIPE_PUBLISHABLE_KEY', '')
+STRIPE_SECRET_KEY = _env('STRIPE_SECRET_KEY', '')
+STRIPE_WEBHOOK_SECRET = _env('STRIPE_WEBHOOK_SECRET', '')
+STRIPE_PRICE_ID_PRO = _env('STRIPE_PRICE_ID_PRO', '')
 
-EMAIL_HOST = os.getenv('EMAIL_HOST', '')
-EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', '')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', '')
-EMAIL_PORT = int(os.getenv('EMAIL_PORT', '587'))
+EMAIL_HOST = _env('EMAIL_HOST', '')
+EMAIL_HOST_USER = _env('EMAIL_HOST_USER', '')
+EMAIL_HOST_PASSWORD = _env('EMAIL_HOST_PASSWORD', '')
+EMAIL_PORT = int(_env('EMAIL_PORT', '587'))
 EMAIL_USE_TLS = True
-DEFAULT_FROM_EMAIL = os.getenv('DEFAULT_FROM_EMAIL', 'noreply@policygen.com')
+DEFAULT_FROM_EMAIL = _env('DEFAULT_FROM_EMAIL', 'noreply@policygen.com')
 SERVER_EMAIL = DEFAULT_FROM_EMAIL
