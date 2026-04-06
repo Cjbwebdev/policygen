@@ -13,6 +13,7 @@ from urllib.parse import urlparse
 from django.http import JsonResponse
 from .models import PolicyDocument, SEOLandingPage, ComplianceScore
 from .generator import generate_policy
+from .scanner import scan_compliance
 
 
 def home(request):
@@ -147,102 +148,30 @@ def run_score_check(request):
     if not target_url:
         return JsonResponse({'error': 'Please enter a URL'})
 
-    if not target_url.startswith('http'):
-        target_url = 'https://' + target_url
+    result = scan_compliance(target_url)
 
+    if 'error' in result:
+        return JsonResponse({'error': result['error']})
+
+    # Save to database for lead tracking
     try:
-        parsed = urlparse(target_url)
-        conn = http.client.HTTPSConnection(parsed.netloc, timeout=8)
-        conn.request('GET', parsed.path or '/')
-        resp = conn.getresponse()
-        html = resp.read().decode('utf-8', errors='ignore')[:50000]
-        conn.close()
-    except Exception as e:
-        return JsonResponse({'error': f'Could not reach {target_url}: {str(e)}'})
-
-    issues = []
-    recommendations = []
-    score = 100
-
-    has_privacy = any(kw in html.lower() for kw in ['privacy policy', 'privacy notice', 'data protection policy'])
-    if has_privacy:
-        score -= 5
-    else:
-        issues.append('No privacy policy found')
-        recommendations.append('Add a clear privacy policy link in your footer')
-        score -= 25
-
-    has_terms = any(kw in html.lower() for kw in ['terms of service', 'terms and conditions', 'terms of use'])
-    if has_terms:
-        score -= 3
-    else:
-        issues.append('No terms of service found')
-        recommendations.append('Add terms of service to protect your business')
-        score -= 15
-
-    has_cookie = any(kw in html.lower() for kw in ['cookie policy', 'cookie notice', 'we use cookies'])
-    if has_cookie:
-        score -= 3
-    else:
-        issues.append('No cookie policy found')
-        recommendations.append('Add a cookie policy if you use analytics or tracking')
-        score -= 15
-
-    has_gdpr = any(kw in html.lower() for kw in ['gdpr', 'data subject', 'right to erasure', 'right to access'])
-    if has_gdpr:
-        score -= 2
-    else:
-        recommendations.append('Ensure your policy mentions GDPR rights (EU visitors)')
-        score -= 10
-
-    has_ccpa = any(kw in html.lower() for kw in ['ccpa', 'california privacy', 'do not sell'])
-    if has_ccpa:
-        score -= 2
-    else:
-        recommendations.append('Add CCPA compliance language if you have California visitors')
-        score -= 10
-
-    has_contact = any(kw in html.lower() for kw in ['contact us', 'contact@', '@email', 'dpo@', 'privacy@'])
-    if not has_contact:
-        issues.append('No privacy contact information found')
-        recommendations.append('Include a DPO or privacy contact email in your policy')
-        score -= 10
-
-    has_retention = any(kw in html.lower() for kw in ['retention', 'how long we keep', 'delete your data'])
-    if not has_retention:
-        recommendations.append('Specify how long you retain user data')
-        score -= 7
-
-    has_third_party = any(kw in html.lower() for kw in ['third party', 'third-party', 'service providers', 'google analytics'])
-    if not has_third_party:
-        recommendations.append('Disclose third-party services you use (analytics, ads, payments)')
-        score -= 5
-
-    score = max(0, min(100, score))
-
-    try:
+        email = request.POST.get('email', '').strip()
         ComplianceScore.objects.create(
-            url=target_url,
-            score=score,
-            issues_found=issues,
-            recommendations=recommendations,
-            has_privacy_policy=has_privacy,
-            has_terms=has_terms,
-            has_cookie_policy=has_cookie,
-            gdpr_compliant=has_gdpr,
-            ccpa_compliant=has_ccpa,
+            url=result['url'],
+            score=result['score'],
+            issues_found=result['issues'],
+            recommendations=result['recommendations'],
+            has_privacy_policy=result['details']['has_privacy_policy'],
+            has_terms=result['details']['has_terms'],
+            has_cookie_policy=result['details']['has_cookie_policy'],
+            gdpr_compliant=result['details']['gdpr_compliant'],
+            ccpa_compliant=result['details']['ccpa_compliant'],
+            email=email,
         )
     except Exception:
         pass
 
-    return JsonResponse({
-        'score': score,
-        'issues': issues,
-        'recommendations': recommendations,
-        'has_privacy': has_privacy,
-        'has_terms': has_terms,
-        'has_cookie': has_cookie,
-    })
+    return JsonResponse(result)
 
 
 def seo_landing_page(request, slug):
