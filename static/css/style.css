@@ -176,9 +176,12 @@ footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 2rem;
 }
-.footer-inner a { color: var(--text-secondary); }
-.footer-inner a:hover { color: var(--text-primary); }
+.footer-inner > span { white-space: nowrap; }
+.footer-links { display: flex; gap: 1.25rem; align-items: center; flex-wrap: wrap; }
+.footer-links a { color: var(--text-secondary); font-size: 0.75rem; }
+.footer-links a:hover { color: var(--text-primary); }
 
 /* ── Typography ─────────────────────────────────────── */
 .heading-serif {

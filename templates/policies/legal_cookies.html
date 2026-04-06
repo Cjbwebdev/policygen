@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} — PolicyGen{% endblock %}
+{% block content %}
+<div style="padding-top:3rem;max-width:680px;margin-bottom:4rem;">
+  <p class="hero-eyebrow">Legal</p>
+  <h1 class="heading-serif" style="margin-top:0.5rem;margin-bottom:0.375rem;">Cookie Policy — PolicyGen</h1>
+  <p class="text-sm text-muted" style="margin-bottom:2rem;">Last updated: April 6, 2026.</p>
+
+  <div class="document-output" style="max-height:none;">
+    <h2>What Cookies We Use</h2>
+    <p>PolicyGen uses only essential cookies required for the service to function:</p>
+
+    <table style="width:100%;border-collapse:collapse;margin:1rem 0;">
+      <thead>
+        <tr>
+          <th style="text-align:left;padding:0.5rem;border-bottom:1px solid var(--border);font-size:0.75rem;color:var(--text-muted);">Cookie</th>
+          <th style="text-align:left;padding:0.5rem;border-bottom:1px solid var(--border);font-size:0.75rem;color:var(--text-muted);">Purpose</th>
+          <th style="text-align:left;padding:0.5rem;border-bottom:1px solid var(--border);font-size:0.75rem;color:var(--text-muted);">Duration</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="padding:0.5rem;border-bottom:1px solid var(--border);font-size:0.8125rem;">sessionid</td>
+          <td style="padding:0.5rem;border-bottom:1px solid var(--border);font-size:0.8125rem;">Authentication and session management</td>
+          <td style="padding:0.5rem;border-bottom:1px solid var(--border);font-size:0.8125rem;">Expires on logout or 2 weeks</td>
+        </tr>
+        <tr>
+          <td style="padding:0.5rem;border-bottom:1px solid var(--border);font-size:0.8125rem;">csrftoken</td>
+          <td style="padding:0.5rem;border-bottom:1px solid var(--border);font-size:0.8125rem;">Security — prevents cross-site request forgery</td>
+          <td style="padding:0.5rem;border-bottom:1px solid var(--border);font-size:0.8125rem;">1 year</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h2>What We Don't Use</h2>
+    <p>We do <strong>not</strong> use:</p>
+    <ul style="margin:0.5rem 0 0.5rem 1.25rem;color:var(--text-secondary);">
+      <li>Analytics or tracking cookies (no Google Analytics, no Hotjar)</li>
+      <li>Advertising or retargeting cookies</li>
+      <li>Third-party tracking pixels</li>
+    </ul>
+
+    <h2>Managing Cookies</h2>
+    <p>You can control or delete cookies through your browser settings. Note that blocking essential cookies may prevent the service from functioning.</p>
+
+    <h2>Changes</h2>
+    <p>We may update this Cookie Policy. Changes will be posted here with an updated date.</p>
+
+    <h2>Contact</h2>
+    <p>Questions: <a href="mailto:privacy@policygen.ai" style="color:var(--accent);">privacy@policygen.ai</a></p>
+  </div>
+</div>
+{% endblock %}

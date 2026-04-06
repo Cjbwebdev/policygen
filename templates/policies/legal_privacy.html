@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ page_title }} — PolicyGen{% endblock %}
+{% block content %}
+<div style="padding-top:3rem;max-width:680px;margin-bottom:4rem;">
+  <p class="hero-eyebrow">Legal</p>
+  <h1 class="heading-serif" style="margin-top:0.5rem;margin-bottom:0.375rem;">Privacy Policy — PolicyGen</h1>
+  <p class="text-sm text-muted" style="margin-bottom:2rem;">Last updated: April 6, 2026. This policy applies to the PolicyGen website and services (policygen.ai).</p>
+
+  <div class="document-output" style="max-height:none;">
+    <h2>1. Who We Are</h2>
+    <p>PolicyGen ("we," "our," "us") operates the policygen.ai website and generates legal policy documents for users. This privacy policy explains what data we collect, how we use it, and your rights.</p>
+
+    <h2>2. Information We Collect</h2>
+    <p>When you use PolicyGen:</p>
+    <ul style="margin:0.75rem 0 0.75rem 1.25rem;color:var(--text-secondary);">
+      <li><strong>Account data:</strong> Email address, username, password hash</li>
+      <li><strong>Generated documents:</strong> Company name, website URL, contact email, industry, and compliance preferences you enter to generate policies</li>
+      <li><strong>Compliance checker:</strong> When you scan a URL, we fetch that page and store basic compliance results (score, issues found)</li>
+      <li><strong>Technical data:</strong> IP address, browser type, pages visited, session identifiers</li>
+    </ul>
+
+    <h2>3. How We Use Your Information</h2>
+    <p>We use the data to: provide the policy generator service, save and display your generated documents, power the compliance scoring tool, improve the platform, and comply with legal obligations.</p>
+
+    <h2>4. Billing Data</h2>
+    <p>If you subscribe to a paid plan, we process payments through Stripe. We do not store your payment card details. Stripe's privacy policy applies to payment processing: <a href="https://stripe.com/privacy" style="color:var(--accent);">stripe.com/privacy</a>.</p>
+
+    <h2>5. Data Sharing</h2>
+    <p>We do not sell your personal information. We share data only with: Stripe (payment processing), our hosting provider (Railway), and when required by law.</p>
+
+    <h2>6. Data Retention</h2>
+    <p>We retain generated documents for as long as your account is active. You may delete documents at any time. Upon account deletion, all associated data is removed within 30 days.</p>
+
+    <h2>7. Your Rights</h2>
+    <p>Under GDPR, UK Data Protection Act, and similar laws, you have the right to: access your data, correct inaccurate data, request deletion ("right to be forgotten"), export your data in a portable format, and object to processing.</p>
+    <p>To exercise these rights, email <strong>privacy@policygen.ai</strong>.</p>
+
+    <h2>8. Cookies</h2>
+    <p>We use essential cookies for authentication and session management. We do not use analytics or tracking cookies without your consent. See our <a href="/legal/cookies/" style="color:var(--accent);">Cookie Policy</a>.</p>
+
+    <h2>9. Security</h2>
+    <p>We use HTTPS encryption, secure session handling, and follow Django security best practices. Passwords are hashed using Django's PBKDF2 algorithm.</p>
+
+    <h2>10. Changes to This Policy</h2>
+    <p>We may update this policy. Material changes will be communicated via email or a prominent site notice. Continued use constitutes acceptance.</p>
+
+    <h2>Contact</h2>
+    <p>For any privacy questions: <a href="mailto:privacy@policygen.ai" style="color:var(--accent);">privacy@policygen.ai</a></p>
+  </div>
+</div>
+{% endblock %}

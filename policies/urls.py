@@ -25,4 +25,9 @@ urlpatterns = [
     
     # Programmatic SEO landing pages
     path('p/<slug:slug>/', policies_views.seo_landing_page, name='seo_landing'),
+
+    # PolicyGen's own legal pages
+    path('legal/privacy/', policies_views.privacy_policy, name='legal_privacy'),
+    path('legal/terms/', policies_views.terms_of_service, name='legal_terms'),
+    path('legal/cookies/', policies_views.cookie_policy, name='legal_cookies'),
 ]

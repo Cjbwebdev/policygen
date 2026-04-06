@@ -7,6 +7,10 @@ from django.contrib import messages
 from django.views.decorators.http import require_POST
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+import re
+import http.client
+from urllib.parse import urlparse
+from django.http import JsonResponse
 from .models import PolicyDocument, SEOLandingPage, ComplianceScore
 from .generator import generate_policy
 
@@ -49,9 +53,8 @@ def generate_public(request):
     if request.method == 'POST':
         data = request.POST
         regulations = data.getlist('regulations')
-        # Clean up any malformed regulation values
         regulations = [r.strip() for r in regulations if r.strip()]
-        
+
         doc = PolicyDocument(
             doc_type=data.get('doc_type', 'privacy'),
             company_name=data.get('company_name', 'My Company'),
@@ -80,7 +83,7 @@ def generate_authenticated(request):
         data = request.POST
         regulations = data.getlist('regulations')
         regulations = [r.strip() for r in regulations if r.strip()]
-        
+
         doc = PolicyDocument(
             user=request.user,
             doc_type=data.get('doc_type', 'privacy'),
@@ -128,20 +131,13 @@ def document_list(request):
 
 
 def health_check(request):
-    from django.http import JsonResponse
     return JsonResponse({'status': 'ok', 'service': 'policygen'})
 
-import re
-import http.client
-from urllib.parse import urlparse
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.views.decorators.http import require_POST
-from django.views.decorators.csrf import csrf_exempt
 
 def check_compliance_score(request):
     """Free compliance checker tool page"""
     return render(request, 'policies/score_checker.html')
+
 
 @csrf_exempt
 @require_POST
@@ -150,10 +146,10 @@ def run_score_check(request):
     target_url = request.POST.get('url', '').strip()
     if not target_url:
         return JsonResponse({'error': 'Please enter a URL'})
-    
+
     if not target_url.startswith('http'):
         target_url = 'https://' + target_url
-    
+
     try:
         parsed = urlparse(target_url)
         conn = http.client.HTTPSConnection(parsed.netloc, timeout=8)
@@ -163,21 +159,19 @@ def run_score_check(request):
         conn.close()
     except Exception as e:
         return JsonResponse({'error': f'Could not reach {target_url}: {str(e)}'})
-    
+
     issues = []
     recommendations = []
     score = 100
-    
-    # Check for privacy policy link
+
     has_privacy = any(kw in html.lower() for kw in ['privacy policy', 'privacy notice', 'data protection policy'])
     if has_privacy:
-        score -= 5  # Has one but might not be compliant
+        score -= 5
     else:
         issues.append('No privacy policy found')
         recommendations.append('Add a clear privacy policy link in your footer')
         score -= 25
-    
-    # Check for terms of service
+
     has_terms = any(kw in html.lower() for kw in ['terms of service', 'terms and conditions', 'terms of use'])
     if has_terms:
         score -= 3
@@ -185,8 +179,7 @@ def run_score_check(request):
         issues.append('No terms of service found')
         recommendations.append('Add terms of service to protect your business')
         score -= 15
-    
-    # Check for cookie policy
+
     has_cookie = any(kw in html.lower() for kw in ['cookie policy', 'cookie notice', 'we use cookies'])
     if has_cookie:
         score -= 3
@@ -194,45 +187,39 @@ def run_score_check(request):
         issues.append('No cookie policy found')
         recommendations.append('Add a cookie policy if you use analytics or tracking')
         score -= 15
-    
-    # Check for GDPR indicators
+
     has_gdpr = any(kw in html.lower() for kw in ['gdpr', 'data subject', 'right to erasure', 'right to access'])
     if has_gdpr:
         score -= 2
     else:
         recommendations.append('Ensure your policy mentions GDPR rights (EU visitors)')
         score -= 10
-    
-    # Check for CCPA indicators
+
     has_ccpa = any(kw in html.lower() for kw in ['ccpa', 'california privacy', 'do not sell'])
     if has_ccpa:
         score -= 2
     else:
         recommendations.append('Add CCPA compliance language if you have California visitors')
         score -= 10
-    
-    # Check for contact information
+
     has_contact = any(kw in html.lower() for kw in ['contact us', 'contact@', '@email', 'dpo@', 'privacy@'])
     if not has_contact:
         issues.append('No privacy contact information found')
         recommendations.append('Include a DPO or privacy contact email in your policy')
         score -= 10
-    
-    # Check for data retention
+
     has_retention = any(kw in html.lower() for kw in ['retention', 'how long we keep', 'delete your data'])
     if not has_retention:
         recommendations.append('Specify how long you retain user data')
         score -= 7
-    
-    # Check for third-party disclosure
+
     has_third_party = any(kw in html.lower() for kw in ['third party', 'third-party', 'service providers', 'google analytics'])
     if not has_third_party:
         recommendations.append('Disclose third-party services you use (analytics, ads, payments)')
         score -= 5
-    
+
     score = max(0, min(100, score))
-    
-    # Save to DB
+
     try:
         ComplianceScore.objects.create(
             url=target_url,
@@ -245,9 +232,9 @@ def run_score_check(request):
             gdpr_compliant=has_gdpr,
             ccpa_compliant=has_ccpa,
         )
-    except:
+    except Exception:
         pass
-    
+
     return JsonResponse({
         'score': score,
         'issues': issues,
@@ -260,15 +247,32 @@ def run_score_check(request):
 
 def seo_landing_page(request, slug):
     """Programmatic SEO landing page"""
-    from django.shortcuts import get_object_or_404
     page = get_object_or_404(SEOLandingPage, slug=slug)
-    
-    # Related pages for internal linking
     related = SEOLandingPage.objects.filter(
         industry=page.industry
-    ).exclude(slug=page.slug)[:4]
-    
+    ).exclude(slug=slug)[:4]
+
     return render(request, 'policies/seo_landing.html', {
         'page': page,
         'related_pages': related,
+    })
+
+
+# ── PolicyGen's own legal pages ─────────────────────────
+
+def privacy_policy(request):
+    return render(request, 'policies/legal_privacy.html', {
+        'page_title': 'Privacy Policy',
+    })
+
+
+def terms_of_service(request):
+    return render(request, 'policies/legal_terms.html', {
+        'page_title': 'Terms of Service',
+    })
+
+
+def cookie_policy(request):
+    return render(request, 'policies/legal_cookies.html', {
+        'page_title': 'Cookie Policy',
     })
