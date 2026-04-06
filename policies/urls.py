@@ -23,6 +23,10 @@ urlpatterns = [
     path('score/', policies_views.check_compliance_score, name='score_tool'),
     path('score/check/', policies_views.run_score_check, name='score_check'),
     
+    # Policy comparison tool
+    path('compare/', policies_views.compare_policy, name='compare_tool'),
+    path('compare/check/', policies_views.run_policy_comparison, name='compare_check'),
+    
     # Programmatic SEO landing pages
     path('p/<slug:slug>/', policies_views.seo_landing_page, name='seo_landing'),
 
