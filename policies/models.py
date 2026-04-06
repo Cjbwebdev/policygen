@@ -5,7 +5,7 @@ from django.db import models
 from django.conf import settings
 from django.utils import timezone
 
-DOCTOR_TYPES = [
+DOC_TYPES = [
     ('privacy', 'Privacy Policy'),
     ('terms', 'Terms and Conditions'),
     ('cookie', 'Cookie Policy'),
@@ -36,7 +36,7 @@ REGULATIONS = [
 class PolicyDocument(models.Model):
     """A generated legal document for a user"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='documents', null=True, blank=True)
-    doc_type = models.CharField(max_length=20, choices=DOCTOR_TYPES)
+    doc_type = models.CharField(max_length=20, choices=DOC_TYPES)
     company_name = models.CharField(max_length=200, default='My Company')
     website_url = models.URLField(blank=True, default='')
     contact_email = models.EmailField(default='hello@example.com')
