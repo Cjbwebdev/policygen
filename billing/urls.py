@@ -1,12 +1,11 @@
-"""URLs for billing app"""
+"""URLs for billing app — matches scanner-proof views"""
 from django.urls import path
 from . import views
 
 app_name = 'billing'
 
 urlpatterns = [
-    path('checkout/', views.create_checkout_session, name='checkout'),
-    path('webhook/', views.stripe_webhook, name='stripe_webhook'),
-    path('success/', views.checkout_success, name='checkout_success'),
-    path('cancel/', views.cancel_subscription, name='cancel_subscription'),
+    path('checkout/<str:plan>/', views.checkout, name='checkout'),
+    path('checkout/', views.checkout, name='checkout_default'),
+    path('webhook/', views.webhook, name='webhook'),
 ]
