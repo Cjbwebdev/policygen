@@ -1,27 +1,21 @@
 """
-PolicyGen settings — production-ready for policygen.site
+PolicyGen settings — production-ready for Railway
 """
-import os, base64
+import os
 from pathlib import Path
-from dotenv import load_dotenv
 
-load_dotenv()
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 def _env(key, default=""):
     return os.environ.get(key, default)
 
-def _ev64(b64key, default=""):
-    key = base64.b64decode(b64key).decode()
-    return os.environ.get(key, default)
-
-SECRET_KEY = _ev64('U0VDUkVUX0tFWQ==', 'django-insecure-dev-key-REPLACE-IN-PRODUCTION')
+SECRET_KEY = _env('SECRET_KEY', 'django-insecure-dev-fallback-replace-in-production')
 DEBUG = _env("DEBUG", "True").lower() == "true"
 
 ALLOWED_HOSTS = ["policygen.site", "www.policygen.site", "localhost", "127.0.0.1"]
 if "RAILWAY_UPSTREAM_HOST" in os.environ:
     _rh = os.environ["RAILWAY_UPSTREAM_HOST"]
-    for _h in [_rh, "www." + _rh]:
+    for _h in [_rh, "www." + _h]:
         if _h not in ALLOWED_HOSTS:
             ALLOWED_HOSTS.append(_h)
 _eh = _env("ALLOWED_HOSTS", "")
@@ -60,13 +54,13 @@ else:
     db = DATABASE_URL.split("///")[-1] if "///" in DATABASE_URL else "db.sqlite3"
     DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / db}}
 
-AUTH_USER_MODEL = _ev64('QVVUSF9VU0VSX01PREVM', 'users.User')
+AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = "/login/"
 LOGIN_REDIRECT_URL = "/dashboard/"
 LOGOUT_REDIRECT_URL = "/"
 
 _pvb = "django.contrib.auth.password_validation"
-AUTH_PASSWORD_VALIDATORS = [
+AUTH_PASSWORD_VALIDATORS=[
     {"NAME": f"{_pvb}.UserAttributeSimilarityValidator"},
     {"NAME": f"{_pvb}.MinimumLengthValidator"},
     {"NAME": f"{_pvb}.CommonPasswordValidator"},
@@ -93,17 +87,17 @@ TEMPLATES = [{
     ]},
 }]
 
-STRIPE_PUBLISHABLE_KEY = _ev64('U1RSSVBFX1BVQkxJU0hBQkxFX0tFWQ==', '')
-STRIPE_SECRET_KEY = _ev64('U1RSSVBFX1NFQ1JFVF9LRVk=', '')
-STRIPE_WEBHOOK_SECRET = _ev64('U1RSSVBFX1dFQkhPT0tfU0VDUkVU', '')
-STRIPE_PRICE_ID_PRO = _ev64('U1RSSVBFX1BSSUNFX0lEX1BSTw==', '')
-STRIPE_PRICE_ID_BUSINESS = _ev64('U1RSSVBFX1BSSUNFX0lEX0JVU0lORVNT', '')
+STRIPE_PUBLISHABLE_KEY = _env('STRIPE_PUBLISHABLE_KEY', '')
+STRIPE_SECRET_KEY = _env('STRIPE_SECRET_KEY', '')
+STRIPE_WEBHOOK_SECRET = _env('STRIPE_WEBHOOK_SECRET', '')
+STRIPE_PRICE_ID_PRO = _env('STRIPE_PRICE_ID_PRO', '')
+STRIPE_PRICE_ID_BUSINESS = _env('STRIPE_PRICE_ID_BUSINESS', '')
 
 OPENAI_API_KEY = _env("OPENAI_API_KEY", "")
 
 EMAIL_HOST = _env("MAIL_SERVER", "")
 EMAIL_HOST_USER = _env("MAIL_USER", "")
-EMAIL_HOST_PASSWORD = _env("MAIL_PASS", "")
+EMAIL_HOST_PASSWORD = _env("MAIL_PASSWORD", "")
 EMAIL_PORT = int(_env("MAIL_PORT", "587"))
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = _env("MAIL_FROM", "noreply@policygen.site")
