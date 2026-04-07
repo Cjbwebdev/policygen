@@ -18,9 +18,18 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 @login_required
 def create_checkout_session(request):
     try:
-        price_id = request.GET.get('price') or settings.STRIPE_PRICE_ID_PRO
+        
+# Reverse plan lookup: price_id -> plan_name
+PLAN_PRICES = {
+    'pro': getattr(settings, 'STRIPE_PRICE_ID_PRO', 'price_1TJfKuL81vKpHdTkQ7ULrWQs'),
+    'business': getattr(settings, 'STRIPE_PRICE_ID_BUSINESS', 'price_1TJfLoL81vKpHdTk0OJO8g4m'),
+}
+PRICE_TO_PLAN = {v: k for k, v in PLAN_PRICES.items()}
+
+        plan = request.GET.get('plan', 'pro')
+        price_id = request.GET.get('price') or PLAN_PRICES.get(plan)
         if not price_id:
-            messages.error(request, 'Stripe not configured. Set STRIPE_PRICE_ID_PRO in your environment.')
+            messages.error(request, 'Stripe not configured.')
             return redirect('/pricing/')
 
         session = stripe.checkout.Session.create(
@@ -76,7 +85,9 @@ def _handle_checkout_completed(session):
         user.save()
         Subscription.objects.update_or_create(
             user=user,
-            defaults={'stripe_subscription_id': sub_id, 'status': 'active'},
+            defaults={'stripe_subscription_id': sub_id,
+                               'status': 'active',
+                               'plan': plan_name or 'pro'},
         )
     except User.DoesNotExist:
         pass
@@ -95,7 +106,8 @@ def _handle_subscription_deleted(sub):
 
 @login_required
 def checkout_success(request):
-    messages.success(request, 'Payment successful! Welcome to Pro.')
+    plan = request.GET.get('plan', 'pro').title()
+    messages.success(request, f'Payment successful! Welcome to {plan}.')
     return redirect('/dashboard/')
 
 

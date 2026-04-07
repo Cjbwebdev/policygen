@@ -102,11 +102,28 @@ We encourage you to review the privacy policies of these third-party providers."
 def _generate_privacy(doc) -> str:
     sections = [_header(doc, f"Privacy Policy — {doc.company_name}")]
 
+    personal_info = """
+
+### Personal Information You Provide
+
+- Name and contact information (email address, phone number)
+- Account credentials
+- Payment information (processed securely through our payment providers)
+- Communications and support requests""" if doc.has_user_accounts else ""
+
+    auto_info = """
+
+### Automatically Collected Information
+
+- IP address and device information
+- Browser type and version
+- Pages visited and time spent
+- Referring website URL
+- Cookies and similar tracking technologies""" if doc.has_cookies else ""
+
     sections.append(f"""## 1. Information We Collect
 
-We collect the following types of information:{
-'\n\n### Personal Information You Provide\n\n- Name and contact information (email address, phone number)\n- Account credentials\n- Payment information (processed securely through our payment providers)\n- Communications and support requests' if doc.has_user_accounts else ''}{
-'\n\n### Automatically Collected Information\n\n- IP address and device information\n- Browser type and version\n- Pages visited and time spent\n- Referring website URL\n- Cookies and similar tracking technologies' if doc.has_cookies else ''}""")
+We collect the following types of information:{personal_info}{auto_info}""")
 
     if doc.has_newsletter:
         sections.append("""## Email Communications
