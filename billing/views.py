@@ -1,10 +1,9 @@
 """
 Stripe billing views
 """
-import os
 import stripe
 from django.conf import settings
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
@@ -12,20 +11,19 @@ from django.contrib import messages
 from users.models import User
 from .models import Subscription, PaymentEvent
 
-stripe.api_key = settings.STRIPE_SECRET_KEY
+stripe.api_key = getattr(settings, 'STRIPE_SECRET_KEY', '')
 
-
-@login_required
-def create_checkout_session(request):
-    try:
-        
-# Reverse plan lookup: price_id -> plan_name
+# Plan price mapping
 PLAN_PRICES = {
     'pro': getattr(settings, 'STRIPE_PRICE_ID_PRO', 'price_1TJfKuL81vKpHdTkQ7ULrWQs'),
     'business': getattr(settings, 'STRIPE_PRICE_ID_BUSINESS', 'price_1TJfLoL81vKpHdTk0OJO8g4m'),
 }
 PRICE_TO_PLAN = {v: k for k, v in PLAN_PRICES.items()}
 
+
+@login_required
+def create_checkout_session(request):
+    try:
         plan = request.GET.get('plan', 'pro')
         price_id = request.GET.get('price') or PLAN_PRICES.get(plan)
         if not price_id:
@@ -78,6 +76,16 @@ def stripe_webhook(request):
 def _handle_checkout_completed(session):
     email = session.get('customer_email', '')
     sub_id = session.get('subscription', '')
+    plan = 'pro'
+    
+    # Determine plan from line items
+    line_items = session.get('line_items', None) or session.get('display_items', [])
+    for item in line_items:
+        price_id = item.get('price', {}).get('id', '') if isinstance(item.get('price'), dict) else item.get('price', '')
+        if price_id in PRICE_TO_PLAN:
+            plan = PRICE_TO_PLAN[price_id]
+            break
+    
     try:
         user = User.objects.get(email=email)
         user.is_pro = True
@@ -86,8 +94,8 @@ def _handle_checkout_completed(session):
         Subscription.objects.update_or_create(
             user=user,
             defaults={'stripe_subscription_id': sub_id,
-                               'status': 'active',
-                               'plan': plan_name or 'pro'},
+                      'status': 'active',
+                      'plan': plan},
         )
     except User.DoesNotExist:
         pass

@@ -13,6 +13,10 @@ class Subscription(models.Model):
         ('past_due', 'Past Due'),
         ('trialing', 'Trialing'),
     ], default='active')
+    plan = models.CharField(max_length=20, default='pro', choices=[
+        ('pro', 'Pro'),
+        ('business', 'Business'),
+    ])
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
