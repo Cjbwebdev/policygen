@@ -244,6 +244,10 @@ We reserve the right to modify these Terms at any time. We will notify users of 
 
 def _generate_cookie(doc) -> str:
     sections = [_header(doc, f"Cookie Policy — {doc.company_name}")]
+    
+    analytics_section = "### Analytics Cookies\n\nWe use analytics cookies to understand how visitors interact with our website. These cookies help us improve the website by collecting and reporting information on usage patterns." if doc.has_cookies else ""
+    marketing_section = "### Marketing Cookies\n\nWe use marketing cookies to track visitors across websites to display relevant advertisements." if doc.regulations else ""
+    functional_section = "### Functional Cookies\n\nThese cookies enable enhanced functionality and personalization, such as remembering your language preference or login status." if doc.has_user_accounts else ""
 
     sections.append(f"""## What Are Cookies?
 
@@ -254,11 +258,11 @@ Cookies are small text files stored on your device when you visit a website. The
 ### Essential Cookies
 These cookies are necessary for the website to function properly. They enable basic functions like page navigation and access to secure areas. The website cannot function properly without these cookies.
 
-{"### Analytics Cookies\n\nWe use analytics cookies to understand how visitors interact with our website. These cookies help us improve the website by collecting and reporting information on usage patterns." if doc.has_cookies else ""}
+{analytics_section}
 
-{"### Marketing Cookies\n\nWe use marketing cookies to track visitors across websites to display relevant advertisements." if doc.regulations else ""}
+{marketing_section}
 
-{"### Functional Cookies\n\nThese cookies enable enhanced functionality and personalization, such as remembering your language preference or login status." if doc.has_user_accounts else ""}
+{functional_section}
 
 ## How to Manage Cookies
 
