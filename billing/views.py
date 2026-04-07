@@ -1,132 +1,128 @@
-"""
-Stripe billing views
-"""
-import stripe
+"""Billing views for PolicyGen"""
+import json
 from django.conf import settings
-from django.shortcuts import redirect
-from django.http import HttpResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import redirect, render
 from django.contrib import messages
-from users.models import User
-from .models import Subscription, PaymentEvent
+from django.db import models
 
-stripe.api_key = getattr(settings, 'STRIPE_SECRET_KEY', '')
+# Stripe setup
+_STRIPE = __import__('stripe')
 
-# Plan price mapping
-PLAN_PRICES = {
-    'pro': getattr(settings, 'STRIPE_PRICE_ID_PRO', 'price_1TJfKuL81vKpHdTkQ7ULrWQs'),
-    'business': getattr(settings, 'STRIPE_PRICE_ID_BUSINESS', 'price_1TJfLoL81vKpHdTk0OJO8g4m'),
-}
-PRICE_TO_PLAN = {v: k for k, v in PLAN_PRICES.items()}
+def _g(name):
+    """Get env var"""
+    import os
+    return os.environ.get(name, '')
+
+def _get_stripe_api_key():
+    return _g('STRIPE_SECRET_KEY')
+
+_stripe_api_key = _get_stripe_api_key()
+if _stripe_api_key:
+    _STRIPE.api_key = _stripe_api_key
+
+# Price map
+def _prices():
+    return {
+        'pro': _g('STRIPE_PRICE_ID_PRO') or 'price_1TJfKuL81vKpHdTkQ7ULrWQs',
+        'business': _g('STRIPE_PRICE_ID_BUSINESS') or 'price_1TJfLoL81vKpHdTk0OJO8g4m',
+    }
+
+PRICES = _prices()
 
 
 @login_required
-def create_checkout_session(request):
+def create_checkout_session(request, plan='pro'):
+    price_id = PRICES.get(plan, PRICES['pro'])
     try:
-        plan = request.GET.get('plan', 'pro')
-        price_id = request.GET.get('price') or PLAN_PRICES.get(plan)
-        if not price_id:
-            messages.error(request, 'Stripe not configured.')
-            return redirect('/pricing/')
-
-        session = stripe.checkout.Session.create(
-            payment_method_types=['card'],
-            customer_email=request.user.email,
-            line_items=[{'price': price_id, 'quantity': 1}],
+        session = _STRIPE.checkout.Session.create(
             mode='subscription',
-            success_url=request.build_absolute_uri('/billing/success/?session_id={CHECKOUT_SESSION_ID}'),
+            payment_method_types=['card'],
+            line_items=[{'price': price_id, 'quantity': 1}],
+            success_url=request.build_absolute_uri('/dashboard/') + '?session_id={CHECKOUT_SESSION_ID}',
             cancel_url=request.build_absolute_uri('/pricing/'),
-            metadata={'user_id': request.user.pk},
+            customer_email=request.user.email,
+            metadata={'user_id': request.user.pk, 'plan': plan},
         )
-        return redirect(session.url)
+        return redirect(session.url, code=303)
     except Exception as e:
-        messages.error(request, f'Stripe error: {str(e)}')
-        return redirect('/pricing/')
+        messages.error(request, f'Checkout error: {e}')
+        return redirect('policies:pricing')
 
 
-@csrf_exempt
-def stripe_webhook(request):
+def webhook(request):
     payload = request.body
-    sig_header = request.META.get('HTTP_STRIPE_SIGNATURE', '')
+    sig = request.META.get('HTTP_STRIPE_SIGNATURE', '')
+    secret = _g('STRIPE_WEBHOOK_SECRET')
     try:
-        event = stripe.Webhook.construct_event(
-            payload, sig_header, settings.STRIPE_WEBHOOK_SECRET
-        )
-    except (ValueError, stripe.error.SignatureVerificationError):
+        event = _STRIPE.Webhook.construct_event(payload, sig, secret)
+    except (ValueError, Exception):
         return HttpResponse(status=400)
 
-    PaymentEvent.objects.get_or_create(
-        event_id=event.id,
-        defaults={
-            'event_type': event.type,
-            'customer_email': event.data.object.get('customer_email', ''),
-            'amount': event.data.object.get('amount_total', 0) or 0,
-        }
-    )
-
     if event.type == 'checkout.session.completed':
-        _handle_checkout_completed(event.data.object)
+        session = event.data.object
+        plan = session.metadata.get('plan', 'pro')
+        from .models import Subscription as _Sub
+        _Sub.objects.update_or_create(
+            user_id=session.metadata.get('user_id'),
+            defaults={'status': 'active', 'plan': plan,
+                     'stripe_subscription_id': getattr(session, 'subscription', '')}
+        )
+    elif event.type == 'customer.subscription.updated':
+        sub = event.data.object
+        from .models import Subscription as _Sub
+        _Sub.objects.filter(stripe_subscription_id=sub.id).update(
+            status='active' if sub.status == 'active' else 'past_due',
+            plan=sub.metadata.get('plan', 'pro') if hasattr(sub, 'metadata') else 'pro'
+        )
     elif event.type == 'customer.subscription.deleted':
-        _handle_subscription_deleted(event.data.object)
+        sub = event.data.object
+        from .models import Subscription as _Sub
+        _Sub.objects.filter(stripe_subscription_id=sub.id).update(status='cancelled')
 
     return HttpResponse(status=200)
 
 
-def _handle_checkout_completed(session):
-    email = session.get('customer_email', '')
-    sub_id = session.get('subscription', '')
-    plan = 'pro'
-    
-    # Determine plan from line items
-    line_items = session.get('line_items', None) or session.get('display_items', [])
-    for item in line_items:
-        price_id = item.get('price', {}).get('id', '') if isinstance(item.get('price'), dict) else item.get('price', '')
-        if price_id in PRICE_TO_PLAN:
-            plan = PRICE_TO_PLAN[price_id]
-            break
-    
-    try:
-        user = User.objects.get(email=email)
-        user.is_pro = True
-        user.stripe_customer_id = session.get('customer', '')
-        user.save()
-        Subscription.objects.update_or_create(
-            user=user,
-            defaults={'stripe_subscription_id': sub_id,
-                      'status': 'active',
-                      'plan': plan},
-        )
-    except User.DoesNotExist:
-        pass
-
-
-def _handle_subscription_deleted(sub):
-    try:
-        subscription = Subscription.objects.get(stripe_subscription_id=sub.id)
-        subscription.status = 'canceled'
-        subscription.user.is_pro = False
-        subscription.user.save()
-        subscription.save()
-    except Subscription.DoesNotExist:
-        pass
+@csrf_exempt
+def stripe_webhook(request):
+    return webhook(request)
 
 
 @login_required
 def checkout_success(request):
-    plan = request.GET.get('plan', 'pro').title()
-    messages.success(request, f'Payment successful! Welcome to {plan}.')
-    return redirect('/dashboard/')
+    messages.success(request, 'Payment successful! Your subscription is active.')
+    return redirect('policies:dashboard')
 
 
 @login_required
 def cancel_subscription(request):
     try:
-        sub = Subscription.objects.get(user=request.user)
-        stripe.Subscription.cancel(sub.stripe_subscription_id)
-        sub.status = 'canceled'
-        sub.save()
-        messages.success(request, 'Subscription cancelled.')
+        from .models import Subscription as _Sub
+        sub = _Sub.objects.filter(user=request.user, status='active').first()
+        if sub and sub.stripe_subscription_id:
+            _STRIPE.Subscription.delete(sub.stripe_subscription_id)
+            sub.status = 'cancelled'
+            sub.save()
+            messages.success(request, 'Subscription cancelled.')
+        else:
+            messages.info(request, 'No active subscription found.')
     except Exception as e:
-        messages.error(request, f'Error: {str(e)}')
-    return redirect('/dashboard/')
+        messages.error(request, f'Error cancelling subscription: {e}')
+    return redirect('policies:dashboard')
+
+
+@login_required
+@staff_member_required
+def admin_dashboard(request):
+    from .models import Subscription as _Sub
+    ctx = {
+        'total': _Sub.objects.count(),
+        'active': _Sub.objects.filter(models.Q(status='active') | models.Q(status='trialing')).count(),
+        'mrr': _Sub.objects.filter(status='active').aggregate(
+            total=models.Sum('plan', filter=models.Q(plan='business'))
+        ),
+    }
+    return render(request, 'billing/admin.html', ctx)

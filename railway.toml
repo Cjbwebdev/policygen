@@ -5,4 +5,4 @@ builder = "NIXPACKS"
 healthcheckPath = "/health/"
 restartPolicyType = "ON_FAILURE"
 numRetries = 3
-startCommand = "python manage.py migrate --noinput && gunicorn config.wsgi:application --bind 0.0.0.0:$PORT --timeout 120"
+startCommand = "bash entrypoint.sh"

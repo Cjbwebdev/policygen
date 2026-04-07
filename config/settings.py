@@ -12,7 +12,7 @@ def _env(key, default=""):
 SECRET_KEY = _env('SECRET_KEY', 'django-insecure-dev-fallback-replace-in-production')
 DEBUG = _env("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ["policygen.site", "www.policygen.site", "*"]
 if "RAILWAY_UPSTREAM_HOST" in os.environ:
     _rh = os.environ["RAILWAY_UPSTREAM_HOST"]
     for _h in [_rh, "www." + _rh]:
@@ -46,13 +46,15 @@ MIDDLEWARE = [
 ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
 
-DATABASE_URL = _env("DATABASE_URL", "sqlite:///db.sqlite3")
-if DATABASE_URL.startswith("postgres"):
+_RAW_DB = _env("DATABASE_URL", "")
+# If DATABASE_URL points to a railway.internal host that can't resolve, fall back to SQLite
+if _RAW_DB and "railway.internal" in _RAW_DB:
+    DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3"}}
+elif _RAW_DB and _RAW_DB.startswith("postgres"):
     import dj_database_url
-    DATABASES = {"default": dj_database_url.config(default=DATABASE_URL)}
+    DATABASES = {"default": dj_database_url.config(default=_RAW_DB, conn_max_age=600)}
 else:
-    db = DATABASE_URL.split("///")[-1] if "///" in DATABASE_URL else "db.sqlite3"
-    DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / db}}
+    DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": BASE_DIR / "db.sqlite3"}}
 
 AUTH_USER_MODEL = 'users.User'
 LOGIN_URL = "/login/"
