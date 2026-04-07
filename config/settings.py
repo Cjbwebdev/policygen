@@ -92,7 +92,7 @@ ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
 
 _RAW_DB = _ev("DATABASE_URL", "")
-if _RAW_DB and _RAW_DB.startswith("postgres"):
+if _RAW_DB and _RAW_DB.startswith("postgres") and "railway.internal" not in _RAW_DB:
     import dj_database_url
     DATABASES = {"default": dj_database_url.config(default=_RAW_DB, conn_max_age=600)}
 else:
