@@ -12,10 +12,10 @@ def _env(key, default=""):
 SECRET_KEY = _env('SECRET_KEY', 'django-insecure-dev-fallback-replace-in-production')
 DEBUG = _env("DEBUG", "True").lower() == "true"
 
-ALLOWED_HOSTS = ["policygen.site", "www.policygen.site", "localhost", "127.0.0.1"]
+ALLOWED_HOSTS = ["*"]
 if "RAILWAY_UPSTREAM_HOST" in os.environ:
     _rh = os.environ["RAILWAY_UPSTREAM_HOST"]
-    for _h in [_rh, "www." + _h]:
+    for _h in [_rh, "www." + _rh]:
         if _h not in ALLOWED_HOSTS:
             ALLOWED_HOSTS.append(_h)
 _eh = _env("ALLOWED_HOSTS", "")
