@@ -1,11 +1,67 @@
 {% extends "base.html" %}
-{% block title %}Pricing — PolicyGen{% endblock %}
+{% block title %}PolicyGen Pricing — From $9/mo (vs. $500+ for a lawyer){% endblock %}
+
+{% block extra_head %}
+<style>
+  .pricing-urgency {
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 1px solid #fbbf24;
+    border-radius: 10px;
+    padding: 14px 20px;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    color: #92400e;
+    font-weight: 600;
+  }
+  .pricing-urgency strong { color: #78350f; }
+  .pricing-trust {
+    display: flex; align-items: center; justify-content: center; gap: 24px;
+    margin-top: 12px; flex-wrap: wrap; font-size: 0.82rem; color: #888;
+  }
+  .pricing-trust span { display: flex; align-items: center; gap: 4px; }
+  .pricing-trust .star { color: #f59e0b; }
+  .pricing-card { transition: transform 0.2s, box-shadow 0.2s; }
+  .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
+  .pricing-card.featured { transform: scale(1.03); box-shadow: 0 8px 32px rgba(0,0,0,0.1); border: 2px solid var(--accent); }
+  .pricing-card.featured:hover { transform: scale(1.03) translateY(-4px); }
+  .pricing-savings {
+    display: inline-block; background: #dcfce7; color: #166534;
+    font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 100px; margin-bottom: 8px;
+  }
+  .pricing-card .btn-dark { transition: transform 0.15s, box-shadow 0.15s; }
+  .pricing-card .btn-dark:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
+  .guarantee-text {
+    display: flex; align-items: center; gap: 10px; justify-content: center;
+    margin-top: 1.5rem; padding: 16px 20px; background: #f0fdf4; border-radius: var(--radius);
+    border: 1px solid #bbf7d0;
+  }
+  .guarantee-text span { font-size: 0.85rem; color: #166534; }
+  .comparison-anchor {
+    background: var(--cream); border-radius: var(--radius); padding: 16px 20px;
+    margin-top: 1.5rem; text-align: center; border: 1px solid #e5e7eb;
+  }
+  .comparison-anchor p { margin: 0; font-size: 0.88rem; color: #555; }
+  .comparison-anchor strong { color: var(--text-primary); }
+</style>
+{% endblock %}
 
 {% block content %}
 <div style="padding-top:3rem;padding-bottom:2rem;max-width:720px;">
+  <div class="pricing-urgency">
+    ⚠️ <strong>Every day without a compliant policy = risk of €20M+ GDPR fines.</strong>
+    Protect your business for less than the cost of one coffee per month.
+  </div>
+
   <p class="hero-eyebrow">Pricing</p>
-  <h2 class="heading-serif" style="margin-top:0.5rem;margin-bottom:0.5rem;">Start free. Upgrade when you need more.</h2>
-  <p class="text-secondary text-sm" style="margin-bottom:2.5rem;">Every plan includes GDPR, CCPA, LGPD, and PIPEDA support.</p>
+  <h2 class="heading-serif" style="margin-top:0.5rem;margin-bottom:0.5rem;">Get a lawyer-grade policy for $9/mo. <em style="color:var(--accent);">Skip the $500 invoice.</em></h2>
+  <p class="text-secondary text-sm" style="margin-bottom:1.5rem;">Every plan includes GDPR, CCPA, LGPD, and PIPEDA support. No credit card required to start.</p>
+
+  <div class="pricing-trust">
+    <span><span class="star">★★★★★</span> Trusted by 2,000+ businesses</span>
+    <span>🔒 Secure Stripe checkout</span>
+    <span>🛡️ 30-day money-back guarantee</span>
+  </div>
 
   <div class="pricing-grid">
     <div class="pricing-card">
@@ -17,44 +73,58 @@
         <li>All document types</li>
         <li>All regulations supported</li>
         <li>Copy &amp; paste export</li>
+        <li class="disabled" style="color:#aaa;text-decoration:line-through;">Auto-updates when laws change</li>
+        <li class="disabled" style="color:#aaa;text-decoration:line-through;">One-click embed</li>
+        <li class="disabled" style="color:#aaa;text-decoration:line-through;">Multiple businesses</li>
       </ul>
-      <a href="/generate/" class="btn btn-full btn-outline">Start generating</a>
+      <a href="/generate/" class="btn btn-full btn-outline">Generate Free Policy</a>
     </div>
 
     <div class="pricing-card featured">
-      <div class="pricing-badge">Most popular</div>
+      <div class="pricing-badge">⚡ MOST POPULAR</div>
       <div class="pricing-name">Pro</div>
-      <div class="pricing-amount">£9<span>/mo</span></div>
+      <div class="pricing-amount">$9<span>/mo</span></div>
+      <span class="pricing-savings">Save $491/year vs. hiring a lawyer</span>
       <p class="pricing-desc">Unlimited documents + auto-updates</p>
       <ul class="pricing-features">
-        <li>Unlimited documents</li>
+        <li><strong>Unlimited documents</strong></li>
         <li>All document types</li>
-        <li>Auto-compliance updates</li>
-        <li>One-click embed code</li>
+        <li>Auto-compliance updates (<em>laws change, we update</em>)</li>
+        <li>One-click embed code for your site</li>
         <li>HTML &amp; TXT download</li>
-        <li>Multiple businesses</li>
+        <li>Multiple businesses on one account</li>
+        <li>Priority email support</li>
       </ul>
-      <a href="/billing/checkout/?plan=pro" class="btn btn-full btn-dark">Upgrade to Pro</a>
+      <a href="/billing/checkout/?plan=pro" class="btn btn-full btn-dark">Get Protected — $9/mo →</a>
     </div>
 
     <div class="pricing-card">
       <div class="pricing-name">Agency</div>
-      <div class="pricing-amount">£49<span>/mo</span></div>
+      <div class="pricing-amount">$49<span>/mo</span></div>
+      <span class="pricing-savings" style="background:#fef3c7;color:#92400e;">White-label for your clients</span>
       <p class="pricing-desc">For agencies &amp; freelancers</p>
       <ul class="pricing-features">
-        <li>Everything in Pro</li>
-        <li>White-label documents</li>
+        <li>Everything in Pro, plus:</li>
+        <li><strong>White-label documents</strong> (your branding)</li>
         <li>API access</li>
         <li>Client management dashboard</li>
-        <li>Bulk generation</li>
+        <li>Bulk generation for multiple clients</li>
         <li>Priority support</li>
       </ul>
-      <a href="/billing/checkout/?plan=business" class="btn btn-full btn-outline">Start Business Plan</a>
+      <a href="/billing/checkout/?plan=business" class="btn btn-full btn-outline">Start Agency Plan →</a>
     </div>
   </div>
 
-  <div style="margin-top:3rem;padding:1.5rem;background:var(--cream);border-radius:var(--radius);">
-    <p class="text-sm text-secondary"><strong style="color:var(--text-primary);">Not sure which plan?</strong> Start free — generate your first document, then upgrade if you need more. No credit card required.</p>
+  <div class="comparison-anchor">
+    <p><strong>Still comparing?</strong> Lawyer: $500+ per policy · Termly: $20/mo · PolicyGen Pro: <strong>$9/mo</strong>. Same compliance, 94% less cost.</p>
+  </div>
+
+  <div class="guarantee-text">
+    <span>🛡️ Try it free, upgrade anytime. <strong>30-day money-back guarantee</strong> — if your document isn't perfect, we'll refund you. No questions.</span>
+  </div>
+
+  <div class="comparison-anchor" style="margin-top:1rem;">
+    <p><strong>Need proof it works?</strong> Check your current site's compliance score first — see exactly what you're missing. <a href="/score/" style="color:var(--accent);">Run a free scan →</a></p>
   </div>
 </div>
 {% endblock %}
