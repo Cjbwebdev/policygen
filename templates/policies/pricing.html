@@ -43,6 +43,19 @@
   }
   .comparison-anchor p { margin: 0; font-size: 0.88rem; color: #555; }
   .comparison-anchor strong { color: var(--text-primary); }
+
+  /* Billing toggle */
+  .billing-toggle { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 1.5rem 0; }
+  .billing-toggle-label { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; }
+  .billing-toggle-label.active { color: var(--text-primary); font-weight: 700; }
+  .toggle-switch { position: relative; width: 48px; height: 26px; cursor: pointer; }
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+  .toggle-slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #d1d5db; border-radius: 13px; transition: 0.3s; }
+  .toggle-slider:before { content: ""; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
+  .toggle-switch input:checked + .toggle-slider { background: var(--accent, #2563eb); }
+  .toggle-switch input:checked + .toggle-slider:before { transform: translateX(22px); }
+  .annual-badge { background: #dcfce7; color: #166534; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
+  .monthly-price { font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 2px; }
 </style>
 {% endblock %}
 
@@ -55,7 +68,17 @@
 
   <p class="hero-eyebrow">Pricing</p>
   <h2 class="heading-serif" style="margin-top:0.5rem;margin-bottom:0.5rem;">Get a lawyer-grade policy for $9/mo. <em style="color:var(--accent);">Skip the $500 invoice.</em></h2>
-  <p class="text-secondary text-sm" style="margin-bottom:1.5rem;">Every plan includes GDPR, CCPA, LGPD, and PIPEDA support. No credit card required to start.</p>
+  <p class="text-secondary text-sm" style="margin-bottom:1rem;">Every plan includes GDPR, CCPA, LGPD, and PIPEDA support. No credit card required to start.</p>
+
+  <!-- Billing Toggle -->
+  <div class="billing-toggle">
+    <span class="billing-toggle-label active" id="monthly-label">Monthly</span>
+    <label class="toggle-switch">
+      <input type="checkbox" id="billing-toggle" onchange="toggleBilling()">
+      <span class="toggle-slider"></span>
+    </label>
+    <span class="billing-toggle-label" id="annual-label">Annual <span class="annual-badge">Save 20%</span></span>
+  </div>
 
   <div class="pricing-trust">
     <span><span class="star">★★★★★</span> Trusted by 2,000+ businesses</span>
@@ -77,14 +100,16 @@
         <li class="disabled" style="color:#aaa;text-decoration:line-through;">One-click embed</li>
         <li class="disabled" style="color:#aaa;text-decoration:line-through;">Multiple businesses</li>
       </ul>
-      <a href="/generate/" class="btn btn-full btn-outline">Generate Free Policy</a>
+      <a href="/generate/" class="btn btn-full btn-outline">Start Free — No Credit Card</a>
     </div>
 
     <div class="pricing-card featured">
       <div class="pricing-badge">⚡ MOST POPULAR</div>
       <div class="pricing-name">Pro</div>
-      <div class="pricing-amount">$9<span>/mo</span></div>
-      <span class="pricing-savings">Save $491/year vs. hiring a lawyer</span>
+      <div class="pricing-amount" id="pro-price">$9<span>/mo</span></div>
+      <span class="monthly-price" id="pro-monthly-detail" style="display:none;">$7.20/mo billed annually ($86.40/yr)</span>
+      <span class="pricing-savings" id="pro-savings">Save $491/year vs. hiring a lawyer</span>
+      <span class="pricing-savings" id="pro-savings-annual" style="display:none;background:#dcfce7;color:#166534;">Save 20% vs. monthly — $491/yr saved vs. lawyer</span>
       <p class="pricing-desc">Unlimited documents + auto-updates</p>
       <ul class="pricing-features">
         <li><strong>Unlimited documents</strong></li>
@@ -100,8 +125,10 @@
 
     <div class="pricing-card">
       <div class="pricing-name">Agency</div>
-      <div class="pricing-amount">$49<span>/mo</span></div>
-      <span class="pricing-savings" style="background:#fef3c7;color:#92400e;">White-label for your clients</span>
+      <div class="pricing-amount" id="agency-price">$49<span>/mo</span></div>
+      <span class="monthly-price" id="agency-monthly-detail" style="display:none;">$39/mo billed annually ($468/yr)</span>
+      <span class="pricing-savings" id="agency-savings" style="background:#fef3c7;color:#92400e;">White-label for your clients</span>
+      <span class="pricing-savings" id="agency-savings-annual" style="display:none;background:#dcfce7;color:#166534;">Save 20% on annual billing</span>
       <p class="pricing-desc">For agencies &amp; freelancers</p>
       <ul class="pricing-features">
         <li>Everything in Pro, plus:</li>
@@ -127,4 +154,27 @@
     <p><strong>Need proof it works?</strong> Check your current site's compliance score first — see exactly what you're missing. <a href="/score/" style="color:var(--accent);">Run a free scan →</a></p>
   </div>
 </div>
+
+<script>
+function toggleBilling() {
+  const isAnnual = document.getElementById('billing-toggle').checked;
+  const monthlyLabel = document.getElementById('monthly-label');
+  const annualLabel = document.getElementById('annual-label');
+  
+  monthlyLabel.classList.toggle('active', !isAnnual);
+  annualLabel.classList.toggle('active', isAnnual);
+  
+  // Pro pricing
+  document.getElementById('pro-price').innerHTML = isAnnual ? '$7<span>.20/mo</span>' : '$9<span>/mo</span>';
+  document.getElementById('pro-monthly-detail').style.display = isAnnual ? 'block' : 'none';
+  document.getElementById('pro-savings').style.display = isAnnual ? 'none' : 'inline-block';
+  document.getElementById('pro-savings-annual').style.display = isAnnual ? 'inline-block' : 'none';
+  
+  // Agency pricing
+  document.getElementById('agency-price').innerHTML = isAnnual ? '$39<span>/mo</span>' : '$49<span>/mo</span>';
+  document.getElementById('agency-monthly-detail').style.display = isAnnual ? 'block' : 'none';
+  document.getElementById('agency-savings').style.display = isAnnual ? 'none' : 'inline-block';
+  document.getElementById('agency-savings-annual').style.display = isAnnual ? 'inline-block' : 'none';
+}
+</script>
 {% endblock %}

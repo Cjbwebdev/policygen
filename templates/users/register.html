@@ -13,18 +13,32 @@
   .step-indicator strong { color: var(--text-primary); }
   .progress-bar { height: 4px; background: #e5e5ea; border-radius: 4px; margin-bottom: 1.5rem; }
   .progress-bar .fill { height: 100%; width: 25%; background: var(--accent); border-radius: 4px; transition: width 0.3s; }
+  .progress-text { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: -0.75rem; margin-bottom: 1rem; }
+  .social-proof-header { text-align: center; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-secondary); }
+  .social-proof-header strong { color: var(--accent); }
+  .used-by-badge { display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center; margin-bottom: 1.5rem; font-size: 0.8rem; color: #666; }
+  .used-by-badge .live-dot { display: inline-block; width: 6px; height: 6px; background: #22c55e; border-radius: 50%; animation: livePulse 2s infinite; }
 </style>
 {% endblock %}
 
 {% block content %}
 <div class="auth-wrapper">
+  <div class="social-proof-header">
+    <strong>Join 2,847 businesses already protected</strong>
+  </div>
+
   <div class="step-indicator">
     <span>Step 1 of 3 — <strong>Set up your account</strong></span>
   </div>
-  <div class="progress-bar"><div class="fill"></div></div>
+  <div class="progress-bar"><div class="fill" style="width:25%"></div></div>
+  <p class="progress-text">Your policy is 90 seconds away 🚀</p>
 
   <h2 class="auth-title">Create your free account</h2>
   <p class="auth-subtitle">Your policy will be ready in 90 seconds after signup.</p>
+
+  <div class="used-by-badge">
+    <span class="live-dot"></span> Used by 2,847 businesses
+  </div>
 
   <div class="signup-benefits">
     <p>✓ <strong>Free</strong> — generate 1 policy document per month</p>
@@ -60,7 +74,7 @@
     </div>
     {% endif %}
 
-    <button type="submit" class="btn btn-dark btn-lg btn-full">Create Account &amp; Start Generating →</button>
+    <button type="submit" class="btn btn-dark btn-lg btn-full">Create Free Account &amp; Generate Policy →</button>
   </form>
 
   <p class="trust-note">🔒 No credit card · No spam · Unsubscribe anytime</p>

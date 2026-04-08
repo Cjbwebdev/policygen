@@ -54,5 +54,22 @@
   </footer>
 
   {% block extra_js %}{% endblock %}
+
+  <!-- Floating contact button -->
+  <a href="mailto:hello@policygen.site" class="floating-contact" title="Contact us" aria-label="Contact us">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+  </a>
+  <style>
+    .floating-contact {
+      position: fixed; bottom: 24px; right: 24px; z-index: 999;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--accent, #2563eb); color: white;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 14px rgba(37,99,235,0.4);
+      transition: transform 0.2s, box-shadow 0.2s;
+      text-decoration: none;
+    }
+    .floating-contact:hover { transform: scale(1.1); box-shadow: 0 6px 20px rgba(37,99,235,0.5); color: white; }
+  </style>
 </body>
 </html>

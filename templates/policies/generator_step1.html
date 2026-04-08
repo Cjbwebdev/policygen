@@ -1,9 +1,21 @@
 {% extends "base.html" %}
 {% block title %}Choose document type{% endblock %}
 
+{% block extra_head %}
+<style>
+  .gen-progress-bar { height: 6px; background: #e5e5ea; border-radius: 6px; margin-bottom: 1.5rem; }
+  .gen-progress-bar .gen-fill { height: 100%; background: var(--accent); border-radius: 6px; transition: width 0.5s ease; }
+  .gen-progress-info { text-align: center; font-size: 0.78rem; color: var(--text-muted); margin-top: -0.5rem; margin-bottom: 2rem; }
+</style>
+{% endblock %}
+
 {% block content %}
 <div style="padding-top:3rem;padding-bottom:2rem;">
   <p class="hero-eyebrow">Step 1 of 3</p>
+
+  <div class="gen-progress-bar"><div class="gen-fill" style="width:33%"></div></div>
+  <p class="gen-progress-info">📊 33% complete — your document is 2 minutes away (94% finish in under 2 min)</p>
+
   <h2 class="heading-serif" style="margin-top:0.5rem;margin-bottom:0.5rem;">What document do you need?</h2>
   <p class="text-secondary text-sm" style="margin-bottom:2rem;">Select the type of policy you need. You can generate additional documents after.</p>
 

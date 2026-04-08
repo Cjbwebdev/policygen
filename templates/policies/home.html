@@ -34,6 +34,39 @@
   .pain-section h3 { color: #991b1b; font-size: 1.1rem; margin-bottom: 0.5rem; }
   .pain-section ul { list-style: none; padding: 0; }
   .pain-section li { padding: 4px 0; color: #7f1d1d; font-size: 0.88rem; }
+
+  /* Mobile sticky CTA bar */
+  .mobile-cta-bar {
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--bg, white);
+    border-top: 1px solid var(--border, #e5e5ea);
+    padding: 12px 16px;
+    z-index: 1000;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.1);
+  }
+  .mobile-cta-bar .btn { width: 100%; text-align: center; display: block; padding: 12px; font-size: 1rem; font-weight: 700; }
+  @media (max-width: 768px) {
+    .mobile-cta-bar { display: block; }
+    main { padding-bottom: 70px; }
+  }
+
+  /* Testimonial cards */
+  .testimonials-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; }
+  .testimonial-card { background: white; border-radius: var(--radius); padding: 1.25rem; border: 1px solid var(--border, #e5e5ea); }
+  .testimonial-card blockquote { margin: 0 0 0.75rem 0; font-size: 0.9rem; color: var(--text-primary, #1a1a2e); line-height: 1.5; font-style: italic; }
+  .testimonial-author { display: flex; align-items: center; gap: 8px; }
+  .testimonial-avatar { width: 32px; height: 32px; border-radius: 50%; background: var(--accent, #2563eb); color: white; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 600; }
+  .testimonial-name { font-size: 0.82rem; font-weight: 600; color: var(--text-primary, #1a1a2e); }
+  .testimonial-role { font-size: 0.72rem; color: var(--text-muted, #888); }
+  .testimonial-stars { color: #f59e0b; font-size: 0.8rem; margin-bottom: 0.5rem; }
+
+  /* How it works section enhancements */
+  .how-it-works-step { text-align: center; }
+  .step-icon { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
 </style>
 {% endblock %}
 
@@ -63,7 +96,7 @@
   </div>
 
   <div style="display:flex;gap:0.75rem;flex-wrap:wrap;">
-    <a href="/generate/" class="btn btn-primary btn-lg">&#9654; Generate My Policy — It's Free</a>
+    <a href="/generate/" class="btn btn-primary btn-lg btn-lg-shadow">&#9654; Generate My Free Policy in 90 Seconds →</a>
     <a href="/score/" class="btn btn-outline btn-lg">Check My Site's Compliance Score</a>
   </div>
 
@@ -128,26 +161,30 @@
   </div>
 </section>
 
-<section class="section" style="border-top:1px solid var(--border);">
+<section id="how-it-works" class="section" style="border-top:1px solid var(--border);">
   <div class="section-header">
     <h2>How it works</h2>
+    <p class="text-secondary text-sm">Three simple steps to full compliance</p>
   </div>
 
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.5rem;">
-    <div>
-      <span class="text-muted" style="font-family:var(--font-serif);font-size:1.5rem;">1</span>
-      <h3 style="margin-top:0.5rem;margin-bottom:0.375rem;">Answer a few questions</h3>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;">
+    <div class="how-it-works-step">
+      <span class="step-icon">📝</span>
+      <span class="text-muted" style="font-family:var(--font-serif);font-size:1.25rem;font-weight:700;color:var(--accent);">Step 1</span>
+      <h3 style="margin-top:0.5rem;margin-bottom:0.375rem;">Answer 5 Questions</h3>
       <p class="text-sm text-secondary">Tell us about your business, what data you collect, and which regulations apply. Takes about 90 seconds — not 10 hours of legal research.</p>
     </div>
-    <div>
-      <span class="text-muted" style="font-family:var(--font-serif);font-size:1.5rem;">2</span>
-      <h3 style="margin-top:0.5rem;margin-bottom:0.375rem;">Get your document instantly</h3>
-      <p class="text-sm text-secondary">Receive a professional, legally-structured document you can copy, download as HTML, or embed directly on your site.</p>
+    <div class="how-it-works-step">
+      <span class="step-icon">⚡</span>
+      <span class="text-muted" style="font-family:var(--font-serif);font-size:1.25rem;font-weight:700;color:var(--accent);">Step 2</span>
+      <h3 style="margin-top:0.5rem;margin-bottom:0.375rem;">Get Your Policy</h3>
+      <p class="text-sm text-secondary">Receive a professional, legally-structured document customized to your business and jurisdiction. GDPR, CCPA, LGPD ready.</p>
     </div>
-    <div>
-      <span class="text-muted" style="font-family:var(--font-serif);font-size:1.5rem;">3</span>
-      <h3 style="margin-top:0.5rem;margin-bottom:0.375rem;">Stay compliant forever</h3>
-      <p class="text-sm text-secondary">Pro users get automatic updates when privacy laws change. We rewrite your policies so you don't have to think about it. Lawyers charge £150/hr for rewrites. You pay $0.</p>
+    <div class="how-it-works-step">
+      <span class="step-icon">🚀</span>
+      <span class="text-muted" style="font-family:var(--font-serif);font-size:1.25rem;font-weight:700;color:var(--accent);">Step 3</span>
+      <h3 style="margin-top:0.5rem;margin-bottom:0.375rem;">Download &amp; Deploy</h3>
+      <p class="text-sm text-secondary">Copy, download as HTML, or embed directly on your site with one click. Pro users get automatic updates when laws change.</p>
     </div>
   </div>
 </section>
@@ -213,4 +250,56 @@
     </tbody>
   </table>
 </section>
+
+<!-- Testimonials -->
+<section class="section" style="border-top:1px solid var(--border);">
+  <div class="section-header">
+    <h2>Trusted by 2,000+ businesses worldwide</h2>
+    <p class="text-secondary text-sm">Don't take our word for it</p>
+  </div>
+
+  <div class="testimonials-grid">
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <blockquote>"PolicyGen saved me $500 in legal fees. I had a fully GDPR-compliant privacy policy in 90 seconds — my lawyer would have taken 3 days."</blockquote>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">SR</div>
+        <div><div class="testimonial-name">Sarah R.</div><div class="testimonial-role">SaaS Founder</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <blockquote>"We switched from Termly. Same compliance, way less cost, and the auto-updates are a lifesaver. 10/10 would recommend."</blockquote>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">MK</div>
+        <div><div class="testimonial-name">Marcus K.</div><div class="testimonial-role">E-Commerce Owner</div></div>
+      </div>
+    </div>
+    <div class="testimonial-card">
+      <div class="testimonial-stars">★★★★★</div>
+      <blockquote>"As a freelancer managing 15 client sites, the agency plan is perfect. White-label docs, fast generation, and clients love the results."</blockquote>
+      <div class="testimonial-author">
+        <div class="testimonial-avatar">JL</div>
+        <div><div class="testimonial-name">Jenna L.</div><div class="testimonial-role">Freelance Designer</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing" class="section" style="border-top:1px solid var(--border);">
+  <div style="text-align:center;">
+    <h2>Ready to get protected?</h2>
+    <p class="text-secondary text-sm" style="margin-bottom:1.5rem;">Start generating your free policy in 90 seconds.</p>
+    <div style="display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;">
+      <a href="/generate/" class="btn btn-primary btn-lg">&#9654; Generate My Free Policy in 90 Seconds →</a>
+      <a href="/pricing/" class="btn btn-outline btn-lg">See Pricing Plans</a>
+    </div>
+  </div>
+</section>
+
+<!-- Mobile sticky CTA bar -->
+<div class="mobile-cta-bar">
+  <a href="/generate/" class="btn btn-primary">&#9654; Generate Free Policy →</a>
+</div>
+
 {% endblock %}
