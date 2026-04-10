@@ -48,11 +48,18 @@
 
   <form method="POST" action="/register/">
     {% csrf_token %}
+    <input type="hidden" name="next" value="{{ next }}">
 
     <div class="form-group">
       <label class="form-label">Email</label>
       <input type="email" name="email" class="form-input" placeholder="you@yourbusiness.com" required>
       <p class="form-hint">We'll send your document here</p>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">Username</label>
+      <input type="text" name="username" class="form-input" placeholder="Pick a username" required>
+      <p class="form-hint">Use letters, numbers, or _</p>
     </div>
 
     <div class="form-group">
