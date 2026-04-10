@@ -192,6 +192,21 @@ We may update this Privacy Policy from time to time. We will notify you of mater
 def _generate_terms(doc) -> str:
     sections = [_header(doc, f"Terms and Conditions — {doc.company_name}")]
 
+    # Define conditional text blocks beforehand
+    user_account_text = (
+        "When you create an account with us, you must provide accurate and complete information. "
+        "You are responsible for maintaining the confidentiality of your account credentials and "
+        "for all activities that occur under your account. You must notify us immediately of any "
+        "unauthorized use of your account."
+    ) if doc.has_user_accounts else ""
+
+    payment_text = (
+        "\n\nFees for certain Services are billed on a subscription or one-time basis. "
+        "You agree to pay all fees associated with your account. Refunds are handled in "
+        "accordance with our Refund Policy. We reserve the right to change our fees upon 30 days notice."
+    ) if doc.has_payments else "\n\nOur services may be offered free of charge or for a fee as specified on our website."
+
+    # Now use the clean variables in the f-string
     sections.append(f"""## 1. Acceptance of Terms
 
 By accessing or using {doc.company_name}'s services (the "Services"), you agree to be bound by these Terms and Conditions. If you do not agree to these terms, do not use the Services.
@@ -202,7 +217,7 @@ By accessing or using {doc.company_name}'s services (the "Services"), you agree 
 
 ## 3. User Accounts
 
-{"""When you create an account with us, you must provide accurate and complete information. You are responsible for maintaining the confidentiality of your account credentials and for all activities that occur under your account. You must notify us immediately of any unauthorized use of your account.""" if doc.has_user_accounts else ""}
+{user_account_text}
 
 ## 4. Acceptable Use
 
@@ -218,7 +233,7 @@ You agree not to use the Services to:
 All content, features, and functionality of the Services, including but not limited to text, graphics, logos, and software, are the exclusive property of {doc.company_name} and are protected by intellectual property laws.
 
 ## 6. Payment and Billing
-{chr(10) + chr(10) + "Fees for certain Services are billed on a subscription or one-time basis. You agree to pay all fees associated with your account. Refunds are handled in accordance with our Refund Policy. We reserve the right to change our fees upon 30 days notice." if doc.has_payments else chr(10) + chr(10) + "Our services may be offered free of charge or for a fee as specified on our website."}
+{payment_text}
 
 ## 7. Limitation of Liability
 
