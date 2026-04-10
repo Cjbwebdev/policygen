@@ -121,6 +121,8 @@ def _generate_privacy(doc) -> str:
 - Referring website URL
 - Cookies and similar tracking technologies""" if doc.has_cookies else ""
 
+    third_party = _third_party_section(doc)
+
     sections.append(f"""## 1. Information We Collect
 
 We collect the following types of information:{personal_info}{auto_info}""")
@@ -157,6 +159,7 @@ We do not sell your personal information. We may share your information with:
 - **Your Consent**: With your express consent
 
 {third_party}
+
 ## 4. Data Security
 
 We implement appropriate technical and organizational security measures designed to protect your personal information against accidental or unlawful destruction, loss, alteration, unauthorized disclosure, or access.
@@ -189,12 +192,8 @@ We may update this Privacy Policy from time to time. We will notify you of mater
 def _generate_terms(doc) -> str:
     sections = [_header(doc, f"Terms and Conditions — {doc.company_name}")]
 
-    sections.append(f"""
-## 1. Acceptance of Terms
-By accessing or using {doc.company_name}'s website (the "Services"), you agree to be bound by these Terms and Conditions. If you do not agree, do not use the Services.
-""")
+    sections.append(f"""## 1. Acceptance of Terms
 
-    return "\n\n".join(sections)    
 By accessing or using {doc.company_name}'s services (the "Services"), you agree to be bound by these Terms and Conditions. If you do not agree to these terms, do not use the Services.
 
 ## 2. Description of Services
@@ -219,7 +218,7 @@ You agree not to use the Services to:
 All content, features, and functionality of the Services, including but not limited to text, graphics, logos, and software, are the exclusive property of {doc.company_name} and are protected by intellectual property laws.
 
 ## 6. Payment and Billing
-{"""\n\nFees for certain Services are billed on a [subscription / one-time] basis. You agree to pay all fees associated with your account. Refunds are handled in accordance with our Refund Policy. We reserve the right to change our fees upon 30 days notice.""" if doc.has_payments else "\n\nOur services may be offered free of charge or for a fee as specified on our website."}
+{chr(10) + chr(10) + "Fees for certain Services are billed on a subscription or one-time basis. You agree to pay all fees associated with your account. Refunds are handled in accordance with our Refund Policy. We reserve the right to change our fees upon 30 days notice." if doc.has_payments else chr(10) + chr(10) + "Our services may be offered free of charge or for a fee as specified on our website."}
 
 ## 7. Limitation of Liability
 
@@ -248,10 +247,12 @@ We reserve the right to modify these Terms at any time. We will notify users of 
 
 def _generate_cookie(doc) -> str:
     sections = [_header(doc, f"Cookie Policy — {doc.company_name}")]
-    
+
     analytics_section = "### Analytics Cookies\n\nWe use analytics cookies to understand how visitors interact with our website. These cookies help us improve the website by collecting and reporting information on usage patterns." if doc.has_cookies else ""
     marketing_section = "### Marketing Cookies\n\nWe use marketing cookies to track visitors across websites to display relevant advertisements." if doc.regulations else ""
     functional_section = "### Functional Cookies\n\nThese cookies enable enhanced functionality and personalization, such as remembering your language preference or login status." if doc.has_user_accounts else ""
+
+    reg_sections = _regulation_clauses(doc, 'cookie')
 
     sections.append(f"""## What Are Cookies?
 
@@ -272,7 +273,7 @@ These cookies are necessary for the website to function properly. They enable ba
 
 You can control and/or delete cookies as you wish. You can delete all cookies that are already on your device and you can set most browsers to prevent them from being placed. However, if you do this, you may have to manually adjust some preferences every time you visit a site and some services and functionalities may not work.
 
-{reg_sections if doc.regulations else ""}
+{reg_sections}
 
 {_contact_section(doc)}""")
 
