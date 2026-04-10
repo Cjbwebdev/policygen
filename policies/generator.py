@@ -190,7 +190,11 @@ def _generate_terms(doc) -> str:
     sections = [_header(doc, f"Terms and Conditions — {doc.company_name}")]
 
     sections.append(f"""
-    
+## 1. Acceptance of Terms
+By accessing or using {doc.company_name}'s website (the "Services"), you agree to be bound by these Terms and Conditions. If you do not agree, do not use the Services.
+""")
+
+    return "\n\n".join(sections)    
 By accessing or using {doc.company_name}'s services (the "Services"), you agree to be bound by these Terms and Conditions. If you do not agree to these terms, do not use the Services.
 
 ## 2. Description of Services
