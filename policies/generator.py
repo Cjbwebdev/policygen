@@ -189,7 +189,14 @@ We may update this Privacy Policy from time to time. We will notify you of mater
 def _generate_terms(doc) -> str:
     sections = [_header(doc, f"Terms and Conditions — {doc.company_name}")]
 
-    sections.append(f"""## 1. Acceptance of Terms)
+    sections.append("""
+## 1. Acceptance of Terms
+By accessing or using this website, you agree to be bound by these Terms and Conditions.
+""")
+
+    # Continue with your other sections...
+    return "\n\n".join(sections)
+
 
 By accessing or using {doc.company_name}'s services (the "Services"), you agree to be bound by these Terms and Conditions. If you do not agree to these terms, do not use the Services.
 
