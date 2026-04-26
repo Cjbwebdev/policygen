@@ -4,71 +4,83 @@
 {% block extra_head %}
 <style>
   .pricing-urgency {
-    background: linear-gradient(135deg, #fef3c7, #fde68a);
-    border: 1px solid #fbbf24;
-    border-radius: 10px;
-    padding: 14px 20px;
+    background: var(--gray-50);
+    box-shadow: var(--shadow-border);
+    border-radius: var(--radius-pill);
+    padding: 12px 20px;
     text-align: center;
     margin-bottom: 2rem;
-    font-size: 0.9rem;
-    color: #92400e;
-    font-weight: 600;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--black);
   }
-  .pricing-urgency strong { color: #78350f; }
+  .pricing-urgency strong { color: var(--black); font-weight: 600; }
   .pricing-trust {
     display: flex; align-items: center; justify-content: center; gap: 24px;
-    margin-top: 12px; flex-wrap: wrap; font-size: 0.82rem; color: #888;
+    margin-top: 12px; flex-wrap: wrap; font-size: 13px; color: var(--gray-500);
   }
   .pricing-trust span { display: flex; align-items: center; gap: 4px; }
   .pricing-trust .star { color: #f59e0b; }
   .pricing-card { transition: transform 0.2s, box-shadow 0.2s; }
-  .pricing-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
-  .pricing-card.featured { transform: scale(1.03); box-shadow: 0 8px 32px rgba(0,0,0,0.1); border: 2px solid var(--accent); }
+  .pricing-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-elevated); }
+  .pricing-card.featured { transform: scale(1.03); box-shadow: var(--shadow-elevated); }
   .pricing-card.featured:hover { transform: scale(1.03) translateY(-4px); }
   .pricing-savings {
-    display: inline-block; background: #dcfce7; color: #166534;
-    font-size: 0.75rem; font-weight: 700; padding: 3px 10px; border-radius: 100px; margin-bottom: 8px;
+    display: inline-block; background: #ecfdf5; color: #059669;
+    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); margin-bottom: 8px;
+  }
+  .pricing-savings-amber {
+    display: inline-block; background: #fffbeb; color: #92400e;
+    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); margin-bottom: 8px;
   }
   .pricing-card .btn-dark { transition: transform 0.15s, box-shadow 0.15s; }
   .pricing-card .btn-dark:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
   .guarantee-text {
     display: flex; align-items: center; gap: 10px; justify-content: center;
-    margin-top: 1.5rem; padding: 16px 20px; background: #f0fdf4; border-radius: var(--radius);
-    border: 1px solid #bbf7d0;
+    margin-top: 1.5rem; padding: 16px 20px;
+    background: var(--white);
+    box-shadow: var(--shadow-card);
+    border-radius: var(--radius-card);
+    font-size: 14px;
+    color: var(--gray-600);
   }
-  .guarantee-text span { font-size: 0.85rem; color: #166534; }
   .comparison-anchor {
-    background: var(--cream); border-radius: var(--radius); padding: 16px 20px;
-    margin-top: 1.5rem; text-align: center; border: 1px solid #e5e7eb;
+    background: var(--gray-50);
+    box-shadow: var(--shadow-border);
+    border-radius: var(--radius-card);
+    padding: 16px 20px;
+    margin-top: 1.5rem; text-align: center;
   }
-  .comparison-anchor p { margin: 0; font-size: 0.88rem; color: #555; }
-  .comparison-anchor strong { color: var(--text-primary); }
+  .comparison-anchor p { margin: 0; font-size: 14px; color: var(--gray-600); }
+  .comparison-anchor strong { color: var(--black); }
 
   /* Billing toggle */
   .billing-toggle { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 1.5rem 0; }
-  .billing-toggle-label { font-size: 0.85rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; }
-  .billing-toggle-label.active { color: var(--text-primary); font-weight: 700; }
+  .billing-toggle-label { font-size: 14px; font-weight: 500; color: var(--gray-500); cursor: pointer; }
+  .billing-toggle-label.active { color: var(--black); font-weight: 600; }
   .toggle-switch { position: relative; width: 48px; height: 26px; cursor: pointer; }
   .toggle-switch input { opacity: 0; width: 0; height: 0; }
-  .toggle-slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #d1d5db; border-radius: 13px; transition: 0.3s; }
-  .toggle-slider:before { content: ""; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
-  .toggle-switch input:checked + .toggle-slider { background: var(--accent, #2563eb); }
+  .toggle-slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--gray-100); border-radius: 13px; transition: 0.3s; }
+  .toggle-slider:before { content: ""; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+  .toggle-switch input:checked + .toggle-slider { background: var(--black); }
   .toggle-switch input:checked + .toggle-slider:before { transform: translateX(22px); }
-  .annual-badge { background: #dcfce7; color: #166534; font-size: 0.72rem; font-weight: 700; padding: 2px 8px; border-radius: 100px; }
-  .monthly-price { font-size: 0.72rem; color: var(--text-muted); display: block; margin-top: 2px; }
+  .annual-badge { background: #ecfdf5; color: #059669; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-pill); }
+  .monthly-price { font-size: 12px; color: var(--gray-500); display: block; margin-top: 2px; }
+  .disabled-feature { color: var(--gray-400); text-decoration: line-through; }
 </style>
 {% endblock %}
 
 {% block content %}
-<div style="padding-top:3rem;padding-bottom:2rem;max-width:720px;">
+<div style="padding-top:3rem;padding-bottom:2rem;max-width:780px;margin:0 auto;">
+
   <div class="pricing-urgency">
     ⚠️ <strong>Every day without a compliant policy = risk of €20M+ GDPR fines.</strong>
     Protect your business for less than the cost of one coffee per month.
   </div>
 
   <p class="hero-eyebrow">Pricing</p>
-  <h2 class="heading-serif" style="margin-top:0.5rem;margin-bottom:0.5rem;">Get a lawyer-grade policy for £9/mo. <em style="color:var(--accent);">Skip the £500 invoice.</em></h2>
-  <p class="text-secondary text-sm" style="margin-bottom:1rem;">Every plan includes GDPR, CCPA, LGPD, and PIPEDA support. No credit card required to start.</p>
+  <h2 style="margin-bottom:0.5rem;">Get a lawyer-grade policy for £9/mo. <em style="font-style:italic;color:var(--gray-500);">Skip the £500 invoice.</em></h2>
+  <p class="text-secondary" style="margin-bottom:1rem;font-size:16px;">Every plan includes GDPR, CCPA, LGPD, and PIPEDA support. No credit card required to start.</p>
 
   <!-- Billing Toggle -->
   <div class="billing-toggle">
@@ -96,9 +108,9 @@
         <li>All document types</li>
         <li>All regulations supported</li>
         <li>Copy &amp; paste export</li>
-        <li class="disabled" style="color:#aaa;text-decoration:line-through;">Auto-updates when laws change</li>
-        <li class="disabled" style="color:#aaa;text-decoration:line-through;">One-click embed</li>
-        <li class="disabled" style="color:#aaa;text-decoration:line-through;">Multiple businesses</li>
+        <li class="disabled-feature">Auto-updates when laws change</li>
+        <li class="disabled-feature">One-click embed</li>
+        <li class="disabled-feature">Multiple businesses</li>
       </ul>
       <a href="/generate/" class="btn btn-full btn-outline">Start Free — No Credit Card</a>
     </div>
@@ -109,7 +121,7 @@
       <div class="pricing-amount" id="pro-price">£9<span>/mo</span></div>
       <span class="monthly-price" id="pro-monthly-detail" style="display:none;">£7.20/mo billed annually (£86.40/yr)</span>
       <span class="pricing-savings" id="pro-savings">Save £491/year vs. hiring a lawyer</span>
-      <span class="pricing-savings" id="pro-savings-annual" style="display:none;background:#dcfce7;color:#166534;">Save 20% vs. monthly — £491/yr saved vs. lawyer</span>
+      <span class="pricing-savings" id="pro-savings-annual" style="display:none;">Save 20% vs. monthly — £491/yr saved vs. lawyer</span>
       <p class="pricing-desc">Unlimited documents + auto-updates</p>
       <ul class="pricing-features">
         <li><strong>Unlimited documents</strong></li>
@@ -127,8 +139,8 @@
       <div class="pricing-name">Agency</div>
       <div class="pricing-amount" id="agency-price">£49<span>/mo</span></div>
       <span class="monthly-price" id="agency-monthly-detail" style="display:none;">£39/mo billed annually (£468/yr)</span>
-      <span class="pricing-savings" id="agency-savings" style="background:#fef3c7;color:#92400e;">White-label for your clients</span>
-      <span class="pricing-savings" id="agency-savings-annual" style="display:none;background:#dcfce7;color:#166534;">Save 20% on annual billing</span>
+      <span class="pricing-savings-amber" id="agency-savings">White-label for your clients</span>
+      <span class="pricing-savings" id="agency-savings-annual" style="display:none;">Save 20% on annual billing</span>
       <p class="pricing-desc">For agencies &amp; freelancers</p>
       <ul class="pricing-features">
         <li>Everything in Pro, plus:</li>
@@ -151,7 +163,7 @@
   </div>
 
   <div class="comparison-anchor" style="margin-top:1rem;">
-    <p><strong>Need proof it works?</strong> Check your current site's compliance score first — see exactly what you're missing. <a href="/score/" style="color:var(--accent);">Run a free scan →</a></p>
+    <p><strong>Need proof it works?</strong> Check your current site's compliance score first — see exactly what you're missing. <a href="/score/" style="color:var(--black);font-weight:500;">Run a free scan →</a></p>
   </div>
 </div>
 

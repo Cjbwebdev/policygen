@@ -3,21 +3,71 @@
 
 {% block extra_head %}
 <style>
-  .signup-benefits { background: var(--cream); border-radius: var(--radius); padding: 12px 16px; margin-bottom: 1.5rem; }
-  .signup-benefits p { margin: 3px 0; font-size: 0.82rem; color: var(--text-secondary); }
-  .signup-benefits strong { color: var(--text-primary); }
-  .form-hint { color: var(--text-muted); font-size: 0.75rem; margin-top: 3px; }
-  .trust-note { text-align: center; margin-top: 1rem; font-size: 0.78rem; color: #888; }
-  .step-indicator { text-align: center; margin-bottom: 1.5rem; }
-  .step-indicator span { font-size: 0.78rem; color: #888; }
-  .step-indicator strong { color: var(--text-primary); }
-  .progress-bar { height: 4px; background: #e5e5ea; border-radius: 4px; margin-bottom: 1.5rem; }
-  .progress-bar .fill { height: 100%; width: 25%; background: var(--accent); border-radius: 4px; transition: width 0.3s; }
-  .progress-text { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: -0.75rem; margin-bottom: 1rem; }
-  .social-proof-header { text-align: center; margin-bottom: 1rem; font-size: 0.85rem; color: var(--text-secondary); }
-  .social-proof-header strong { color: var(--accent); }
-  .used-by-badge { display: flex; align-items: center; justify-content: center; gap: 6px; text-align: center; margin-bottom: 1.5rem; font-size: 0.8rem; color: #666; }
-  .used-by-badge .live-dot { display: inline-block; width: 6px; height: 6px; background: #22c55e; border-radius: 50%; animation: livePulse 2s infinite; }
+  .signup-benefits {
+    background: var(--gray-50);
+    box-shadow: var(--shadow-border);
+    border-radius: var(--radius-card);
+    padding: 14px 18px;
+    margin-bottom: 1.5rem;
+  }
+  .signup-benefits p {
+    margin: 4px 0;
+    font-size: 14px;
+    color: var(--gray-600);
+    line-height: 1.6;
+  }
+  .signup-benefits strong { color: var(--black); }
+  .trust-note {
+    text-align: center;
+    margin-top: 1rem;
+    font-size: 12px;
+    color: var(--gray-500);
+  }
+  .step-indicator {
+    text-align: center; margin-bottom: 1rem;
+  }
+  .step-indicator span {
+    font-size: 13px; color: var(--gray-500);
+  }
+  .step-indicator strong { color: var(--black); }
+  .progress-bar {
+    height: 4px; background: var(--gray-100);
+    border-radius: 4px; margin-bottom: 1.5rem;
+  }
+  .progress-bar .fill {
+    height: 100%; width: 25%;
+    background: var(--black);
+    border-radius: 4px;
+    transition: width 0.3s;
+  }
+  .progress-text {
+    font-size: 12px; color: var(--gray-500);
+    text-align: center; margin-top: -0.75rem; margin-bottom: 1rem;
+  }
+  .social-proof-header {
+    text-align: center; margin-bottom: 1rem;
+    font-size: 14px; font-weight: 500;
+    color: var(--gray-600);
+  }
+  .used-by-badge {
+    display: flex; align-items: center; justify-content: center;
+    gap: 6px; text-align: center; margin-bottom: 1.5rem;
+    font-size: 13px; color: var(--gray-500);
+  }
+  .used-by-badge .live-dot {
+    display: inline-block; width: 6px; height: 6px;
+    background: var(--success); border-radius: 50%;
+    animation: livePulse 2s infinite;
+  }
+  @keyframes livePulse {
+    0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(5,150,105,0.4); }
+    50% { opacity:0.7; box-shadow:0 0 0 6px rgba(5,150,105,0); }
+  }
+  .form-hint {
+    color: var(--gray-500);
+    font-size: 12px;
+    margin-top: 4px;
+  }
 </style>
 {% endblock %}
 
