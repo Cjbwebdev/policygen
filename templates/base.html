@@ -6,7 +6,7 @@
   <title>{% block title %}PolicyGen{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
   {% block extra_head %}{% endblock %}
 </head>
@@ -14,20 +14,20 @@
   <header>
     <div class="header-inner">
       <a href="/" class="logo">
-        <div class="logo-icon">&#9878;</div>
+        <div class="logo-icon">PG</div>
         PolicyGen
       </a>
       <nav>
         {% if user.is_authenticated %}
           <a href="/dashboard/" class="nav-link">Dashboard</a>
           {% if not user.is_pro %}
-            <a href="/pricing/" class="btn btn-dark" style="padding:6px 16px;font-size:0.8rem;">Upgrade to Pro</a>
+            <a href="/pricing/" class="btn btn-gold btn-sm">Upgrade to Pro</a>
           {% endif %}
           <a href="/logout/" class="nav-link">Sign out</a>
         {% else %}
           <a href="/pricing/" class="nav-link">Pricing</a>
           <a href="/score/" class="nav-link">Site Score</a>
-          <a href="/register/" class="btn btn-dark" style="padding:6px 16px;font-size:0.8rem;">Get Started — Free</a>
+          <a href="/register/" class="btn btn-gold btn-sm">Get Started — Free</a>
         {% endif %}
       </nav>
     </div>
@@ -58,7 +58,7 @@
 
   {% block extra_js %}{% endblock %}
 
-  <!-- Floating contact button -->
+  <!-- Floating contact — wax seal style -->
   <a href="mailto:hello@policygen.site" class="floating-contact" title="Contact us" aria-label="Contact us">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
   </a>

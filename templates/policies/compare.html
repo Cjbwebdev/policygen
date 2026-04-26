@@ -16,28 +16,28 @@
 
   <div id="scanner-loading" style="display:none;margin-top:2rem;text-align:center;padding:2rem 0;">
     <p class="text-secondary">Analyzing policy…</p>
-    <div style="margin:1rem auto;width:32px;height:32px;border:2px solid var(--gray-100);border-top:2px solid var(--black);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+    <div style="margin:1rem auto;width:32px;height:32px;border:2px solid var(--border-light);border-top:2px solid var(--ink);border-radius:50%;animation:spin 0.8s linear infinite;"></div>
     <style>@keyframes spin { to { transform: rotate(360deg); } }</style>
   </div>
 
   <div id="scanner-results" style="display:none;margin-top:2rem;">
-    <div style="text-align:center;padding:1.5rem;background:var(--black);color:#fff;border-radius:var(--radius);margin-bottom:1.5rem;">
+    <div style="text-align:center;padding:1.5rem;background:var(--ink);color:#fff;border-radius:var(--radius);margin-bottom:1.5rem;">
       <p class="text-xs" style="color:rgba(255,255,255,0.5);margin-bottom:0.25rem;">Their compliance score</p>
-      <p id="score-value" style="font-family:var(--font-sans);font-size:3rem;font-weight:400;line-height:1;">--</p>
+      <p id="score-value" style="font-family:var(--font-body);font-size:3rem;font-weight:400;line-height:1;">--</p>
       <p id="grade-value" style="font-size:1.25rem;margin-top:0.25rem;color:rgba(255,255,255,0.7);"></p>
     </div>
 
-    <div id="verdict-section" style="display:none;padding:1rem 1.25rem;background:var(--gray-50);border-radius:var(--radius);margin-bottom:1.5rem;">
+    <div id="verdict-section" style="display:none;padding:1rem 1.25rem;background:var(--paper-dark);border-radius:var(--radius);margin-bottom:1.5rem;">
       <p class="text-secondary" id="verdict-text" style="font-style:italic;font-size:0.875rem;"></p>
     </div>
 
     <div id="issues-section" style="display:none;">
-      <h3 style="font-size:0.875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:var(--warning);margin-bottom:0.75rem;">What they're missing</h3>
+      <h3 style="font-size:0.875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:var(--danger);margin-bottom:0.75rem;">What they're missing</h3>
       <ul id="issues-list" style="list-style:none;margin-bottom:1.5rem;"></ul>
     </div>
 
     <div id="recommendations-section" style="display:none;">
-      <h3 style="font-size:0.875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:var(--gray-500);margin-bottom:0.75rem;">Recommended improvements</h3>
+      <h3 style="font-size:0.875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.04em;color:var(--ink-muted);margin-bottom:0.75rem;">Recommended improvements</h3>
       <ul id="recommendations-list" style="list-style:none;margin-bottom:1.5rem;"></ul>
     </div>
 
@@ -46,7 +46,7 @@
       <ul id="upgrades-list" style="list-style:none;margin-bottom:1.5rem;"></ul>
     </div>
 
-    <div style="padding:1.5rem;background:var(--gray-50);border-radius:var(--radius);text-align:center;margin-top:1rem;">
+    <div style="padding:1.5rem;background:var(--paper-dark);border-radius:var(--radius);text-align:center;margin-top:1rem;">
       <p style="font-size:0.9375rem;font-weight:600;margin-bottom:0.375rem;">Generate a better version — in 90 seconds</p>
       <p class="text-sm text-secondary" style="margin-bottom:1rem;">PolicyGen creates a fully compliant, industry-specific policy that covers everything this one is missing.</p>
       <a href="/generate/" class="btn btn-dark btn-lg">Generate yours — free</a>
@@ -97,7 +97,7 @@ document.getElementById('compare-form').addEventListener('submit', function(e) {
       ul.innerHTML = '';
       data.issues.forEach(function(issue) {
         var li = document.createElement('li');
-        li.style.cssText = 'padding:0.5rem 0;border-bottom:1px solid var(--gray-100);font-size:0.8125rem;color:var(--warning);';
+        li.style.cssText = 'padding:0.5rem 0;border-bottom:1px solid var(--border-light);font-size:0.8125rem;color:var(--danger);';
         li.textContent = '✗ ' + issue;
         ul.appendChild(li);
       });
@@ -109,7 +109,7 @@ document.getElementById('compare-form').addEventListener('submit', function(e) {
       ul2.innerHTML = '';
       data.recommendations.forEach(function(rec) {
         var li = document.createElement('li');
-        li.style.cssText = 'padding:0.5rem 0;border-bottom:1px solid var(--gray-100);font-size:0.8125rem;color:var(--gray-600);';
+        li.style.cssText = 'padding:0.5rem 0;border-bottom:1px solid var(--border-light);font-size:0.8125rem;color:var(--ink-light);';
         li.textContent = '→ ' + rec;
         ul2.appendChild(li);
       });
@@ -121,7 +121,7 @@ document.getElementById('compare-form').addEventListener('submit', function(e) {
       ul3.innerHTML = '';
       data.upgrades.forEach(function(up) {
         var li = document.createElement('li');
-        li.style.cssText = 'padding:0.5rem 0;border-bottom:1px solid var(--gray-100);font-size:0.8125rem;color:var(--success);';
+        li.style.cssText = 'padding:0.5rem 0;border-bottom:1px solid var(--border-light);font-size:0.8125rem;color:var(--success);';
         li.textContent = '✓ PolicyGen: ' + up;
         ul3.appendChild(li);
       });

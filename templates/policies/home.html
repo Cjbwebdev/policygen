@@ -3,7 +3,7 @@
 
 {% block extra_head %}
 <style>
-  /* Home-specific spacing overrides */
+  /* Home-specific retro touches */
   .hero-cta-row {
     display: flex;
     gap: 0.75rem;
@@ -12,8 +12,8 @@
   }
   .doc-type-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
   }
   .how-it-works-grid {
     display: grid;
@@ -23,18 +23,12 @@
   .how-it-works-step { text-align: center; }
   .step-number {
     font-family: var(--font-mono);
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 0.75rem;
     text-transform: uppercase;
-    letter-spacing: 0.04em;
-    color: var(--black);
+    letter-spacing: 2px;
+    color: var(--accent);
   }
   .step-emoji { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
-  .comparison-table th:last-child,
-  .comparison-table td:last-child {
-    font-weight: 600;
-    color: var(--black);
-  }
   .section-cta {
     text-align: center;
     padding: 2rem 0;
@@ -51,9 +45,8 @@
 
 {% block content %}
 <section class="hero">
-
   <div class="hero-urgency">
-    ⚠️ <strong>{{ doc_count|default:"3,847" }} legal docs generated this month</strong> —
+    ⚠ <strong>{{ doc_count|default:"3,847" }} legal docs generated this month</strong> —
     Your competitors are already protected. 94% of websites still have outdated or missing policies.
   </div>
 
@@ -94,45 +87,45 @@
 <section class="section">
   <div class="section-header">
     <h2>Every document your business needs — in one place</h2>
-    <p>One generator. Five document types. Zero legal headaches.</p>
+    <p style="color:var(--ink-muted);">One generator. Five document types. Zero legal headaches.</p>
   </div>
 
   <div class="doc-type-grid">
     {% for doc in doc_types %}
     <a href="/generate/?doc_type={{ doc.key }}" style="text-decoration:none;color:inherit;">
       <div class="card card-hover">
-        <h3 style="font-size:16px;font-weight:600;letter-spacing:-0.32px;margin-bottom:0.25rem;">{{ doc.name }}</h3>
+        <h3>{{ doc.name }}</h3>
         <p class="text-sm text-secondary">{{ doc.desc }}</p>
       </div>
     </a>
     {% empty %}
     <a href="/generate/?doc_type=privacy" style="text-decoration:none;color:inherit;">
       <div class="card card-hover">
-        <h3 style="font-size:16px;font-weight:600;letter-spacing:-0.32px;margin-bottom:0.25rem;">Privacy Policy</h3>
+        <h3>Privacy Policy</h3>
         <p class="text-sm text-secondary">GDPR, CCPA compliant</p>
       </div>
     </a>
     <a href="/generate/?doc_type=terms" style="text-decoration:none;color:inherit;">
       <div class="card card-hover">
-        <h3 style="font-size:16px;font-weight:600;letter-spacing:-0.32px;margin-bottom:0.25rem;">Terms & Conditions</h3>
+        <h3>Terms & Conditions</h3>
         <p class="text-sm text-secondary">For any SaaS or website</p>
       </div>
     </a>
     <a href="/generate/?doc_type=cookie" style="text-decoration:none;color:inherit;">
       <div class="card card-hover">
-        <h3 style="font-size:16px;font-weight:600;letter-spacing:-0.32px;margin-bottom:0.25rem;">Cookie Policy</h3>
+        <h3>Cookie Policy</h3>
         <p class="text-sm text-secondary">EU Cookie Law ready</p>
       </div>
     </a>
     <a href="/generate/?doc_type=disclaimer" style="text-decoration:none;color:inherit;">
       <div class="card card-hover">
-        <h3 style="font-size:16px;font-weight:600;letter-spacing:-0.32px;margin-bottom:0.25rem;">Disclaimer</h3>
+        <h3>Disclaimer</h3>
         <p class="text-sm text-secondary">Limit your liability</p>
       </div>
     </a>
     <a href="/generate/?doc_type=refund" style="text-decoration:none;color:inherit;">
       <div class="card card-hover">
-        <h3 style="font-size:16px;font-weight:600;letter-spacing:-0.32px;margin-bottom:0.25rem;">Refund Policy</h3>
+        <h3>Refund Policy</h3>
         <p class="text-sm text-secondary">Clear terms for returns</p>
       </div>
     </a>
@@ -143,26 +136,26 @@
 <section id="how-it-works" class="section">
   <div class="section-header">
     <h2>How it works</h2>
-    <p>Three simple steps to full compliance</p>
+    <p style="color:var(--ink-muted);">Three simple steps to full compliance</p>
   </div>
 
   <div class="how-it-works-grid">
     <div class="how-it-works-step">
       <span class="step-emoji">📝</span>
       <span class="step-number">Step 1</span>
-      <h3 style="margin-top:0.5rem;margin-bottom:0.375rem;">Answer 5 Questions</h3>
+      <h3>Answer 5 Questions</h3>
       <p class="text-sm text-secondary">Tell us about your business, what data you collect, and which regulations apply. Takes about 90 seconds — not 10 hours of legal research.</p>
     </div>
     <div class="how-it-works-step">
       <span class="step-emoji">⚡</span>
       <span class="step-number">Step 2</span>
-      <h3 style="margin-top:0.5rem;margin-bottom:0.375rem;">Get Your Policy</h3>
+      <h3>Get Your Policy</h3>
       <p class="text-sm text-secondary">Receive a professional, legally-structured document customized to your business and jurisdiction. GDPR, CCPA, LGPD ready.</p>
     </div>
     <div class="how-it-works-step">
       <span class="step-emoji">🚀</span>
       <span class="step-number">Step 3</span>
-      <h3 style="margin-top:0.5rem;margin-bottom:0.375rem;">Download &amp; Deploy</h3>
+      <h3>Download &amp; Deploy</h3>
       <p class="text-sm text-secondary">Copy, download as HTML, or embed directly on your site with one click. Pro users get automatic updates when laws change.</p>
     </div>
   </div>
@@ -173,58 +166,58 @@
     <h2>Why PolicyGen beats every alternative</h2>
   </div>
 
-  <table class="comparison-table" style="width:100%;border-collapse:collapse;font-size:14px;">
+  <table class="comparison-table">
     <thead>
       <tr>
         <th></th>
         <th style="text-align:center;">Generic templates</th>
         <th style="text-align:center;">Termly (£20/mo)</th>
-        <th style="text-align:center;color:#dc2626;">Lawyer (£500+)</th>
+        <th style="text-align:center;color:var(--danger);">Lawyer (£500+)</th>
         <th style="text-align:center;">PolicyGen</th>
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td style="color:var(--gray-600);">Customized to your business</td>
+        <td>Customized to your business</td>
         <td class="text-center text-muted">✕</td>
         <td class="text-center" style="color:var(--success);">✓</td>
         <td class="text-center" style="color:var(--success);">✓</td>
         <td class="text-center" style="color:var(--success);">✓</td>
       </tr>
       <tr>
-        <td style="color:var(--gray-600);">Multi-regulation support</td>
+        <td>Multi-regulation support</td>
         <td class="text-center text-muted">✕</td>
         <td class="text-center" style="color:var(--success);">✓</td>
         <td class="text-center" style="color:var(--success);">✓</td>
         <td class="text-center" style="color:var(--success);">✓</td>
       </tr>
       <tr>
-        <td style="color:var(--gray-600);">Auto-updates when laws change</td>
+        <td>Auto-updates when laws change</td>
         <td class="text-center text-muted">✕</td>
         <td class="text-center text-muted">✕</td>
         <td class="text-center" style="color:var(--success);">✓</td>
         <td class="text-center" style="color:var(--success);">✓</td>
       </tr>
       <tr>
-        <td style="color:var(--gray-600);">One-click embed</td>
+        <td>One-click embed</td>
         <td class="text-center text-muted">✕</td>
         <td class="text-center text-muted">✕</td>
         <td class="text-center text-muted">✕</td>
         <td class="text-center" style="color:var(--success);">✓</td>
       </tr>
       <tr>
-        <td style="color:var(--gray-600);">90-second setup</td>
+        <td>90-second setup</td>
         <td class="text-center text-muted">N/A</td>
         <td class="text-center text-muted">30+ min</td>
         <td class="text-center text-muted">Weeks</td>
-        <td class="text-center" style="color:var(--black);">90 seconds</td>
+        <td class="text-center" style="color:var(--accent);">90 seconds</td>
       </tr>
       <tr>
-        <td style="color:var(--gray-600);">Price</td>
+        <td>Price</td>
         <td class="text-center text-muted">Free (outdated)</td>
         <td class="text-center">£20/mo</td>
         <td class="text-center">£500+ per update</td>
-        <td class="text-center" style="color:var(--black);">From £9/mo</td>
+        <td class="text-center" style="color:var(--accent);">From £9/mo</td>
       </tr>
     </tbody>
   </table>
@@ -233,7 +226,7 @@
 <section class="section">
   <div class="section-header">
     <h2>Trusted by 2,000+ businesses worldwide</h2>
-    <p>Don't take our word for it</p>
+    <p style="color:var(--ink-muted);">Don't take our word for it</p>
   </div>
 
   <div class="testimonials-grid">
@@ -267,7 +260,7 @@
 <section id="pricing" class="section">
   <div class="section-cta">
     <h2>Ready to get protected?</h2>
-    <p class="text-secondary" style="margin-bottom:0.5rem;">Start generating your free policy in 90 seconds.</p>
+    <p style="color:var(--ink-muted); margin-bottom:0.5rem;">Start generating your free policy in 90 seconds.</p>
     <div class="btn-row">
       <a href="/generate/" class="btn btn-primary btn-lg">▶ Generate My Free Policy in 90 Seconds →</a>
       <a href="/pricing/" class="btn btn-outline btn-lg">See Pricing Plans</a>

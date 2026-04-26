@@ -4,34 +4,34 @@
 {% block extra_head %}
 <style>
   .pricing-urgency {
-    background: var(--gray-50);
-    box-shadow: var(--shadow-border);
-    border-radius: var(--radius-pill);
+    background: var(--paper-dark);
+    box-shadow: 1px solid var(--border-light);
+    border-radius: 2px;
     padding: 12px 20px;
     text-align: center;
     margin-bottom: 2rem;
     font-size: 14px;
     font-weight: 500;
-    color: var(--black);
+    color: var(--ink);
   }
-  .pricing-urgency strong { color: var(--black); font-weight: 600; }
+  .pricing-urgency strong { color: var(--ink); font-weight: 600; }
   .pricing-trust {
     display: flex; align-items: center; justify-content: center; gap: 24px;
-    margin-top: 12px; flex-wrap: wrap; font-size: 13px; color: var(--gray-500);
+    margin-top: 12px; flex-wrap: wrap; font-size: 13px; color: var(--ink-muted);
   }
   .pricing-trust span { display: flex; align-items: center; gap: 4px; }
   .pricing-trust .star { color: #f59e0b; }
   .pricing-card { transition: transform 0.2s, box-shadow 0.2s; }
-  .pricing-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-elevated); }
-  .pricing-card.featured { transform: scale(1.03); box-shadow: var(--shadow-elevated); }
+  .pricing-card:hover { transform: translateY(-4px); box-shadow: 1px solid var(--border); }
+  .pricing-card.featured { transform: scale(1.03); box-shadow: 1px solid var(--border); }
   .pricing-card.featured:hover { transform: scale(1.03) translateY(-4px); }
   .pricing-savings {
     display: inline-block; background: #ecfdf5; color: #059669;
-    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); margin-bottom: 8px;
+    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 2px; margin-bottom: 8px;
   }
   .pricing-savings-amber {
     display: inline-block; background: #fffbeb; color: #92400e;
-    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: var(--radius-pill); margin-bottom: 8px;
+    font-size: 12px; font-weight: 600; padding: 3px 10px; border-radius: 2px; margin-bottom: 8px;
   }
   .pricing-card .btn-dark { transition: transform 0.15s, box-shadow 0.15s; }
   .pricing-card .btn-dark:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
@@ -39,34 +39,34 @@
     display: flex; align-items: center; gap: 10px; justify-content: center;
     margin-top: 1.5rem; padding: 16px 20px;
     background: var(--white);
-    box-shadow: var(--shadow-card);
+    box-shadow: 1px solid var(--border);
     border-radius: var(--radius-card);
     font-size: 14px;
-    color: var(--gray-600);
+    color: var(--ink-light);
   }
   .comparison-anchor {
-    background: var(--gray-50);
-    box-shadow: var(--shadow-border);
+    background: var(--paper-dark);
+    box-shadow: 1px solid var(--border-light);
     border-radius: var(--radius-card);
     padding: 16px 20px;
     margin-top: 1.5rem; text-align: center;
   }
-  .comparison-anchor p { margin: 0; font-size: 14px; color: var(--gray-600); }
-  .comparison-anchor strong { color: var(--black); }
+  .comparison-anchor p { margin: 0; font-size: 14px; color: var(--ink-light); }
+  .comparison-anchor strong { color: var(--ink); }
 
   /* Billing toggle */
   .billing-toggle { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 1.5rem 0; }
-  .billing-toggle-label { font-size: 14px; font-weight: 500; color: var(--gray-500); cursor: pointer; }
-  .billing-toggle-label.active { color: var(--black); font-weight: 600; }
+  .billing-toggle-label { font-size: 14px; font-weight: 500; color: var(--ink-muted); cursor: pointer; }
+  .billing-toggle-label.active { color: var(--ink); font-weight: 600; }
   .toggle-switch { position: relative; width: 48px; height: 26px; cursor: pointer; }
   .toggle-switch input { opacity: 0; width: 0; height: 0; }
-  .toggle-slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--gray-100); border-radius: 13px; transition: 0.3s; }
+  .toggle-slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: var(--border-light); border-radius: 13px; transition: 0.3s; }
   .toggle-slider:before { content: ""; position: absolute; height: 20px; width: 20px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-  .toggle-switch input:checked + .toggle-slider { background: var(--black); }
+  .toggle-switch input:checked + .toggle-slider { background: var(--ink); }
   .toggle-switch input:checked + .toggle-slider:before { transform: translateX(22px); }
-  .annual-badge { background: #ecfdf5; color: #059669; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: var(--radius-pill); }
-  .monthly-price { font-size: 12px; color: var(--gray-500); display: block; margin-top: 2px; }
-  .disabled-feature { color: var(--gray-400); text-decoration: line-through; }
+  .annual-badge { background: #ecfdf5; color: #059669; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 2px; }
+  .monthly-price { font-size: 12px; color: var(--ink-muted); display: block; margin-top: 2px; }
+  .disabled-feature { color: var(--ink-muted); text-decoration: line-through; }
 </style>
 {% endblock %}
 
@@ -79,7 +79,7 @@
   </div>
 
   <p class="hero-eyebrow">Pricing</p>
-  <h2 style="margin-bottom:0.5rem;">Get a lawyer-grade policy for £9/mo. <em style="font-style:italic;color:var(--gray-500);">Skip the £500 invoice.</em></h2>
+  <h2 style="margin-bottom:0.5rem;">Get a lawyer-grade policy for £9/mo. <em style="font-style:italic;color:var(--ink-muted);">Skip the £500 invoice.</em></h2>
   <p class="text-secondary" style="margin-bottom:1rem;font-size:16px;">Every plan includes GDPR, CCPA, LGPD, and PIPEDA support. No credit card required to start.</p>
 
   <!-- Billing Toggle -->
@@ -163,7 +163,7 @@
   </div>
 
   <div class="comparison-anchor" style="margin-top:1rem;">
-    <p><strong>Need proof it works?</strong> Check your current site's compliance score first — see exactly what you're missing. <a href="/score/" style="color:var(--black);font-weight:500;">Run a free scan →</a></p>
+    <p><strong>Need proof it works?</strong> Check your current site's compliance score first — see exactly what you're missing. <a href="/score/" style="color:var(--ink);font-weight:500;">Run a free scan →</a></p>
   </div>
 </div>
 

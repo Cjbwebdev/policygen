@@ -1,41 +1,46 @@
 # Project Roadmap: PolicyGen Frontend Redesign
 
 ## Goals
-- [ ] Complete Vercel-inspired frontend redesign
-- [ ] All templates updated to new design system
-- [ ] Responsive at all breakpoints
-- [ ] No broken functionality
+- [x] Complete vintage print shop retro redesign
+- [x] All 19 templates updated
+- [x] Responsive at all breakpoints
+- [x] No broken functionality
 
 ## Resume Checkpoint
 - Last updated: 2026-04-26
-- Last completed task: Initial project discovery
-- Next task: Rewrite style.css
-- Sprint: 1
-- Status: IN PROGRESS
+- Last completed task: Retro redesign — all 19 templates verified and ready to push
+- Next task: None (sprint complete)
+- Sprint: 2
+- Status: COMPLETE
 
-## Phase 1: Vercel-Inspired Redesign — Sprint 1
+## Phase 1: Vercel-Inspired Redesign — Sprint 1 ✅ (superseded)
 
-### Design System: Vercel (Black & White Precision)
-- Font: Geist (Google Fonts CDN)
-- Palette: #171717 black, #ffffff white, #4d4d4d gray
-- Technique: Shadow-as-border (0px 0px 0px 1px rgba(0,0,0,0.08))
-- Typography: Negative letter-spacing at display sizes, Geist Mono for code/technical
+## Phase 2: Vintage Print Shop — Sprint 2 ✅
+
+### Design System: Vintage Print Shop
+- Fonts: Playfair Display (headings), Lora (body), Courier Prime (mono)
+- Palette: Cream paper (#f5f0e1), dark ink (#2c1810), deep red (#8b2500), gold (#b8860b)
+- Technique: Paper texture CSS background, double borders, letterpress buttons, stacked paper cards
+- Feel: 1920s law office meets modern web
 
 ### Tasks
-- [ ] Rewrite style.css (complete design system)
-- [ ] Update base.html (header, nav, footer)
-- [ ] Restyle home.html
-- [ ] Update pricing.html
-- [ ] Update login.html
-- [ ] Update register.html
-- [ ] Update remaining templates (compare.html, document_view.html, document_list.html, generator_step*.html, score_checker.html, seo_landing.html, legal_*.html)
-- [ ] Test all pages
+- [x] Rewrite style.css (complete retro design system) — 905 lines
+- [x] Update base.html (Playfair/Lora/Courier fonts, gold-on-ink header)
+- [x] Restyle home.html (letterpress buttons, stacked paper cards, vintage table)
+- [x] Update register.html
+- [x] Update login.html
+- [x] Update pricing.html
+- [x] Update generator_step1/2/3.html
+- [x] Update score_checker.html
+- [x] Update compare.html
+- [x] Update seo_landing.html
+- [x] Update legal_cookies/privacy/terms.html
+- [x] Update document_view.html
+- [x] Verify all 19 templates compile
+- [x] Ready to push to GitHub
 
 ### Issues
-- None yet
+- None
 
 ### Security
 - None
-
-### Completed
-- Project discovery and design system selection
