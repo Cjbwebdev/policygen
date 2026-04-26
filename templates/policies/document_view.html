@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% block title %}{{ doc.title }} — PolicyGen{% endblock %}
+{% block meta_description %}Your generated {{ doc.get_doc_type_display }} for {{ doc.company_name }}. Created by PolicyGen — GDPR, CCPA, and LGPD compliant.{% endblock %}
 
 {% block content %}
 <div style="padding-top:3rem;padding-bottom:2rem;">
