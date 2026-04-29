@@ -914,3 +914,15 @@ textarea { resize: vertical; min-height: 100px; }
   header, footer, .floating-contact, .mobile-cta-bar { display: none; }
   .section { padding: 0; max-width: 100%; }
 }
+
+/* ── GSAP Animation Helpers ─────────────────────────── */
+.reveal-up { opacity: 0; transform: translateY(30px); }
+.paper-card { opacity: 0; transform: translateY(40px) rotate(-2deg); }
+.step-card { opacity: 0; transform: translateY(30px); }
+.testimonial-item { opacity: 0; }
+
+/* Smooth scroll for GSAP scrub */
+html { scroll-behavior: auto; }
+
+/* Header transition for scroll shadow */
+#site-header { transition: box-shadow 0.3s ease; }

@@ -3,62 +3,50 @@
 
 {% block extra_head %}
 <style>
-  /* Home-specific retro touches */
-  .hero-cta-row {
-    display: flex;
-    gap: 0.75rem;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  .doc-type-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-  }
-  .how-it-works-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 2rem;
-  }
+  .hero-cta-row { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+  .doc-type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+  .how-it-works-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; }
   .how-it-works-step { text-align: center; }
-  .step-number {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--accent);
-  }
+  .step-number { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); }
   .step-emoji { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
-  .section-cta {
-    text-align: center;
-    padding: 2rem 0;
-  }
-  .section-cta .btn-row {
-    display: flex;
-    gap: 0.75rem;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 1.5rem;
-  }
+  .section-cta { text-align: center; padding: 2rem 0; }
+  .section-cta .btn-row { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+
+  /* Typewriter cursor */
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+  .typewriter-cursor::after { content:'|'; animation:blink 0.8s infinite; color:var(--ink); font-weight:300; }
+
+  /* Wax seal pulse */
+  @keyframes sealPulse { 0%,100%{box-shadow:0 0 0 0 rgba(184,134,11,0.4)} 50%{box-shadow:0 0 0 15px rgba(184,134,11,0)} }
+  .wax-seal { animation: sealPulse 2.5s infinite; }
+
+  /* Ink bloom */
+  .ink-reveal { opacity:0; transform:translateY(30px) scale(0.97); transition:none; }
+  .ink-reveal.visible { opacity:1; transform:translateY(0) scale(1); }
+
+  /* Paper shuffle */
+  .paper-card { opacity:0; transform:translateY(40px) rotate(-2deg); }
+  .paper-card.visible { opacity:1; transform:translateY(0) rotate(0); }
 </style>
 {% endblock %}
 
 {% block content %}
-<section class="hero">
-  <div class="hero-urgency">
-    ⚠ <strong>{{ doc_count|default:"3,847" }} legal docs generated this month</strong> —
+<!-- HERO: Typewriter Law Office -->
+<section class="hero" id="hero">
+  <div class="hero-urgency reveal-up">
+    ⚠ <strong><span id="live-count">{{ doc_count|default:"3,847" }}</span> legal docs generated this month</strong> —
     Your competitors are already protected. 94% of websites still have outdated or missing policies.
   </div>
 
-  <p class="hero-eyebrow">Stop risking fines. Start staying compliant.</p>
-  <h1>Generate a legally bulletproof privacy policy<br>in <em>90 seconds</em></h1>
-  <p class="hero-description">
+  <p class="hero-eyebrow reveal-up" data-delay="0.2">Stop risking fines. Start staying compliant.</p>
+  <h1 class="reveal-up" data-delay="0.4">Generate a legally bulletproof privacy policy<br>in <em>90 seconds</em></h1>
+  <p class="hero-description reveal-up" data-delay="0.6">
     <span class="live-pulse"></span>
     Lawyers charge <strong>£500+</strong> per policy. PolicyGen gives you the same compliance for £9/mo —
     GDPR, CCPA, and LGPD ready. Auto-updates when laws change.
   </p>
 
-  <div class="pain-section">
+  <div class="pain-section reveal-up" data-delay="0.8">
     <h3>You're at risk if you:</h3>
     <ul>
       <li>Still using a free template from 2019</li>
@@ -67,92 +55,74 @@
     </ul>
   </div>
 
-  <div class="hero-cta-row" style="margin-top:1.5rem;">
+  <div class="hero-cta-row reveal-up" data-delay="1.0" style="margin-top:1.5rem;">
     <a href="/generate/" class="btn btn-primary btn-lg">▶ Generate My Free Policy in 90 Seconds →</a>
     <a href="/score/" class="btn btn-outline btn-lg">Check My Site's Compliance Score</a>
   </div>
 
-  <div class="trust-strip">
+  <div class="trust-strip reveal-up" data-delay="1.2">
     <span><span class="star">★★★★★</span> Trusted by 2,000+ businesses</span>
     <span>🔒 No credit card required</span>
     <span>✓ GDPR & CCPA compliant</span>
   </div>
-
-  <div class="live-counter">
-    <span class="live-dot"></span>
-    <span>{{ doc_count|default:"3,847" }} documents generated this month</span>
-  </div>
 </section>
 
-<section class="section">
-  <div class="section-header">
+<!-- DOCUMENT TYPES: Paper shuffle cards -->
+<section class="section" id="doc-types">
+  <div class="section-header reveal-up">
     <h2>Every document your business needs — in one place</h2>
     <p style="color:var(--ink-muted);">One generator. Five document types. Zero legal headaches.</p>
   </div>
 
   <div class="doc-type-grid">
     {% for doc in doc_types %}
-    <a href="/generate/?doc_type={{ doc.key }}" style="text-decoration:none;color:inherit;">
+    <a href="/generate/?doc_type={{ doc.key }}" style="text-decoration:none;color:inherit;" class="paper-card">
       <div class="card card-hover">
         <h3>{{ doc.name }}</h3>
         <p class="text-sm text-secondary">{{ doc.desc }}</p>
       </div>
     </a>
     {% empty %}
-    <a href="/generate/?doc_type=privacy" style="text-decoration:none;color:inherit;">
-      <div class="card card-hover">
-        <h3>Privacy Policy</h3>
-        <p class="text-sm text-secondary">GDPR, CCPA compliant</p>
-      </div>
+    <a href="/generate/?doc_type=privacy" style="text-decoration:none;color:inherit;" class="paper-card">
+      <div class="card card-hover"><h3>Privacy Policy</h3><p class="text-sm text-secondary">GDPR, CCPA compliant</p></div>
     </a>
-    <a href="/generate/?doc_type=terms" style="text-decoration:none;color:inherit;">
-      <div class="card card-hover">
-        <h3>Terms & Conditions</h3>
-        <p class="text-sm text-secondary">For any SaaS or website</p>
-      </div>
+    <a href="/generate/?doc_type=terms" style="text-decoration:none;color:inherit;" class="paper-card">
+      <div class="card card-hover"><h3>Terms & Conditions</h3><p class="text-sm text-secondary">For any SaaS or website</p></div>
     </a>
-    <a href="/generate/?doc_type=cookie" style="text-decoration:none;color:inherit;">
-      <div class="card card-hover">
-        <h3>Cookie Policy</h3>
-        <p class="text-sm text-secondary">EU Cookie Law ready</p>
-      </div>
+    <a href="/generate/?doc_type=cookie" style="text-decoration:none;color:inherit;" class="paper-card">
+      <div class="card card-hover"><h3>Cookie Policy</h3><p class="text-sm text-secondary">EU Cookie Law ready</p></div>
     </a>
-    <a href="/generate/?doc_type=disclaimer" style="text-decoration:none;color:inherit;">
-      <div class="card card-hover">
-        <h3>Disclaimer</h3>
-        <p class="text-sm text-secondary">Limit your liability</p>
-      </div>
+    <a href="/generate/?doc_type=disclaimer" style="text-decoration:none;color:inherit;" class="paper-card">
+      <div class="card card-hover"><h3>Disclaimer</h3><p class="text-sm text-secondary">Limit your liability</p></div>
     </a>
-    <a href="/generate/?doc_type=refund" style="text-decoration:none;color:inherit;">
-      <div class="card card-hover">
-        <h3>Refund Policy</h3>
-        <p class="text-sm text-secondary">Clear terms for returns</p>
-      </div>
+    <a href="/generate/?doc_type=refund" style="text-decoration:none;color:inherit;" class="paper-card">
+      <div class="card card-hover"><h3>Refund Policy</h3><p class="text-sm text-secondary">Clear terms for returns</p></div>
     </a>
     {% endfor %}
   </div>
 </section>
 
+<!-- HOW IT WORKS: Step cards -->
 <section id="how-it-works" class="section">
-  <div class="section-header">
+  <div class="section-header reveal-up">
     <h2>How it works</h2>
     <p style="color:var(--ink-muted);">Three simple steps to full compliance</p>
   </div>
 
   <div class="how-it-works-grid">
-    <div class="how-it-works-step">
+    <div class="how-it-works-step step-card" data-step="1">
       <span class="step-emoji">📝</span>
       <span class="step-number">Step 1</span>
       <h3>Answer 5 Questions</h3>
       <p class="text-sm text-secondary">Tell us about your business, what data you collect, and which regulations apply. Takes about 90 seconds — not 10 hours of legal research.</p>
     </div>
-    <div class="how-it-works-step">
+    <div class="how-it-works-step step-card" data-step="2">
       <span class="step-emoji">⚡</span>
       <span class="step-number">Step 2</span>
       <h3>Get Your Policy</h3>
       <p class="text-sm text-secondary">Receive a professional, legally-structured document customized to your business and jurisdiction. GDPR, CCPA, LGPD ready.</p>
     </div>
-    <div class="how-it-works-step">
+    <div class="how-it-works-step step-card" data-step="3">
       <span class="step-emoji">🚀</span>
       <span class="step-number">Step 3</span>
       <h3>Download &amp; Deploy</h3>
@@ -161,8 +131,9 @@
   </div>
 </section>
 
-<section class="section">
-  <div class="section-header">
+<!-- COMPARISON TABLE -->
+<section class="section" id="comparison">
+  <div class="section-header reveal-up">
     <h2>Why PolicyGen beats every alternative</h2>
   </div>
 
@@ -177,60 +148,25 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>Customized to your business</td>
-        <td class="text-center text-muted">✕</td>
-        <td class="text-center" style="color:var(--success);">✓</td>
-        <td class="text-center" style="color:var(--success);">✓</td>
-        <td class="text-center" style="color:var(--success);">✓</td>
-      </tr>
-      <tr>
-        <td>Multi-regulation support</td>
-        <td class="text-center text-muted">✕</td>
-        <td class="text-center" style="color:var(--success);">✓</td>
-        <td class="text-center" style="color:var(--success);">✓</td>
-        <td class="text-center" style="color:var(--success);">✓</td>
-      </tr>
-      <tr>
-        <td>Auto-updates when laws change</td>
-        <td class="text-center text-muted">✕</td>
-        <td class="text-center text-muted">✕</td>
-        <td class="text-center" style="color:var(--success);">✓</td>
-        <td class="text-center" style="color:var(--success);">✓</td>
-      </tr>
-      <tr>
-        <td>One-click embed</td>
-        <td class="text-center text-muted">✕</td>
-        <td class="text-center text-muted">✕</td>
-        <td class="text-center text-muted">✕</td>
-        <td class="text-center" style="color:var(--success);">✓</td>
-      </tr>
-      <tr>
-        <td>90-second setup</td>
-        <td class="text-center text-muted">N/A</td>
-        <td class="text-center text-muted">30+ min</td>
-        <td class="text-center text-muted">Weeks</td>
-        <td class="text-center" style="color:var(--accent);">90 seconds</td>
-      </tr>
-      <tr>
-        <td>Price</td>
-        <td class="text-center text-muted">Free (outdated)</td>
-        <td class="text-center">£20/mo</td>
-        <td class="text-center">£500+ per update</td>
-        <td class="text-center" style="color:var(--accent);">From £9/mo</td>
-      </tr>
+      <tr class="compare-row"><td>Customized to your business</td><td class="text-center text-muted">✕</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td></tr>
+      <tr class="compare-row"><td>Multi-regulation support</td><td class="text-center text-muted">✕</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td></tr>
+      <tr class="compare-row"><td>Auto-updates when laws change</td><td class="text-center text-muted">✕</td><td class="text-center text-muted">✕</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td></tr>
+      <tr class="compare-row"><td>One-click embed</td><td class="text-center text-muted">✕</td><td class="text-center text-muted">✕</td><td class="text-center text-muted">✕</td><td class="text-center" style="color:var(--success);">✓</td></tr>
+      <tr class="compare-row"><td>90-second setup</td><td class="text-center text-muted">N/A</td><td class="text-center text-muted">30+ min</td><td class="text-center text-muted">Weeks</td><td class="text-center" style="color:var(--accent);">90 seconds</td></tr>
+      <tr class="compare-row"><td>Price</td><td class="text-center text-muted">Free (outdated)</td><td class="text-center">£20/mo</td><td class="text-center">£500+ per update</td><td class="text-center" style="color:var(--accent);">From £9/mo</td></tr>
     </tbody>
   </table>
 </section>
 
-<section class="section">
-  <div class="section-header">
+<!-- TESTIMONIALS -->
+<section class="section" id="testimonials">
+  <div class="section-header reveal-up">
     <h2>Trusted by 2,000+ businesses worldwide</h2>
     <p style="color:var(--ink-muted);">Don't take our word for it</p>
   </div>
 
   <div class="testimonials-grid">
-    <div class="testimonial-card">
+    <div class="testimonial-card testimonial-item" data-side="left">
       <div class="testimonial-stars">★★★★★</div>
       <blockquote>"PolicyGen saved me £500 in legal fees. I had a fully GDPR-compliant privacy policy in 90 seconds — my lawyer would have taken 3 days."</blockquote>
       <div class="testimonial-author">
@@ -238,7 +174,7 @@
         <div><div class="testimonial-name">Sarah R.</div><div class="testimonial-role">SaaS Founder</div></div>
       </div>
     </div>
-    <div class="testimonial-card">
+    <div class="testimonial-card testimonial-item" data-side="right">
       <div class="testimonial-stars">★★★★★</div>
       <blockquote>"We switched from Termly. Same compliance, way less cost, and the auto-updates are a lifesaver. 10/10 would recommend."</blockquote>
       <div class="testimonial-author">
@@ -246,7 +182,7 @@
         <div><div class="testimonial-name">Marcus K.</div><div class="testimonial-role">E-Commerce Owner</div></div>
       </div>
     </div>
-    <div class="testimonial-card">
+    <div class="testimonial-card testimonial-item" data-side="left">
       <div class="testimonial-stars">★★★★★</div>
       <blockquote>"As a freelancer managing 15 client sites, the agency plan is perfect. White-label docs, fast generation, and clients love the results."</blockquote>
       <div class="testimonial-author">
@@ -257,12 +193,13 @@
   </div>
 </section>
 
-<section id="pricing" class="section">
+<!-- CTA: Wax Seal -->
+<section id="cta" class="section">
   <div class="section-cta">
-    <h2>Ready to get protected?</h2>
-    <p style="color:var(--ink-muted); margin-bottom:0.5rem;">Start generating your free policy in 90 seconds.</p>
-    <div class="btn-row">
-      <a href="/generate/" class="btn btn-primary btn-lg">▶ Generate My Free Policy in 90 Seconds →</a>
+    <h2 class="reveal-up">Ready to get protected?</h2>
+    <p class="reveal-up" data-delay="0.2" style="color:var(--ink-muted); margin-bottom:0.5rem;">Start generating your free policy in 90 seconds.</p>
+    <div class="btn-row reveal-up" data-delay="0.4">
+      <a href="/generate/" class="btn btn-primary btn-lg wax-seal">▶ Generate My Free Policy in 90 Seconds →</a>
       <a href="/pricing/" class="btn btn-outline btn-lg">See Pricing Plans</a>
     </div>
   </div>
@@ -272,5 +209,82 @@
 <div class="mobile-cta-bar">
   <a href="/generate/" class="btn btn-primary">▶ Generate Free Policy →</a>
 </div>
+{% endblock %}
 
+{% block extra_js %}
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+document.addEventListener('DOMContentLoaded', () => {
+
+  // ── 1. Hero staggered reveals ─────────────────
+  gsap.fromTo('#hero .reveal-up',
+    { y: 50, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.7, stagger: 0.15, ease: 'power2.out' }
+  );
+
+  // ── 2. Animate live counter ───────────────────
+  const countEl = document.getElementById('live-count');
+  if (countEl) {
+    const raw = countEl.textContent.replace(/,/g, '');
+    const target = parseInt(raw) || 3847;
+    const obj = { val: 0 };
+    gsap.to(obj, { val: target, duration: 2, ease: 'power2.out', delay: 0.5,
+      onUpdate: () => { countEl.textContent = Math.round(obj.val).toLocaleString(); }
+    });
+  }
+
+  // ── 3. Paper card shuffle ─────────────────────
+  gsap.utils.toArray('.paper-card').forEach((card, i) => {
+    gsap.fromTo(card,
+      { y: 60, opacity: 0, rotation: i % 2 === 0 ? -3 : 3 },
+      { y: 0, opacity: 1, rotation: 0, duration: 0.6, delay: i * 0.08,
+        ease: 'back.out(1.2)',
+        scrollTrigger: { trigger: '#doc-types', start: 'top 80%', toggleActions: 'play none none none' }
+      }
+    );
+  });
+
+  // ── 4. Step cards reveal ──────────────────────
+  gsap.fromTo('.step-card',
+    { y: 40, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.6, stagger: 0.15, ease: 'power2.out',
+      scrollTrigger: { trigger: '#how-it-works', start: 'top 80%', toggleActions: 'play none none none' }
+    }
+  );
+
+  // ── 5. Comparison rows highlight ──────────────
+  gsap.utils.toArray('.compare-row').forEach((row, i) => {
+    gsap.fromTo(row,
+      { backgroundColor: 'transparent' },
+      { backgroundColor: 'rgba(184,134,11,0.08)', duration: 0.5, delay: i * 0.1,
+        scrollTrigger: { trigger: '#comparison', start: 'top 75%' }
+      }
+    );
+  });
+
+  // ── 6. Testimonials slide in ──────────────────
+  gsap.utils.toArray('.testimonial-item').forEach((item, i) => {
+    const dir = item.dataset.side === 'left' ? -80 : 80;
+    gsap.fromTo(item,
+      { x: dir, opacity: 0 },
+      { x: 0, opacity: 1, duration: 0.7, delay: i * 0.2, ease: 'power2.out',
+        scrollTrigger: { trigger: '#testimonials', start: 'top 80%', toggleActions: 'play none none none' }
+      }
+    );
+  });
+
+  // ── 7. Section header reveals ─────────────────
+  document.querySelectorAll('.section-header.reveal-up, #cta .reveal-up').forEach(el => {
+    gsap.fromTo(el,
+      { y: 40, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.6,
+        delay: parseFloat(el.dataset.delay || 0), ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+      }
+    );
+  });
+
+});
+</script>
 {% endblock %}
