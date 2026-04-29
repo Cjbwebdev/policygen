@@ -230,7 +230,7 @@ header.scrolled {
 nav {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1rem;
 }
 
 .nav-link {
@@ -238,10 +238,13 @@ nav {
   text-decoration: none;
   font-size: 0.85rem;
   font-weight: 500;
-  transition: color var(--transition);
+  padding: 8px 18px;
+  border: 1px solid transparent;
+  border-radius: var(--radius);
+  transition: all var(--transition);
   letter-spacing: 0.3px;
 }
-.nav-link:hover { color: var(--amber); }
+.nav-link:hover { color: var(--amber); border-color: rgba(245, 158, 11, 0.2); background: rgba(245, 158, 11, 0.04); }
 
 /* ── Buttons ───────────────────────────────────────── */
 .btn {
