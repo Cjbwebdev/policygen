@@ -6,41 +6,52 @@
   <title>{% block title %}PolicyGen{% endblock %}</title>
   <meta name="description" content="{% block meta_description %}Generate custom, legally-compliant privacy policies, terms of service, and more in 90 seconds. GDPR, CCPA, LGPD ready.{% endblock %}">
 
+  {# Open Graph / Facebook #}
   <meta property="og:type" content="{% block og_type %}website{% endblock %}">
   <meta property="og:title" content="{% block og_title %}PolicyGen — Legal documents in 90 seconds{% endblock %}">
   <meta property="og:description" content="{% block og_description %}Generate custom, legally-compliant privacy policies, terms of service, and more in 90 seconds. GDPR, CCPA, LGPD ready.{% endblock %}">
   <meta property="og:url" content="{{ request.build_absolute_uri }}">
   <meta property="og:image" content="{% block og_image %}https://policygen.site/static/img/og-default.png{% endblock %}">
   <meta property="og:site_name" content="PolicyGen">
+
+  {# Twitter Card #}
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="{% block twitter_title %}PolicyGen — Legal documents in 90 seconds{% endblock %}">
   <meta name="twitter:description" content="{% block twitter_description %}Generate custom, legally-compliant privacy policies, terms of service, and more in 90 seconds. GDPR, CCPA, LGPD ready.{% endblock %}">
   <meta name="twitter:image" content="{% block twitter_image %}https://policygen.site/static/img/og-default.png{% endblock %}">
+
+  {# Canonical URL #}
   <link rel="canonical" href="{% block canonical_url %}{{ request.build_absolute_uri }}{% endblock %}">
   <link rel="alternate" hreflang="en" href="{% block hreflang_en %}{{ request.build_absolute_uri }}{% endblock %}">
   <link rel="alternate" hreflang="x-default" href="{% block hreflang_xdefault %}{{ request.build_absolute_uri }}{% endblock %}">
 
+  {# Structured Data #}
   {% block structured_data %}
   <script type="application/ld+json">
   {"@context":"https://schema.org","@type":"SoftwareApplication","name":"PolicyGen","url":"https://policygen.site","description":"Generate custom, legally-compliant privacy policies, terms of service, and more in 90 seconds.","applicationCategory":"BusinessApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"9.00","priceCurrency":"GBP","description":"Pro plan — monthly"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"213"}}
   </script>
   {% endblock %}
 
+  {# Favicon #}
   <link rel="icon" type="image/svg+xml" href="/static/img/favicon.svg">
   <link rel="apple-touch-icon" href="/static/img/apple-touch-icon.png">
 
+  {# Fonts: DM Serif Display + DM Sans + JetBrains Mono #}
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Lora:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,500;1,700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="/static/css/style.css">
 
-  <!-- GSAP + ScrollTrigger -->
+  {# GSAP + ScrollTrigger #}
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
   {% block extra_head %}{% endblock %}
 </head>
 <body>
+  {# Floating ambient orbs #}
+  <div class="floating-orbs"></div>
+
   <header id="site-header">
     <div class="header-inner">
       <a href="/" class="logo">
@@ -87,6 +98,7 @@
     </div>
   </footer>
 
+  {# Floating contact #}
   <a href="mailto:hello@policygen.site" class="floating-contact" title="Contact us" aria-label="Contact us">
     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
   </a>
@@ -94,11 +106,11 @@
   <script>
   gsap.registerPlugin(ScrollTrigger);
 
-  // Nav shadow on scroll
+  // Nav glass shadow on scroll
   ScrollTrigger.create({
     trigger: 'main', start: 'top top',
-    onEnter: () => document.getElementById('site-header').style.boxShadow = '0 2px 20px rgba(44,24,16,0.12)',
-    onLeaveBack: () => document.getElementById('site-header').style.boxShadow = 'none'
+    onEnter: () => document.getElementById('site-header').classList.add('scrolled'),
+    onLeaveBack: () => document.getElementById('site-header').classList.remove('scrolled')
   });
 
   // Footer reveal
@@ -109,5 +121,34 @@
   </script>
 
   {% block extra_js %}{% endblock %}
+
+  {# Cookie Consent Banner — dark glass style #}
+  <div id="cookie-banner" style="display:none; position:fixed; bottom:0; left:0; right:0; z-index:9999; background:rgba(6,6,11,0.95); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-top:1px solid rgba(245,158,11,0.2); padding:1rem 2rem; animation:cbSlide 0.4s ease-out; box-shadow:0 -4px 30px rgba(0,0,0,0.5);">
+    <div style="max-width:1150px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap;">
+      <p style="color:#e8e6f0; font-size:0.85rem; margin:0; flex:1; min-width:200px;">🍪 This site uses cookies for essential functionality. By continuing, you agree to our <a href="/legal/cookies/" style="color:#f59e0b; text-decoration:underline;">Cookie Policy</a>.</p>
+      <div style="display:flex; gap:0.5rem; flex-shrink:0;">
+        <button id="cookie-accept" class="btn btn-gold btn-sm">Accept</button>
+        <button id="cookie-decline" class="btn btn-outline btn-sm">Decline</button>
+      </div>
+    </div>
+  </div>
+  <style>@keyframes cbSlide { from { transform:translateY(100%); } to { transform:translateY(0); } }
+    @media (max-width:768px) { #cookie-banner > div { flex-direction:column; text-align:center; } }
+  </style>
+  <script>
+    (function(){
+      if (!localStorage.getItem('cookie-consent')) {
+        document.getElementById('cookie-banner').style.display = 'block';
+      }
+      document.getElementById('cookie-accept').addEventListener('click', function(){
+        localStorage.setItem('cookie-consent', 'accepted');
+        document.getElementById('cookie-banner').style.display = 'none';
+      });
+      document.getElementById('cookie-decline').addEventListener('click', function(){
+        localStorage.setItem('cookie-consent', 'declined');
+        document.getElementById('cookie-banner').style.display = 'none';
+      });
+    })();
+  </script>
 </body>
 </html>

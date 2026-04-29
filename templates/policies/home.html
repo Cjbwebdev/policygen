@@ -3,42 +3,44 @@
 
 {% block extra_head %}
 <style>
-  .hero-cta-row { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
-  .doc-type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
-  .how-it-works-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem; }
+  .hero-cta-row { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  .doc-type-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.25rem; }
+  .how-it-works-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; }
   .how-it-works-step { text-align: center; }
-  .step-number { font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 2px; color: var(--accent); }
+  .step-number { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--amber); }
   .step-emoji { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
   .section-cta { text-align: center; padding: 2rem 0; }
-  .section-cta .btn-row { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
+  .section-cta .btn-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
 
   /* Typewriter cursor */
   @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
-  .typewriter-cursor::after { content:'|'; animation:blink 0.8s infinite; color:var(--ink); font-weight:300; }
+  .typewriter-cursor::after { content:'|'; animation:blink 0.8s infinite; color:var(--amber); font-weight:300; }
 
   /* Wax seal pulse */
-  @keyframes sealPulse { 0%,100%{box-shadow:0 0 0 0 rgba(184,134,11,0.4)} 50%{box-shadow:0 0 0 15px rgba(184,134,11,0)} }
+  @keyframes sealPulse { 0%,100%{box-shadow:0 0 0 0 rgba(245,158,11,0.4)} 50%{box-shadow:0 0 0 20px rgba(245,158,11,0)} }
   .wax-seal { animation: sealPulse 2.5s infinite; }
 
-  /* Ink bloom */
-  .ink-reveal { opacity:0; transform:translateY(30px) scale(0.97); transition:none; }
-  .ink-reveal.visible { opacity:1; transform:translateY(0) scale(1); }
-
-  /* Paper shuffle */
-  .paper-card { opacity:0; transform:translateY(40px) rotate(-2deg); }
-  .paper-card.visible { opacity:1; transform:translateY(0) rotate(0); }
+  /* Doc card micro-interaction */
+  .doc-card-link { text-decoration: none; color: inherit; }
+  .doc-card-link:hover .doc-card-icon { transform: scale(1.1) rotate(-5deg); }
+  .doc-card-icon {
+    font-size: 2rem;
+    display: block;
+    margin-bottom: 0.75rem;
+    transition: transform 0.3s ease;
+  }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- HERO: Typewriter Law Office -->
+<!-- HERO: Legal Tech Noir -->
 <section class="hero" id="hero">
   <div class="hero-urgency reveal-up">
     ⚠ <strong><span id="live-count">{{ doc_count|default:"3,847" }}</span> legal docs generated this month</strong> —
     Your competitors are already protected. 94% of websites still have outdated or missing policies.
   </div>
 
-  <p class="hero-eyebrow reveal-up" data-delay="0.2">Stop risking fines. Start staying compliant.</p>
+  <p class="hero-eyebrow reveal-up" data-delay="0.2">STOP RISKING FINES. START STAYING COMPLIANT.</p>
   <h1 class="reveal-up" data-delay="0.4">Generate a legally bulletproof privacy policy<br>in <em>90 seconds</em></h1>
   <p class="hero-description reveal-up" data-delay="0.6">
     <span class="live-pulse"></span>
@@ -56,7 +58,7 @@
   </div>
 
   <div class="hero-cta-row reveal-up" data-delay="1.0" style="margin-top:1.5rem;">
-    <a href="/generate/" class="btn btn-primary btn-lg">▶ Generate My Free Policy in 90 Seconds →</a>
+    <a href="/generate/" class="btn btn-primary btn-lg typewriter-cursor">▶ Generate My Free Policy in 90 Seconds →</a>
     <a href="/score/" class="btn btn-outline btn-lg">Check My Site's Compliance Score</a>
   </div>
 
@@ -67,36 +69,39 @@
   </div>
 </section>
 
-<!-- DOCUMENT TYPES: Paper shuffle cards -->
+<!-- DOCUMENT TYPES: Glass cards -->
 <section class="section" id="doc-types">
   <div class="section-header reveal-up">
-    <h2>Every document your business needs — in one place</h2>
-    <p style="color:var(--ink-muted);">One generator. Five document types. Zero legal headaches.</p>
+    <h2>Every document your business needs — <span class="gradient-text">in one place</span></h2>
+    <p class="text-muted">One generator. Five document types. Zero legal headaches.</p>
   </div>
 
   <div class="doc-type-grid">
     {% for doc in doc_types %}
-    <a href="/generate/?doc_type={{ doc.key }}" style="text-decoration:none;color:inherit;" class="paper-card">
+    <a href="/generate/?doc_type={{ doc.key }}" class="doc-card-link paper-card">
       <div class="card card-hover">
+        <span class="doc-card-icon">
+          {% if doc.key == 'privacy' %}🔒{% elif doc.key == 'terms' %}📜{% elif doc.key == 'cookie' %}🍪{% elif doc.key == 'disclaimer' %}⚠️{% elif doc.key == 'refund' %}💰{% else %}📄{% endif %}
+        </span>
         <h3>{{ doc.name }}</h3>
-        <p class="text-sm text-secondary">{{ doc.desc }}</p>
+        <p class="text-sm text-muted">{{ doc.desc }}</p>
       </div>
     </a>
     {% empty %}
-    <a href="/generate/?doc_type=privacy" style="text-decoration:none;color:inherit;" class="paper-card">
-      <div class="card card-hover"><h3>Privacy Policy</h3><p class="text-sm text-secondary">GDPR, CCPA compliant</p></div>
+    <a href="/generate/?doc_type=privacy" class="doc-card-link paper-card">
+      <div class="card card-hover"><span class="doc-card-icon">🔒</span><h3>Privacy Policy</h3><p class="text-sm text-muted">GDPR, CCPA compliant</p></div>
     </a>
-    <a href="/generate/?doc_type=terms" style="text-decoration:none;color:inherit;" class="paper-card">
-      <div class="card card-hover"><h3>Terms & Conditions</h3><p class="text-sm text-secondary">For any SaaS or website</p></div>
+    <a href="/generate/?doc_type=terms" class="doc-card-link paper-card">
+      <div class="card card-hover"><span class="doc-card-icon">📜</span><h3>Terms & Conditions</h3><p class="text-sm text-muted">For any SaaS or website</p></div>
     </a>
-    <a href="/generate/?doc_type=cookie" style="text-decoration:none;color:inherit;" class="paper-card">
-      <div class="card card-hover"><h3>Cookie Policy</h3><p class="text-sm text-secondary">EU Cookie Law ready</p></div>
+    <a href="/generate/?doc_type=cookie" class="doc-card-link paper-card">
+      <div class="card card-hover"><span class="doc-card-icon">🍪</span><h3>Cookie Policy</h3><p class="text-sm text-muted">EU Cookie Law ready</p></div>
     </a>
-    <a href="/generate/?doc_type=disclaimer" style="text-decoration:none;color:inherit;" class="paper-card">
-      <div class="card card-hover"><h3>Disclaimer</h3><p class="text-sm text-secondary">Limit your liability</p></div>
+    <a href="/generate/?doc_type=disclaimer" class="doc-card-link paper-card">
+      <div class="card card-hover"><span class="doc-card-icon">⚠️</span><h3>Disclaimer</h3><p class="text-sm text-muted">Limit your liability</p></div>
     </a>
-    <a href="/generate/?doc_type=refund" style="text-decoration:none;color:inherit;" class="paper-card">
-      <div class="card card-hover"><h3>Refund Policy</h3><p class="text-sm text-secondary">Clear terms for returns</p></div>
+    <a href="/generate/?doc_type=refund" class="doc-card-link paper-card">
+      <div class="card card-hover"><span class="doc-card-icon">💰</span><h3>Refund Policy</h3><p class="text-sm text-muted">Clear terms for returns</p></div>
     </a>
     {% endfor %}
   </div>
@@ -105,8 +110,8 @@
 <!-- HOW IT WORKS: Step cards -->
 <section id="how-it-works" class="section">
   <div class="section-header reveal-up">
-    <h2>How it works</h2>
-    <p style="color:var(--ink-muted);">Three simple steps to full compliance</p>
+    <h2>How it <span class="gradient-text">works</span></h2>
+    <p class="text-muted">Three simple steps to full compliance</p>
   </div>
 
   <div class="how-it-works-grid">
@@ -114,19 +119,19 @@
       <span class="step-emoji">📝</span>
       <span class="step-number">Step 1</span>
       <h3>Answer 5 Questions</h3>
-      <p class="text-sm text-secondary">Tell us about your business, what data you collect, and which regulations apply. Takes about 90 seconds — not 10 hours of legal research.</p>
+      <p class="text-sm text-muted">Tell us about your business, what data you collect, and which regulations apply. Takes about 90 seconds — not 10 hours of legal research.</p>
     </div>
     <div class="how-it-works-step step-card" data-step="2">
       <span class="step-emoji">⚡</span>
       <span class="step-number">Step 2</span>
       <h3>Get Your Policy</h3>
-      <p class="text-sm text-secondary">Receive a professional, legally-structured document customized to your business and jurisdiction. GDPR, CCPA, LGPD ready.</p>
+      <p class="text-sm text-muted">Receive a professional, legally-structured document customized to your business and jurisdiction. GDPR, CCPA, LGPD ready.</p>
     </div>
     <div class="how-it-works-step step-card" data-step="3">
       <span class="step-emoji">🚀</span>
       <span class="step-number">Step 3</span>
       <h3>Download &amp; Deploy</h3>
-      <p class="text-sm text-secondary">Copy, download as HTML, or embed directly on your site with one click. Pro users get automatic updates when laws change.</p>
+      <p class="text-sm text-muted">Copy, download as HTML, or embed directly on your site with one click. Pro users get automatic updates when laws change.</p>
     </div>
   </div>
 </section>
@@ -134,9 +139,10 @@
 <!-- COMPARISON TABLE -->
 <section class="section" id="comparison">
   <div class="section-header reveal-up">
-    <h2>Why PolicyGen beats every alternative</h2>
+    <h2>Why PolicyGen beats <span class="gradient-text">every alternative</span></h2>
   </div>
 
+  <div style="overflow-x:auto;">
   <table class="comparison-table">
     <thead>
       <tr>
@@ -152,17 +158,18 @@
       <tr class="compare-row"><td>Multi-regulation support</td><td class="text-center text-muted">✕</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td></tr>
       <tr class="compare-row"><td>Auto-updates when laws change</td><td class="text-center text-muted">✕</td><td class="text-center text-muted">✕</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td></tr>
       <tr class="compare-row"><td>One-click embed</td><td class="text-center text-muted">✕</td><td class="text-center text-muted">✕</td><td class="text-center text-muted">✕</td><td class="text-center" style="color:var(--success);">✓</td></tr>
-      <tr class="compare-row"><td>90-second setup</td><td class="text-center text-muted">N/A</td><td class="text-center text-muted">30+ min</td><td class="text-center text-muted">Weeks</td><td class="text-center" style="color:var(--accent);">90 seconds</td></tr>
-      <tr class="compare-row"><td>Price</td><td class="text-center text-muted">Free (outdated)</td><td class="text-center">£20/mo</td><td class="text-center">£500+ per update</td><td class="text-center" style="color:var(--accent);">From £9/mo</td></tr>
+      <tr class="compare-row"><td>90-second setup</td><td class="text-center text-muted">N/A</td><td class="text-center text-muted">30+ min</td><td class="text-center text-muted">Weeks</td><td class="text-center" style="color:var(--amber);">90 seconds</td></tr>
+      <tr class="compare-row"><td>Price</td><td class="text-center text-muted">Free (outdated)</td><td class="text-center">£20/mo</td><td class="text-center">£500+ per update</td><td class="text-center" style="color:var(--amber);">From £9/mo</td></tr>
     </tbody>
   </table>
+  </div>
 </section>
 
 <!-- TESTIMONIALS -->
 <section class="section" id="testimonials">
   <div class="section-header reveal-up">
-    <h2>Trusted by 2,000+ businesses worldwide</h2>
-    <p style="color:var(--ink-muted);">Don't take our word for it</p>
+    <h2>Trusted by <span class="gradient-text">2,000+ businesses</span> worldwide</h2>
+    <p class="text-muted">Don't take our word for it</p>
   </div>
 
   <div class="testimonials-grid">
@@ -193,11 +200,11 @@
   </div>
 </section>
 
-<!-- CTA: Wax Seal -->
+<!-- CTA: Glowing -->
 <section id="cta" class="section">
   <div class="section-cta">
-    <h2 class="reveal-up">Ready to get protected?</h2>
-    <p class="reveal-up" data-delay="0.2" style="color:var(--ink-muted); margin-bottom:0.5rem;">Start generating your free policy in 90 seconds.</p>
+    <h2 class="reveal-up">Ready to get <span class="gradient-text">protected</span>?</h2>
+    <p class="reveal-up text-muted" data-delay="0.2" style="margin-bottom:0.5rem;">Start generating your free policy in 90 seconds. No credit card required.</p>
     <div class="btn-row reveal-up" data-delay="0.4">
       <a href="/generate/" class="btn btn-primary btn-lg wax-seal">▶ Generate My Free Policy in 90 Seconds →</a>
       <a href="/pricing/" class="btn btn-outline btn-lg">See Pricing Plans</a>
@@ -205,9 +212,12 @@
   </div>
 </section>
 
+<!-- Aurora divider -->
+<div class="aurora-line"></div>
+
 <!-- Mobile sticky CTA bar -->
 <div class="mobile-cta-bar">
-  <a href="/generate/" class="btn btn-primary">▶ Generate Free Policy →</a>
+  <a href="/generate/" class="btn">▶ Generate Free Policy →</a>
 </div>
 {% endblock %}
 
@@ -219,8 +229,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── 1. Hero staggered reveals ─────────────────
   gsap.fromTo('#hero .reveal-up',
-    { y: 50, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.7, stagger: 0.15, ease: 'power2.out' }
+    { y: 60, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.8, stagger: 0.12, ease: 'power3.out' }
   );
 
   // ── 2. Animate live counter ───────────────────
@@ -229,17 +239,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const raw = countEl.textContent.replace(/,/g, '');
     const target = parseInt(raw) || 3847;
     const obj = { val: 0 };
-    gsap.to(obj, { val: target, duration: 2, ease: 'power2.out', delay: 0.5,
+    gsap.to(obj, { val: target, duration: 2.5, ease: 'power2.out', delay: 0.6,
       onUpdate: () => { countEl.textContent = Math.round(obj.val).toLocaleString(); }
     });
   }
 
-  // ── 3. Paper card shuffle ─────────────────────
+  // ── 3. Glass card reveals ─────────────────────
   gsap.utils.toArray('.paper-card').forEach((card, i) => {
     gsap.fromTo(card,
-      { y: 60, opacity: 0, rotation: i % 2 === 0 ? -3 : 3 },
-      { y: 0, opacity: 1, rotation: 0, duration: 0.6, delay: i * 0.08,
-        ease: 'back.out(1.2)',
+      { y: 60, opacity: 0, scale: 0.95 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.6, delay: i * 0.07,
+        ease: 'back.out(1.4)',
         scrollTrigger: { trigger: '#doc-types', start: 'top 80%', toggleActions: 'play none none none' }
       }
     );
@@ -247,8 +257,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── 4. Step cards reveal ──────────────────────
   gsap.fromTo('.step-card',
-    { y: 40, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.6, stagger: 0.15, ease: 'power2.out',
+    { y: 50, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.6, stagger: 0.15, ease: 'power3.out',
       scrollTrigger: { trigger: '#how-it-works', start: 'top 80%', toggleActions: 'play none none none' }
     }
   );
@@ -257,7 +267,7 @@ document.addEventListener('DOMContentLoaded', () => {
   gsap.utils.toArray('.compare-row').forEach((row, i) => {
     gsap.fromTo(row,
       { backgroundColor: 'transparent' },
-      { backgroundColor: 'rgba(184,134,11,0.08)', duration: 0.5, delay: i * 0.1,
+      { backgroundColor: 'rgba(245,158,11,0.04)', duration: 0.5, delay: i * 0.1,
         scrollTrigger: { trigger: '#comparison', start: 'top 75%' }
       }
     );
@@ -268,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const dir = item.dataset.side === 'left' ? -80 : 80;
     gsap.fromTo(item,
       { x: dir, opacity: 0 },
-      { x: 0, opacity: 1, duration: 0.7, delay: i * 0.2, ease: 'power2.out',
+      { x: 0, opacity: 1, duration: 0.7, delay: i * 0.2, ease: 'power3.out',
         scrollTrigger: { trigger: '#testimonials', start: 'top 80%', toggleActions: 'play none none none' }
       }
     );
@@ -279,11 +289,19 @@ document.addEventListener('DOMContentLoaded', () => {
     gsap.fromTo(el,
       { y: 40, opacity: 0 },
       { y: 0, opacity: 1, duration: 0.6,
-        delay: parseFloat(el.dataset.delay || 0), ease: 'power2.out',
+        delay: parseFloat(el.dataset.delay || 0), ease: 'power3.out',
         scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
       }
     );
   });
+
+  // ── 8. Aurora line glow on scroll ─────────────
+  gsap.fromTo('.aurora-line',
+    { scaleX: 0.3, opacity: 0 },
+    { scaleX: 1, opacity: 1, duration: 1, ease: 'power2.out',
+      scrollTrigger: { trigger: '#cta', start: 'top 90%', toggleActions: 'play none none none' }
+    }
+  );
 
 });
 </script>
