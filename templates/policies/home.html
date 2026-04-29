@@ -8,7 +8,6 @@
   .how-it-works-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 2rem; }
   .how-it-works-step { text-align: center; }
   .step-number { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 2px; color: var(--amber); }
-  .step-emoji { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
   .section-cta { text-align: center; padding: 2rem 0; }
   .section-cta .btn-row { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-top: 1.5rem; }
 
@@ -21,51 +20,320 @@
   .wax-seal { animation: sealPulse 2.5s infinite; }
 
   /* Doc card micro-interaction */
-  .doc-card-link { text-decoration: none; color: inherit; }
-  .doc-card-link:hover .doc-card-icon { transform: scale(1.1) rotate(-5deg); }
+  .doc-card-link { text-decoration: none; color: inherit; display: block; }
+  .doc-card-link:hover .doc-card-icon svg { transform: scale(1.08); }
+  .doc-card-link:hover .doc-card-icon { color: var(--amber); }
   .doc-card-icon {
-    font-size: 2rem;
-    display: block;
-    margin-bottom: 0.75rem;
+    display: flex; align-items: center; justify-content: center;
+    height: 52px; margin-bottom: 1rem;
+    color: var(--amber-dim);
+    transition: color 0.25s ease;
+  }
+  .doc-card-icon svg {
+    width: 32px; height: 32px;
     transition: transform 0.3s ease;
+  }
+
+  /* Step icon */
+  .step-icon {
+    display: flex; align-items: center; justify-content: center;
+    height: 56px; margin-bottom: 1rem;
+    color: var(--amber);
+  }
+  .step-icon svg { width: 36px; height: 36px; }
+
+  /* ── HERO: Split layout ────────────────────────── */
+  .hero-split {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: center;
+    max-width: 1100px;
+    margin: 5rem auto;
+    padding: 0 2rem;
+    position: relative;
+  }
+
+  /* Document animation container */
+  .hero-doc-anim {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 380px;
+  }
+
+  .hero-doc-stack {
+    position: relative;
+    width: 240px;
+    height: 320px;
+  }
+
+  .hero-doc-sheet {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    backdrop-filter: blur(12px);
+    display: flex;
+    flex-direction: column;
+    padding: 24px;
+  }
+
+  .hero-doc-sheet:nth-child(1) {
+    transform: rotate(-6deg);
+    top: 0; left: 0;
+    z-index: 1;
+    animation: docFloat1 6s ease-in-out infinite;
+  }
+
+  .hero-doc-sheet:nth-child(2) {
+    transform: rotate(3deg);
+    top: 8px; left: 8px;
+    z-index: 2;
+    border-color: var(--border-glow);
+    box-shadow: 0 8px 30px rgba(245, 158, 11, 0.08);
+    animation: docFloat2 7s ease-in-out infinite;
+  }
+
+  .hero-doc-sheet:nth-child(3) {
+    transform: rotate(-2deg);
+    top: 16px; left: 16px;
+    z-index: 3;
+    border-color: var(--amber);
+    box-shadow: 0 12px 40px rgba(245, 158, 11, 0.12), 0 0 0 1px rgba(245, 158, 11, 0.1);
+    animation: docFloat3 8s ease-in-out infinite;
+  }
+
+  .doc-line {
+    height: 2px;
+    background: var(--border);
+    border-radius: 1px;
+    margin-bottom: 8px;
+  }
+  .doc-line.short { width: 60%; }
+  .doc-line.medium { width: 80%; }
+  .doc-line.accent {
+    background: linear-gradient(90deg, var(--amber-dim), var(--amber));
+    width: 40%;
+    margin-top: 12px;
+  }
+
+  .doc-seal {
+    position: absolute;
+    bottom: 20px; right: 20px;
+    width: 48px; height: 48px;
+    border: 2px solid var(--amber);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--amber);
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    opacity: 0.6;
+    transform: rotate(-15deg);
+  }
+
+  @keyframes docFloat1 {
+    0%, 100% { transform: rotate(-6deg) translate(0, 0); }
+    33% { transform: rotate(-4deg) translate(-4px, -6px); }
+    66% { transform: rotate(-7deg) translate(2px, 4px); }
+  }
+  @keyframes docFloat2 {
+    0%, 100% { transform: rotate(3deg) translate(0, 0); }
+    33% { transform: rotate(5deg) translate(4px, -4px); }
+    66% { transform: rotate(2deg) translate(-3px, 3px); }
+  }
+  @keyframes docFloat3 {
+    0%, 100% { transform: rotate(-2deg) translate(0, 0); }
+    50% { transform: rotate(0deg) translate(0, -8px); }
+  }
+
+  /* Glow pulse behind document stack */
+  .hero-doc-glow {
+    position: absolute;
+    width: 200px; height: 200px;
+    background: var(--amber);
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.08;
+    animation: glowPulse 4s ease-in-out infinite;
+    z-index: -1;
+  }
+  @keyframes glowPulse {
+    0%, 100% { opacity: 0.06; transform: scale(1); }
+    50% { opacity: 0.12; transform: scale(1.2); }
+  }
+
+  /* Hero text */
+  .hero-text { text-align: left; }
+
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--amber);
+    margin-bottom: 1rem;
+    opacity: 0.85;
+  }
+
+  .hero-text h1 {
+    font-size: 2.75rem;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+  }
+  .hero-text h1 em {
+    font-style: italic;
+    background: linear-gradient(135deg, var(--amber-glow), var(--gold));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-text .hero-description {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    margin-bottom: 2rem;
+    max-width: 480px;
+    line-height: 1.7;
+  }
+
+  .hero-urgency-block {
+    background: rgba(245, 158, 11, 0.06);
+    border: 1px solid rgba(245, 158, 11, 0.15);
+    border-radius: var(--radius);
+    padding: 0.85rem 1.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .hero-urgency-block .urg-icon {
+    flex-shrink: 0;
+    width: 20px; height: 20px;
+    color: var(--amber);
+    margin-top: 2px;
+  }
+  .hero-urgency-block p {
+    color: var(--amber);
+    font-size: 0.85rem;
+    margin: 0;
+    line-height: 1.5;
+  }
+
+  .hero-cta-row {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Responsive — stack on mobile */
+  @media (max-width: 900px) {
+    .hero-split {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin: 3rem auto;
+      padding: 0 1.25rem;
+    }
+    .hero-doc-anim { min-height: 260px; }
+    .hero-doc-stack { width: 180px; height: 240px; }
+    .hero-doc-sheet { padding: 18px; }
+    .hero-text { text-align: center; }
+    .hero-text h1 { font-size: 2rem; }
+    .hero-text .hero-description { max-width: 100%; }
+    .hero-cta-row { justify-content: center; }
+  }
+
+  @media (max-width: 480px) {
+    .hero-split { margin: 2rem auto; gap: 1.5rem; }
+    .hero-doc-anim { min-height: 200px; }
+    .hero-doc-stack { width: 150px; height: 200px; }
+    .hero-doc-sheet { padding: 14px; }
+    .hero-text h1 { font-size: 1.6rem; }
   }
 </style>
 {% endblock %}
 
 {% block content %}
-<!-- HERO: Legal Tech Noir -->
-<section class="hero" id="hero">
-  <div class="hero-urgency reveal-up">
-    ⚠ <strong><span id="live-count">{{ doc_count|default:"3,847" }}</span> legal docs generated this month</strong> —
-    Your competitors are already protected. 94% of websites still have outdated or missing policies.
+<!-- HERO: Split layout — animated document stack + text -->
+<section class="hero-split" id="hero">
+  <!-- Left: Animated document stack -->
+  <div class="hero-doc-anim reveal-up">
+    <div class="hero-doc-glow"></div>
+    <div class="hero-doc-stack">
+      <div class="hero-doc-sheet">
+        <div class="doc-line medium"></div>
+        <div class="doc-line short"></div>
+        <div class="doc-line medium"></div>
+        <div class="doc-line" style="width:45%;"></div>
+        <div class="doc-line short"></div>
+        <div class="doc-line medium"></div>
+        <div class="doc-line accent"></div>
+        <div class="doc-seal">PG</div>
+      </div>
+      <div class="hero-doc-sheet">
+        <div class="doc-line short"></div>
+        <div class="doc-line medium"></div>
+        <div class="doc-line" style="width:35%;"></div>
+        <div class="doc-line medium"></div>
+        <div class="doc-line short"></div>
+        <div class="doc-seal">PG</div>
+      </div>
+      <div class="hero-doc-sheet">
+        <div class="doc-line medium"></div>
+        <div class="doc-line short"></div>
+        <div class="doc-line" style="width:55%;"></div>
+        <div class="doc-line medium"></div>
+        <div class="doc-line accent"></div>
+        <div class="doc-seal">PG</div>
+      </div>
+    </div>
   </div>
 
-  <p class="hero-eyebrow reveal-up" data-delay="0.2">STOP RISKING FINES. START STAYING COMPLIANT.</p>
-  <h1 class="reveal-up" data-delay="0.4">Generate a legally bulletproof privacy policy<br>in <em>90 seconds</em></h1>
-  <p class="hero-description reveal-up" data-delay="0.6">
-    <span class="live-pulse"></span>
-    Lawyers charge <strong>£500+</strong> per policy. PolicyGen gives you the same compliance for £9/mo —
-    GDPR, CCPA, and LGPD ready. Auto-updates when laws change.
-  </p>
+  <!-- Right: Hero text -->
+  <div class="hero-text">
+    <div class="hero-urgency-block reveal-up" data-delay="0">
+      <svg class="urg-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/><line x1="12" y1="10" x2="12" y2="15"/><circle cx="12" cy="18" r="0.5" fill="currentColor" stroke="none"/></svg>
+      <p><strong><span id="live-count">{{ doc_count|default:"3,847" }}</span> legal docs generated this month</strong> — 94% of websites still have outdated or missing policies. Your competitors are already protected.</p>
+    </div>
 
-  <div class="pain-section reveal-up" data-delay="0.8">
-    <h3>You're at risk if you:</h3>
-    <ul>
-      <li>Still using a free template from 2019</li>
-      <li>Haven't updated for CCPA/CPRA or LGPD</li>
-      <li>Don't know which regulations actually apply</li>
-    </ul>
-  </div>
+    <p class="hero-eyebrow reveal-up" data-delay="0.15">STOP RISKING FINES. START STAYING COMPLIANT.</p>
+    <h1 class="reveal-up" data-delay="0.3">Generate a legally bulletproof privacy policy<br>in <em>90 seconds</em></h1>
+    <p class="hero-description reveal-up" data-delay="0.45">
+      <span class="live-pulse"></span>
+      Lawyers charge <strong>£500+</strong> per policy. PolicyGen gives you the same compliance for £9/mo — GDPR, CCPA, and LGPD ready. Auto-updates when laws change.
+    </p>
 
-  <div class="hero-cta-row reveal-up" data-delay="1.0" style="margin-top:1.5rem;">
-    <a href="/generate/" class="btn btn-primary btn-lg typewriter-cursor">▶ Generate My Free Policy in 90 Seconds →</a>
-    <a href="/score/" class="btn btn-outline btn-lg">Check My Site's Compliance Score</a>
-  </div>
+    <div class="pain-section reveal-up" data-delay="0.6">
+      <h3>You're at risk if you:</h3>
+      <ul>
+        <li>Still using a free template from 2019</li>
+        <li>Haven't updated for CCPA/CPRA or LGPD</li>
+        <li>Don't know which regulations actually apply</li>
+      </ul>
+    </div>
 
-  <div class="trust-strip reveal-up" data-delay="1.2">
-    <span><span class="star">★★★★★</span> Trusted by 2,000+ businesses</span>
-    <span>🔒 No credit card required</span>
-    <span>✓ GDPR & CCPA compliant</span>
+    <div class="hero-cta-row reveal-up" data-delay="0.75">
+      <a href="/generate/" class="btn btn-primary btn-lg typewriter-cursor">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-3px;margin-right:4px;"><polyline points="9 18 15 12 9 6"/></svg>
+        Generate My Free Policy in 90 Seconds
+      </a>
+      <a href="/score/" class="btn btn-outline btn-lg">Check My Site's Compliance Score</a>
+    </div>
+
+    <div class="trust-strip reveal-up" data-delay="0.9">
+      <span><span class="star">★★★★★</span> Trusted by 2,000+ businesses</span>
+      <span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:-2px;margin-right:2px;"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        No credit card required
+      </span>
+      <span>✓ GDPR & CCPA compliant</span>
+    </div>
   </div>
 </section>
 
@@ -81,7 +349,19 @@
     <a href="/generate/?doc_type={{ doc.key }}" class="doc-card-link paper-card">
       <div class="card card-hover">
         <span class="doc-card-icon">
-          {% if doc.key == 'privacy' %}🔒{% elif doc.key == 'terms' %}📜{% elif doc.key == 'cookie' %}🍪{% elif doc.key == 'disclaimer' %}⚠️{% elif doc.key == 'refund' %}💰{% else %}📄{% endif %}
+          {% if doc.key == 'privacy' %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/><path d="M12 13.5v1.5"/></svg>
+          {% elif doc.key == 'terms' %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+          {% elif doc.key == 'cookie' %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="8" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1" fill="currentColor" stroke="none"/><circle cx="10" cy="15" r="1.5" fill="currentColor" stroke="none"/><circle cx="16" cy="14" r="1" fill="currentColor" stroke="none"/></svg>
+          {% elif doc.key == 'disclaimer' %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          {% elif doc.key == 'refund' %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+          {% else %}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          {% endif %}
         </span>
         <h3>{{ doc.name }}</h3>
         <p class="text-sm text-muted">{{ doc.desc }}</p>
@@ -89,19 +369,34 @@
     </a>
     {% empty %}
     <a href="/generate/?doc_type=privacy" class="doc-card-link paper-card">
-      <div class="card card-hover"><span class="doc-card-icon">🔒</span><h3>Privacy Policy</h3><p class="text-sm text-muted">GDPR, CCPA compliant</p></div>
+      <div class="card card-hover">
+        <span class="doc-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/><circle cx="12" cy="16" r="1" fill="currentColor" stroke="none"/></svg></span>
+        <h3>Privacy Policy</h3><p class="text-sm text-muted">GDPR, CCPA compliant</p>
+      </div>
     </a>
     <a href="/generate/?doc_type=terms" class="doc-card-link paper-card">
-      <div class="card card-hover"><span class="doc-card-icon">📜</span><h3>Terms & Conditions</h3><p class="text-sm text-muted">For any SaaS or website</p></div>
+      <div class="card card-hover">
+        <span class="doc-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/></svg></span>
+        <h3>Terms & Conditions</h3><p class="text-sm text-muted">For any SaaS or website</p>
+      </div>
     </a>
     <a href="/generate/?doc_type=cookie" class="doc-card-link paper-card">
-      <div class="card card-hover"><span class="doc-card-icon">🍪</span><h3>Cookie Policy</h3><p class="text-sm text-muted">EU Cookie Law ready</p></div>
+      <div class="card card-hover">
+        <span class="doc-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><circle cx="8" cy="10" r="1" fill="currentColor" stroke="none"/><circle cx="15" cy="9" r="1" fill="currentColor" stroke="none"/><circle cx="16" cy="14" r="1" fill="currentColor" stroke="none"/></svg></span>
+        <h3>Cookie Policy</h3><p class="text-sm text-muted">EU Cookie Law ready</p>
+      </div>
     </a>
     <a href="/generate/?doc_type=disclaimer" class="doc-card-link paper-card">
-      <div class="card card-hover"><span class="doc-card-icon">⚠️</span><h3>Disclaimer</h3><p class="text-sm text-muted">Limit your liability</p></div>
+      <div class="card card-hover">
+        <span class="doc-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg></span>
+        <h3>Disclaimer</h3><p class="text-sm text-muted">Limit your liability</p>
+      </div>
     </a>
     <a href="/generate/?doc_type=refund" class="doc-card-link paper-card">
-      <div class="card card-hover"><span class="doc-card-icon">💰</span><h3>Refund Policy</h3><p class="text-sm text-muted">Clear terms for returns</p></div>
+      <div class="card card-hover">
+        <span class="doc-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></span>
+        <h3>Refund Policy</h3><p class="text-sm text-muted">Clear terms for returns</p>
+      </div>
     </a>
     {% endfor %}
   </div>
@@ -116,19 +411,31 @@
 
   <div class="how-it-works-grid">
     <div class="how-it-works-step step-card" data-step="1">
-      <span class="step-emoji">📝</span>
+      <span class="step-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+        </svg>
+      </span>
       <span class="step-number">Step 1</span>
       <h3>Answer 5 Questions</h3>
       <p class="text-sm text-muted">Tell us about your business, what data you collect, and which regulations apply. Takes about 90 seconds — not 10 hours of legal research.</p>
     </div>
     <div class="how-it-works-step step-card" data-step="2">
-      <span class="step-emoji">⚡</span>
+      <span class="step-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+        </svg>
+      </span>
       <span class="step-number">Step 2</span>
       <h3>Get Your Policy</h3>
       <p class="text-sm text-muted">Receive a professional, legally-structured document customized to your business and jurisdiction. GDPR, CCPA, LGPD ready.</p>
     </div>
     <div class="how-it-works-step step-card" data-step="3">
-      <span class="step-emoji">🚀</span>
+      <span class="step-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
+          <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+      </span>
       <span class="step-number">Step 3</span>
       <h3>Download &amp; Deploy</h3>
       <p class="text-sm text-muted">Copy, download as HTML, or embed directly on your site with one click. Pro users get automatic updates when laws change.</p>
@@ -154,10 +461,10 @@
       </tr>
     </thead>
     <tbody>
-      <tr class="compare-row"><td>Customized to your business</td><td class="text-center text-muted">✕</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td></tr>
-      <tr class="compare-row"><td>Multi-regulation support</td><td class="text-center text-muted">✕</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td></tr>
-      <tr class="compare-row"><td>Auto-updates when laws change</td><td class="text-center text-muted">✕</td><td class="text-center text-muted">✕</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td></tr>
-      <tr class="compare-row"><td>One-click embed</td><td class="text-center text-muted">✕</td><td class="text-center text-muted">✕</td><td class="text-center text-muted">✕</td><td class="text-center" style="color:var(--success);">✓</td></tr>
+      <tr class="compare-row"><td>Customized to your business</td><td class="text-center text-muted">—</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td></tr>
+      <tr class="compare-row"><td>Multi-regulation support</td><td class="text-center text-muted">—</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td></tr>
+      <tr class="compare-row"><td>Auto-updates when laws change</td><td class="text-center text-muted">—</td><td class="text-center text-muted">—</td><td class="text-center" style="color:var(--success);">✓</td><td class="text-center" style="color:var(--success);">✓</td></tr>
+      <tr class="compare-row"><td>One-click embed</td><td class="text-center text-muted">—</td><td class="text-center text-muted">—</td><td class="text-center text-muted">—</td><td class="text-center" style="color:var(--success);">✓</td></tr>
       <tr class="compare-row"><td>90-second setup</td><td class="text-center text-muted">N/A</td><td class="text-center text-muted">30+ min</td><td class="text-center text-muted">Weeks</td><td class="text-center" style="color:var(--amber);">90 seconds</td></tr>
       <tr class="compare-row"><td>Price</td><td class="text-center text-muted">Free (outdated)</td><td class="text-center">£20/mo</td><td class="text-center">£500+ per update</td><td class="text-center" style="color:var(--amber);">From £9/mo</td></tr>
     </tbody>
@@ -200,24 +507,25 @@
   </div>
 </section>
 
-<!-- CTA: Glowing -->
+<!-- CTA -->
 <section id="cta" class="section">
   <div class="section-cta">
     <h2 class="reveal-up">Ready to get <span class="gradient-text">protected</span>?</h2>
     <p class="reveal-up text-muted" data-delay="0.2" style="margin-bottom:0.5rem;">Start generating your free policy in 90 seconds. No credit card required.</p>
     <div class="btn-row reveal-up" data-delay="0.4">
-      <a href="/generate/" class="btn btn-primary btn-lg wax-seal">▶ Generate My Free Policy in 90 Seconds →</a>
+      <a href="/generate/" class="btn btn-primary btn-lg wax-seal">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" style="vertical-align:-3px;margin-right:4px;"><polyline points="9 18 15 12 9 6"/></svg>
+        Generate My Free Policy in 90 Seconds
+      </a>
       <a href="/pricing/" class="btn btn-outline btn-lg">See Pricing Plans</a>
     </div>
   </div>
 </section>
 
-<!-- Aurora divider -->
 <div class="aurora-line"></div>
 
-<!-- Mobile sticky CTA bar -->
 <div class="mobile-cta-bar">
-  <a href="/generate/" class="btn">▶ Generate Free Policy →</a>
+  <a href="/generate/" class="btn">Generate Free Policy →</a>
 </div>
 {% endblock %}
 
@@ -229,11 +537,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // ── 1. Hero staggered reveals ─────────────────
   gsap.fromTo('#hero .reveal-up',
-    { y: 60, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.8, stagger: 0.12, ease: 'power3.out' }
+    { y: 50, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.7, stagger: 0.1, ease: 'power3.out' }
   );
 
-  // ── 2. Animate live counter ───────────────────
+  // ── 2. Document stack entrance ─────────────────
+  gsap.fromTo('.hero-doc-stack',
+    { scale: 0.85, opacity: 0 },
+    { scale: 1, opacity: 1, duration: 1, delay: 0.2, ease: 'elastic.out(1,0.6)' }
+  );
+
+  // ── 3. Animate live counter ───────────────────
   const countEl = document.getElementById('live-count');
   if (countEl) {
     const raw = countEl.textContent.replace(/,/g, '');
@@ -244,26 +558,26 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── 3. Glass card reveals ─────────────────────
+  // ── 4. Glass card reveals ─────────────────────
   gsap.utils.toArray('.paper-card').forEach((card, i) => {
     gsap.fromTo(card,
-      { y: 60, opacity: 0, scale: 0.95 },
-      { y: 0, opacity: 1, scale: 1, duration: 0.6, delay: i * 0.07,
-        ease: 'back.out(1.4)',
-        scrollTrigger: { trigger: '#doc-types', start: 'top 80%', toggleActions: 'play none none none' }
+      { y: 50, opacity: 0, scale: 0.96 },
+      { y: 0, opacity: 1, scale: 1, duration: 0.5, delay: i * 0.06,
+        ease: 'back.out(1.3)',
+        scrollTrigger: { trigger: '#doc-types', start: 'top 82%', toggleActions: 'play none none none' }
       }
     );
   });
 
-  // ── 4. Step cards reveal ──────────────────────
+  // ── 5. Step cards reveal ──────────────────────
   gsap.fromTo('.step-card',
-    { y: 50, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.6, stagger: 0.15, ease: 'power3.out',
-      scrollTrigger: { trigger: '#how-it-works', start: 'top 80%', toggleActions: 'play none none none' }
+    { y: 40, opacity: 0 },
+    { y: 0, opacity: 1, duration: 0.55, stagger: 0.12, ease: 'power3.out',
+      scrollTrigger: { trigger: '#how-it-works', start: 'top 82%', toggleActions: 'play none none none' }
     }
   );
 
-  // ── 5. Comparison rows highlight ──────────────
+  // ── 6. Comparison rows highlight ──────────────
   gsap.utils.toArray('.compare-row').forEach((row, i) => {
     gsap.fromTo(row,
       { backgroundColor: 'transparent' },
@@ -273,29 +587,29 @@ document.addEventListener('DOMContentLoaded', () => {
     );
   });
 
-  // ── 6. Testimonials slide in ──────────────────
+  // ── 7. Testimonials slide in ──────────────────
   gsap.utils.toArray('.testimonial-item').forEach((item, i) => {
-    const dir = item.dataset.side === 'left' ? -80 : 80;
+    const dir = item.dataset.side === 'left' ? -60 : 60;
     gsap.fromTo(item,
       { x: dir, opacity: 0 },
-      { x: 0, opacity: 1, duration: 0.7, delay: i * 0.2, ease: 'power3.out',
-        scrollTrigger: { trigger: '#testimonials', start: 'top 80%', toggleActions: 'play none none none' }
+      { x: 0, opacity: 1, duration: 0.65, delay: i * 0.18, ease: 'power3.out',
+        scrollTrigger: { trigger: '#testimonials', start: 'top 82%', toggleActions: 'play none none none' }
       }
     );
   });
 
-  // ── 7. Section header reveals ─────────────────
+  // ── 8. Section header reveals ─────────────────
   document.querySelectorAll('.section-header.reveal-up, #cta .reveal-up').forEach(el => {
     gsap.fromTo(el,
-      { y: 40, opacity: 0 },
-      { y: 0, opacity: 1, duration: 0.6,
+      { y: 35, opacity: 0 },
+      { y: 0, opacity: 1, duration: 0.55,
         delay: parseFloat(el.dataset.delay || 0), ease: 'power3.out',
-        scrollTrigger: { trigger: el, start: 'top 85%', toggleActions: 'play none none none' }
+        scrollTrigger: { trigger: el, start: 'top 86%', toggleActions: 'play none none none' }
       }
     );
   });
 
-  // ── 8. Aurora line glow on scroll ─────────────
+  // ── 9. Aurora line glow on scroll ─────────────
   gsap.fromTo('.aurora-line',
     { scaleX: 0.3, opacity: 0 },
     { scaleX: 1, opacity: 1, duration: 1, ease: 'power2.out',
