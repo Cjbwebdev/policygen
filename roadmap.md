@@ -89,6 +89,28 @@
 - `templates/500.html` — Retro print shop redesign
 - `templates/blog/employment-contract-template-uk-2026.html` — Retro redesign + Article schema + fixed domain
 
+## Phase 5: Live Site Audit — 2026-04-29 🔴
+
+**Overall Score: 6.2/10**
+
+| # | Dimension | Score | Finding | Improvement Needed |
+|---|-----------|-------|---------|-------------------|
+| 1 | Images & Visuals | 3/10 | **Zero real images** — all visuals are emoji/unicode. No product screenshots, no logo image, no hero graphic. | Add real logo image, 1-2 product screenshots/hero illustration, and author photos for testimonials. Target 5-8 meaningful images with alt text. |
+| 2 | Layout & Structure | 7/10 | Clean single-column layout with good whitespace. H3 appears directly after H1 — semantic heading order broken (H1→H3 with no H2). | Fix heading hierarchy: insert H2 between H1 and first H3, or promote H3 to H2 per WCAG 1.3.1. (5 min) |
+| 3 | Typography | 8/10 | Playfair Display + Lora + Courier Prime — excellent law-firm serif pairing. 1.7 line-height for readability. Good contrast (#2c1810 on #f5f0e1). Google Fonts with preconnect + display=swap. | Set min-font-size of 16px on mobile inputs to prevent iOS zoom. Use Courier Prime more intentionally for data points/quotes. (10 min) |
+| 4 | Mobile Responsive | 6/10 | Viewport meta ✓. CSS media queries detected. Mobile CTA bar present. 8 touch targets below 44px (WCAG 2.5.5). No hamburger menu. Footer links dense on small screens. | Enforce 44×44px minimum touch targets. Add hamburger menu at ≤768px. Test at 375px (iPhone SE) and 768px (iPad). (2-3 hrs) |
+| 5 | UX & CTAs | 8/10 | Strong primary CTA ("Generate My Free Policy") at 3× strategic scroll points. All 19 links have valid, distinct hrefs — zero empty/hash links. Missing contact form on site. | Add /contact/ form for users without email clients. Add FAQ link in footer. (1-2 hrs) |
+| 6 | Console Errors | 10/10 | Zero JS errors, zero console messages, zero failed API calls. Site is fully static/server-rendered with no client-side JS. | No fixes needed. When JS is added, maintain this standard with error boundaries. |
+| 7 | Content Quality | 6/10 | Copywriting is sharp and persuasive ("lawyers charge £500+", "90 seconds"). Legal pages have substantive content. **Testimonials appear fabricated** (initials-only: SR/MK/JL, no photos). "94% of websites have outdated policies" unsourced. "Freelance" typo. | Replace fabricated testimonials with real ones (full names, photos, companies). Cite sources for stats. Fix "Freelance" → "Freelance". Make doc counter dynamic if meant to appear live. (2-4 hrs) |
+| 8 | SEO Basics | 3/10 | Title ✓, H1 ✓, viewport ✓, lang="en" ✓. **Missing**: meta description, all OG tags, Twitter card, canonical URL, favicon, zero JSON-LD structured data. Critical gaps for search visibility and social sharing. | Add meta description (150-160 chars). Add full OG + Twitter card tags. Add canonical. Add favicon + apple-touch-icon. Add Organization JSON-LD. Test with Google Rich Results + Facebook Sharing Debugger. (1-2 hrs) |
+| 9 | Trust Signals | 5/10 | Real privacy/TOS/cookie pages with substantive content. Stripe mentioned for payments. **Testimonials appear fabricated** (initials-only, no photos, generic quotes). No business address or phone. Only contact: mailto:hello@policygen.site. | Replace fake testimonials. Add physical business address + phone (required for legal services trust). Add Trustpilot/Google Reviews widget. Add SSL security badge. (3-5 hrs) |
+| 10 | Overall Feel | 6/10 | Strong first impression — law-firm aesthetic with serif typography, cream palette, confident copy. Undermined by emoji-only visuals, fake-looking testimonials, missing SEO fundamentals, sparse contact details. Would NOT trust with credit card without independent verification. | Address TOP3 below. Once visuals, trust, and SEO are strengthened, the design and content quality will carry a much more credible impression. (6-12 hrs total) |
+
+### 🔴 TOP 3 PRIORITY FIXES (from audit)
+1. **Add real images and favicon** — Emoji-only visuals undermine credibility for a legal document service. No favicon makes the site look incomplete. → Add professional logo image, 1-2 product screenshots, testimonial author photos. Add favicon.ico (32×32), favicon-32x32.png, apple-touch-icon. All images need alt text. (2-3 hrs)
+2. **Fix all SEO fundamentals (meta description, OG tags, structured data, canonical)** — Zero social sharing preview. No structured data = no rich results. Missing meta description = Google auto-generates snippets. → Add `<meta name="description">`, full og:tags, twitter:card, canonical `<link>`, Organization JSON-LD. Test with Google Rich Results + Facebook Debugger. (1-2 hrs)
+3. **Replace fabricated testimonials with real ones + add business contact details** — Initials-only names (SR, MK, JL) with no photos are an immediate red flag. No address/phone for a legal service is a trust killer. → Collect 3 real testimonials with full names, headshots, role, company. Add business address + phone to footer and /contact. If not possible, remove fake testimonials — none is better than fabricated. (3-5 hrs)
+
 ### Issues
 - None
 
