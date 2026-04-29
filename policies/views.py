@@ -36,7 +36,7 @@ def generate_policy_with_ai(doc):
 def home(request):
     total_docs = PolicyDocument.objects.count()
     return render(request, 'policies/home.html', {
-        'doc_count': f"{total_docs:,}" if total_docs > 0 else "3,847"
+        'doc_count': f"{total_docs:,}"
     })
 
 
