@@ -111,6 +111,30 @@
 2. **Fix all SEO fundamentals (meta description, OG tags, structured data, canonical)** — Zero social sharing preview. No structured data = no rich results. Missing meta description = Google auto-generates snippets. → Add `<meta name="description">`, full og:tags, twitter:card, canonical `<link>`, Organization JSON-LD. Test with Google Rich Results + Facebook Debugger. (1-2 hrs)
 3. **Replace fabricated testimonials with real ones + add business contact details** — Initials-only names (SR, MK, JL) with no photos are an immediate red flag. No address/phone for a legal service is a trust killer. → Collect 3 real testimonials with full names, headshots, role, company. Add business address + phone to footer and /contact. If not possible, remove fake testimonials — none is better than fabricated. (3-5 hrs)
 
+---
+
+## Phase 6: Live Site Audit — 2026-05-01 🔴
+
+**Overall Score: 7.4/10**
+
+| # | Dimension | Score | Finding | Improvement Needed |
+|---|-----------|-------|---------|-------------------|
+| 1 | Images & Visuals | 7/10 | 13 inline SVGs scale crisply but zero alt text and no lazy loading attributes. | Add aria-label and role="img" to all SVGs. Add loading="lazy" to below-fold visuals. |
+| 2 | Layout & Structure | 8/10 | Clean hierarchy: Hero → Types → How It Works → Comparison → Testimonials → CTA. 1 H1, 5 H2s, 9 H3s — well-formed. | Add breadcrumb structured data. Add FAQ/HowTo schema for "How it works" section. |
+| 3 | Typography | 7/10 | DM Sans on dark theme. H1 font-weight 400 (too light for display heading), line-height 1.15 (tight; ≥1.2 recommended). Good contrast ratio. | Bump H1 font-weight to 600-700. Increase H1 line-height to ≥1.2. |
+| 4 | Mobile Responsive | 7/10 | Viewport meta present. Simple single-column architecture suggests responsive. No hamburger evidence verifiable from 1280px viewport. | Verify at 375px/768px breakpoints. Add hamburger nav if missing on mobile. |
+| 5 | UX & CTAs | 8/10 | "Generate My Free Policy in 90 Seconds" appears 3×. All 21 links valid. Cookie consent with Accept + Decline (GDPR-compliant). "No credit card required". | No major fixes needed. Consider adding live chat for pre-sales questions. |
+| 6 | Console Errors | 10/10 | **Zero JS errors. Zero console warnings.** Clean execution. No CDN failures. | None — perfect score. |
+| 7 | Content Quality | 7/10 | Strong benefit-driven copy. **Issues: "Freelance Designer" typo, "legally bulletproof" unverifiable, uncited statistics (94%, 3,847).** | Fix "Freelance Designer" → "Freelancer". Add footnote sources for 94% stat and 3,847 counter methodology. Soften "legally bulletproof" claim. |
+| 8 | SEO Basics | 9/10 | Title/meta/OG/Twitter all set. SoftwareApplication schema with 4.8★ rating. Canonical correct. **Missing: breadcrumb schema, FAQ/HowTo schema for "How it works" section.** | Add BreadcrumbList JSON-LD. Add FAQ schema for the "How it works" 3-step section. |
+| 9 | Trust Signals | 6/10 | 3 testimonials but initials-only (SR, MK, JL) — unverifiable. "2,000+ businesses" unsubstantiated. No Trustpilot, no phone, no address. Stripe checkout helps. | Add full names, headshots, company names to testimonials. Source the 2,000+ claim. Add Trustpilot widget if available. Add business address. |
+| 10 | Overall Feel | 7/10 | Professional dark SaaS landing. Stripe checkout inspires confidence. Unverifiable testimonials and uncited stats create enough doubt that some users would bounce. | Close the trust gap with real testimonial attribution (#1 fix below). Would cautiously trust with credit card. |
+
+### 🔴 TOP 3 PRIORITY FIXES (from audit)
+1. **Add real testimonial attribution** — Initials-only testimonials (SR, MK, JL) with no photos, companies, or LinkedIn links are an immediate red flag. → Add full names, headshots, company names, and LinkedIn/Twitter links for all 3 testimonials. If real testimonials don't exist, run a beta program to collect them. Lifts Trust 6→8/10 and Overall Feel 7→8/10. (30 min)
+2. **Fix typo + add source citations for statistics** — "Freelance Designer" typo and uncited "94%" and "3,847" statistics undermine credibility for a legal service. → Fix typo. Add footnote or tooltip explaining stat sources. Replace "legally bulletproof" with something defensible like "legally reviewed" or "designed by legal professionals." (15 min)
+3. **Add SVG accessibility + bump H1 styling** — Zero alt/aria on 13 SVGs fails accessibility audits. H1 at font-weight 400 is too light. → Add aria-label to all SVGs. Bump H1 font-weight to 600-700 and line-height to ≥1.2. (20 min)
+
 ### Issues
 - None
 
